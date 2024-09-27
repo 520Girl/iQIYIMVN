@@ -1,0 +1,37 @@
+// 使用bem 命名规范
+$namespace: 'amx' !default;
+$block-sel: "-" !default;
+$element-sel: "__" !default;
+$modifier-sel: "--" !default;
+
+//混入
+@mixin bfc{
+    height: 100%;
+    overflow: hidden;
+}
+
+@mixin b($block, $tag: '.') {
+    $B: $namespace + $block-sel + $block; //变量
+    #{$tag}#{$B} {
+        @content;
+    }
+
+}
+
+@mixin e($element, $tag: '.') {
+    $selectorFat: &; //变量
+    @at-root { //跳出嵌套
+        #{$selectorFat + $element-sel + $element} {
+            @content;
+        }
+    }
+}
+
+@mixin m($modifier, $tag: '.') {
+    $selectorFat: &; //变量
+    @at-root { //跳出嵌套
+        #{$selectorFat + $modifier-sel + $modifier} {
+            @content;
+        }
+    }
+}
