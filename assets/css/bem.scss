@@ -12,7 +12,7 @@ $modifier-sel: "--" !default;
 
 @mixin b($block, $tag: '.') {
     $B: $namespace + $block-sel + $block; //变量
-    #{$tag}#{$B} {
+    #{$tag}#{$B} { 
         @content;
     }
 

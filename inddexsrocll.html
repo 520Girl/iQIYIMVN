@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>滚动覆盖效果</title>
+    <style>
+        body {
+            margin: 0;
+            height: 200vh; /* 为了产生滚动条 */
+        }
+
+        .container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .background, .foreground {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+        }
+
+        .background {
+            background-color: rgba(255, 0, 0, 0.5); /* 半透明红色 */
+            z-index: 1;
+        }
+
+        .foreground {
+            background-color: rgba(0, 0, 255, 0.5); /* 半透明蓝色 */
+            z-index: 2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="background"></div>
+        <div class="foreground"></div>
+    </div>
+    <script>
+        document.addEventListener('scroll', function() {
+            const scrollPosition = window.scrollY;
+            const background = document.querySelector('.background');
+            const foreground = document.querySelector('.foreground');
+
+            // 背景层的滚动速度正常
+            background.style.transform =  `translateY(${scrollPosition}px)`;
+            // 前景层的滚动速度为正常的两倍
+            foreground.style.transform = `translateY(${scrollPosition * 1.5}px)`; // 后面的元素滚动得更快
+        });
+    </script>
+</body>
+</html>

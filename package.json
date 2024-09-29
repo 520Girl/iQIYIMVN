@@ -14,6 +14,10 @@
     "prepare": "husky"
   },
   "dependencies": {
+    "@better-scroll/core": "^2.5.1",
+    "@better-scroll/pull-down": "^2.5.1",
+    "@varlet/nuxt": "^0.1.5",
+    "@varlet/ui": "^3.5.3",
     "nuxt": "^3.13.0",
     "vue": "latest",
     "vue-router": "latest"
@@ -23,6 +27,7 @@
     "@commitlint/config-conventional": "^19.5.0",
     "@eslint/js": "^10.0.0",
     "@typescript-eslint/eslint-plugin": "^8.7.0",
+    "@varlet/import-resolver": "^3.5.3",
     "autoprefixer": "^10.4.20",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
@@ -36,6 +41,14 @@
     "prettier": "^3.3.3",
     "sass": "^1.79.3",
     "tailwindcss": "^3.4.13",
-    "typescript-eslint": "^8.7.0"
+    "typescript-eslint": "^8.7.0",
+    "unplugin-auto-import": "^0.18.3",
+    "unplugin-vue-components": "^0.27.4"
+  },
+  "config": {
+    "nuxt": {
+      "host": "0.0.0.0",
+      "port": 3000
+    }
   }
 }

@@ -1,6 +1,15 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-
+import components from "unplugin-vue-components/vite"
+import autoImport from "unplugin-auto-import/vite"
+import { VarletImportResolver } from "@varlet/import-resolver"
+import { resolve } from "node:path"
+const svgIconsDir = resolve(__dirname, "./assets/svg-icons")
+console.log
 export default defineNuxtConfig({
+	devServer: {
+		host: "0.0.0.0",
+		port: 3000,
+	},
 	app: {
 		head: {
 			link: [
@@ -11,7 +20,7 @@ export default defineNuxtConfig({
 	},
 	compatibilityDate: "2024-04-03",
 	devtools: { enabled: true },
-	css: ["~/assets/css/main.css"],
+	css: ["~/assets/css/main.css", "~/assets/css/variable.css"],
 	postcss: {
 		plugins: {
 			tailwindcss: {},
@@ -46,6 +55,7 @@ export default defineNuxtConfig({
 			},
 		},
 	},
+
 	vite: {
 		css: {
 			preprocessorOptions: {
@@ -53,6 +63,41 @@ export default defineNuxtConfig({
 					additionalData: `@import "./assets/css/bem.scss";`,
 				},
 			},
+		},
+		plugins: [
+			components({
+				resolvers: [VarletImportResolver()],
+			}),
+			autoImport({
+				resolvers: [VarletImportResolver({ autoImport: true })],
+			}),
+			autoImport({
+				dts: "types/auto-imports.d.ts", // 这里是生成的global函数文件
+				imports: ["vue", "vue-router"], // 需要自动导入的插件
+				include: [
+					/\.[tj]sx?$/, // .ts, .tsx, .js, .jsx
+					/\.vue$/,
+					/\.vue\?vue/, // .vue
+					/\.md$/, // .md
+				],
+				// 解决eslint报错问题
+				eslintrc: {
+					// 这里先设置成true然后npm run dev 运行之后会生成 .eslintrc-auto-import.json 文件之后，在改为false
+					enabled: false,
+					filepath: "./.eslintrc-auto-import.json", // 生成的文件路径
+					globalsPropValue: true,
+				},
+			}),
+		],
+	},
+
+	modules: ["@varlet/nuxt"],
+	varlet: {
+		// modulePath: '',
+		// exclude: [],
+		icon: {
+			dir: svgIconsDir,
+			generatedFilename: "./assets/virtual.icons.css",
 		},
 	},
 })
