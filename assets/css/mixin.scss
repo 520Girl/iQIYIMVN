@@ -7,3 +7,129 @@
     background-position: center;
     background-size: cover;
 }
+
+//首页列表项mixin
+@mixin ListItem_1{
+    .amx-ListItem__img{
+        @apply w-full h-40 relative;
+    }
+    .link {
+        
+        @include b-Cover;
+        @apply text-center;
+        border-radius: 5px;
+    }
+    .c-rt {
+            @apply absolute top-0 right-0 text-white font-semibold font-mono;
+            font-size: 10px;
+            background: linear-gradient(to right, #b7f5d0, #66e9a7);
+            border: 1px solid #81d9a9;
+            padding: 0px 3px;
+            border-radius: 0 5px 0 6px;
+            color: #0a3720;
+        }
+
+        .c-rt-1 {
+            color: #0a3720;
+            background: linear-gradient(to right, #b7f5d0, #66e9a7);
+        }
+
+        .c-rt-2 {
+            color: #663700;
+            border: 1px solid #c9b487;
+            background: linear-gradient(to right, #ffeec3, #f9b761);
+        }
+
+        .c-rt-3 {
+            color: #673800;
+            padding: 0;
+            background-color: transparent;
+            border: unset;
+            // background: linear-gradient(to right, #ffeec3, #66e9a7);
+
+            span:first-child {
+                background-color: #020104;
+                color: #e2e2e2;
+                @apply inline-block font-mono;
+                padding: 0 2px 0 3px;
+                border-radius: 0 0 0 5px;
+
+            }
+
+            span:last-child {
+                background: linear-gradient(to right, #ffeec3, #f9b761);
+                color: #663700;
+                @apply inline-block font-mono;
+                ;
+                padding: 0 3px 0 2px;
+                border-radius: 0 5px 0 0;
+            }
+        }
+
+        .c-lb {
+            @apply absolute text-white font-semibold font-mono;
+            bottom: 1px;
+            left: 1px;
+            font-size: 9px;
+            background-color: #23314b;
+            padding: 1px 3px;
+            border-radius: 2px;
+        }
+
+        .c-rb {
+            @apply absolute text-white font-semibold;
+            right: 4px;
+            bottom: 2px;
+
+            .c-date {
+                color: #ff7f00;
+            }
+        }
+
+        .c-rb-2 {
+            @apply absolute text-white font-semibold;
+            right: 4px;
+            bottom: 2px;
+            font-size: 9px;
+            background: linear-gradient(to right, #ae3919, #cf1d3f);
+            padding: 1px 3px;
+            border-radius: 5px;
+            color: #fff;
+
+            .c-date {
+                color: #fff;
+            }
+        }
+
+        .c-lt {
+            @apply absolute text-white font-semibold;
+            top: 1px;
+            left: 1px;
+        }
+
+        .c-lrb {}
+        .c-title {
+            @apply truncate font-sans;
+            font-size: 15px;
+            color: #0d0d0d;
+        }
+
+        .c-info {
+            @apply truncate font-sans flex justify-between;
+            color: #666666;
+
+            a {
+                @apply truncate;
+                font-size: 14px;
+            }
+
+            .more {
+                font-size: 16px;
+
+                i {
+                    vertical-align: baseline;
+                    font-size: 15px;
+                }
+            }
+        }
+}

@@ -5,11 +5,10 @@
 				ref="swipe"
 				:style="translateY.swipe ? `transform: translate3d(0,${translateY.swipe}px,0)` : ''"
 			></Swipe>
-			<div
-				style="height: 1200px"
-				:style="translateY.content ? `transform: translate3d(0,${translateY.content}px,0)` : ''"
-			>
-				<HomeComponentsList />
+			<div :style="translateY.content ? `transform: translate3d(0,${translateY.content}px,0)` : ''">
+				<slot>
+					<HomeComponentsList />
+				</slot>
 			</div>
 		</div>
 	</div>

@@ -44,8 +44,11 @@
 					:ripple="item.ripple"
 					:disabled="item.disabled"
 					:class="{ activeListItem: active === index }"
-					>{{ item.name }}</var-tab
 				>
+					<nuxt-link :to="item.src">
+						{{ item.name }}
+					</nuxt-link>
+				</var-tab>
 			</var-tabs>
 			<!-- </div> -->
 		</div>
@@ -56,18 +59,23 @@ import BScroll from "@better-scroll/core"
 import type { BScrollInstance } from "@better-scroll/core"
 const active = ref(0)
 const list = reactive([
-	{ name: "首页", disabled: false, ripple: false },
-	{ name: "选项2", disabled: false, ripple: false },
-	{ name: "选项3", disabled: false, ripple: false },
-	{ name: "选项4", disabled: false, ripple: false },
-	{ name: "选项5", disabled: false, ripple: false },
-	{ name: "选项6", disabled: false, ripple: false },
-	{ name: "选项7", disabled: false, ripple: false },
-	{ name: "选项8", disabled: false, ripple: false },
-	{ name: "选项9", disabled: false, ripple: false },
+	{ name: "首页", disabled: false, ripple: false, src: "/" },
+	{ name: "小说", disabled: false, ripple: false, src: "/novel" },
+	{ name: "电影", disabled: false, ripple: false, src: "/movie" },
+	{ name: "漫画", disabled: false, ripple: false, src: "/comic" },
 ])
+const route = useRoute()
 const scroll = ref<HTMLElement | null>(null)
 let bs: BScroll
+
+//实现点击选择状态
+list.some((item, index) => {
+	if (item.src === route.path) {
+		active.value = index
+		return true
+	}
+})
+
 onMounted(() => {
 	// scrollInit();
 	// console.log(scroll, bs);
@@ -102,6 +110,7 @@ const handleClick = (active: string | number) => {
 
 @include b(header) {
 	height: 76px;
+
 	@include b(input) {
 		@apply flex items-center justify-between;
 		height: var(--amx-header-input-height);
@@ -168,6 +177,7 @@ const handleClick = (active: string | number) => {
 
 		@include e(right) {
 			width: 70px;
+
 			i:frist-child {
 				font-size: 22px;
 			}
@@ -183,12 +193,14 @@ const handleClick = (active: string | number) => {
 		width: 100%;
 		overflow: hidden;
 		height: var(--amx-header-scroll-height);
+
 		.activeListItem {
 			font-size: 17px;
 			transition: font-size 0.2s;
 			color: #000;
 			@apply font-semibold;
 		}
+
 		.var-tabs--layout-horizontal-padding {
 			padding-right: 35px;
 		}

@@ -1,0 +1,20 @@
+@include b(index) {
+	@apply flex flex-col;
+	height: 100vh;
+}
+
+@include b(index-main) {
+	flex: 1;
+	overflow: auto;
+	/* 隐藏滚动条的样式 */
+	scrollbar-width: none;
+	/* Firefox */
+	-ms-overflow-style: none;
+	/* Internet Explorer 和 Edge */
+	height: calc(100vh - (var(--amx-header-input-height) + var(--amx-header-scroll-height)));
+}
+
+main::-webkit-scrollbar {
+	display: none;
+	/* Safari 和 Chrome */
+}

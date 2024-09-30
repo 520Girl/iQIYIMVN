@@ -3,8 +3,9 @@ import components from "unplugin-vue-components/vite"
 import autoImport from "unplugin-auto-import/vite"
 import { VarletImportResolver } from "@varlet/import-resolver"
 import { resolve } from "node:path"
+
 const svgIconsDir = resolve(__dirname, "./assets/svg-icons")
-console.log
+
 export default defineNuxtConfig({
 	devServer: {
 		host: "0.0.0.0",
@@ -17,6 +18,9 @@ export default defineNuxtConfig({
 			],
 			meta: [{ name: "viewport", content: "width=device-width, initial-scale=1" }],
 		},
+	},
+	typescript: {
+		typeCheck: true,
 	},
 	compatibilityDate: "2024-04-03",
 	devtools: { enabled: true },
@@ -91,13 +95,17 @@ export default defineNuxtConfig({
 		],
 	},
 
-	modules: ["@varlet/nuxt"],
+	modules: ["@varlet/nuxt", "nuxt-svgo"],
+	svgo: {
+		//svg 图片导入
+		autoImportPath: "./assets/svg-icons/",
+	},
 	varlet: {
 		// modulePath: '',
 		// exclude: [],
-		icon: {
-			dir: svgIconsDir,
-			generatedFilename: "./assets/virtual.icons.css",
-		},
+		// icon: { //这个导入会导致我的是配置var-icon使用的，会转化为i 标签，失色
+		// 	dir: svgIconsDir,
+		// 	generatedFilename: "./assets/virtual.icons.css",
+		// },
 	},
 })

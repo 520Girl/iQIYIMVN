@@ -37,13 +37,15 @@
     "eslint-plugin-vue": "^9.28.0",
     "globals": "^15.9.0",
     "husky": "^9.1.6",
+    "nuxt-svgo": "^4.0.6",
     "postcss-px-to-viewport": "^1.1.1",
     "prettier": "^3.3.3",
     "sass": "^1.79.3",
     "tailwindcss": "^3.4.13",
     "typescript-eslint": "^8.7.0",
     "unplugin-auto-import": "^0.18.3",
-    "unplugin-vue-components": "^0.27.4"
+    "unplugin-vue-components": "^0.27.4",
+    "vue-tsc": "^2.1.6"
   },
   "config": {
     "nuxt": {

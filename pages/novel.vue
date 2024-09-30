@@ -9,7 +9,11 @@
 				v-model:requestStates="requestStates"
 			>
 				<template #content>
-					<component :is="Home" ref="homeContent" />
+					<Home ref="homeContent">
+						<template #default>
+							<Novel :data="11223"></Novel>
+						</template>
+					</Home>
 				</template>
 			</DragRefurbish>
 		</main>
@@ -25,10 +29,10 @@
 
 <script setup lang="ts">
 useHead({
-	title: "首页",
-}) // 调用 useHead() 钩子函数
+	title: "小说",
+}) // Set page title
 import Header from "@/components/Header.vue" // Import Header component
-import Home from "@/components/home/index.vue"
+import Novel from "@/components/novel/index.vue"
 import Footer from "@/components/Footer.vue" // Import Footer component
 import { onMounted, ref } from "vue"
 
