@@ -1,45 +1,58 @@
 <template>
 	<div class="amx-playMovie">
-		<div class="amx-playMovie__play">potplay</div>
-		<div class="amx-playMovie__content" ref="listDOM">
-			<div class="amx-playMovie__content__Title">
-				<var-tabs
-					elevation
-					style=""
-					disabled
-					active-color="#000"
-					inactive-color="#000"
-					indicator-size="0"
-					v-model:active="active"
-				>
-					<var-tab class="p-t-1" :ripple="false">视频</var-tab>
-					<var-tab class="p-t-1" :ripple="false">讨论<sub class="review-num">3266</sub></var-tab>
-				</var-tabs>
+		<var-watermark :content="setting.title" :fullscreen="true">
+			<div class="amx-playMovie__play" ref="playDOM">
+				<CommonArtplayer
+					ref="artPlayer"
+					@get-instance="getInstance"
+					:option="option"
+					:style="style"
+				/>
 			</div>
-			<div class="amx-playMovie__content__List" ref="slide">
-				<div class="amx-playMovie__content__List__wrapper" ref="slideWrapper">
-					<div class="Item">
-						<DragRefurbishUp
-							@scrollHandler="scrollHandler"
-							:requestHandler="requestHandler"
-							v-model:requestStates="requestStates"
-						>
-							<template #content>
-								<PlayVideoInfo />
-							</template>
-						</DragRefurbishUp>
-					</div>
-					<div class="Item">
-						<!-- <DragRefurbishUp @scrollHandler="scrollHandler" :requestHandler="requestHandler"
-              v-model:requestStates="requestStates">
-              <template #content> -->
-						<!-- <PlayVideoInfo /> -->
-						<!-- </template>
-            </DragRefurbishUp> -->
+
+			<div class="amx-playMovie__content" ref="listDOM">
+				<div class="amx-playMovie__content__Title">
+					<var-tabs
+						elevation
+						style=""
+						disabled
+						active-color="#000"
+						inactive-color="#9f9a9a"
+						indicator-size="0"
+						v-model:active="active"
+					>
+						<var-tab class="p-t-1" :ripple="false">视频</var-tab>
+						<var-tab class="p-t-1" :ripple="false">讨论<sub class="review-num">3266</sub></var-tab>
+					</var-tabs>
+				</div>
+				<div class="amx-playMovie__content__List" ref="slide">
+					<div class="amx-playMovie__content__List__wrapper" ref="slideWrapper">
+						<div class="Item">
+							<DragRefurbishUp
+								@scrollHandler="scrollHandler"
+								:requestHandler="requestHandler"
+								v-model:requestStates="requestStates"
+							>
+								<template #content>
+									<PlayVideoInfo />
+								</template>
+							</DragRefurbishUp>
+						</div>
+						<div class="Item">
+							<DragRefurbishUp
+								@scrollHandler="scrollHandler"
+								:requestHandler="requestHandler"
+								v-model:requestStates="requestStates"
+							>
+								<template #content>
+									<PlayChat />
+								</template>
+							</DragRefurbishUp>
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
+		</var-watermark>
 	</div>
 </template>
 
@@ -48,19 +61,52 @@ import { ref, reactive, onMounted } from "vue"
 import BScroll from "@better-scroll/core"
 import Slide from "@better-scroll/slide"
 import NestedScroll from "@better-scroll/nested-scroll"
+import setting from "public/setting.json"
 
 BScroll.use(NestedScroll)
 BScroll.use(Slide)
 
 let slide = ref<HTMLElement | null>(null)
 let listDOM = ref<HTMLElement | null>(null)
+let playDOM = ref<HTMLElement | null>(null)
+let artPlayer = ref<any>(null)
 const slideWrapper = ref<HTMLElement | null>(null)
 let active = ref<number>(0)
 let sliderScroll: any = null
 const requestStates = reactive<{ done: boolean; data: number }>({
 	done: false, // 请求状态
 	data: 20, // 请求结果
-}) // 请求状态
+})
+
+//artPlayer 播放器
+
+const option = reactive({
+	url: "https://artplayer.org/assets/sample/video.mp4",
+	autoSize: true,
+	// 视频的海报，只会出现在播放器初始化且未播放的状态下
+	poster: "/home/4274bd8105cc43dab19b180dadeafac4.webp",
+	// 视频标题，目前会出现在视频截图和迷你模式下
+	title: "这个是title",
+	// 播放器主题颜色，目前只作用于进度条上
+	theme: "var(--amx-theme-color)",
+	// 播放器的默认音量
+	volume: 0.5,
+	// 使用直播模式，会隐藏进度条和播放时间
+	isLive: false,
+	// 是否默认静音
+	muted: false,
+	// 是否自动播放
+	autoplay: false,
+})
+const style = reactive({
+	width: "100%",
+	height: "100%",
+	margin: "auto",
+})
+
+const getInstance = (art: any) => {
+	console.log(art)
+}
 
 //通过注入的方式传递数据给子组件
 // provide('listDOM', listDOM)
@@ -69,6 +115,10 @@ const scrollHandler = ({ x, y }: { x: number; y: number }) => {
 	if (y > 0) {
 		console.log("scrollHandler", x, y)
 		listDOM.value!.style.transform = `translate3d(0,${y}px,0)`
+		playDOM.value!.style.transform = `translate3d(0,${y}px,0)`
+		if (y > 20) {
+			artPlayer.value.fullscreen()
+		}
 	}
 }
 //! 2. 请求数据
@@ -140,10 +190,12 @@ onMounted(async () => {
 @include b(playMovie) {
 	height: 100vh;
 
-	// overflow: hidden;
+	overflow: hidden;
+
 	@include e(play) {
 		height: var(--amx-play-height);
 		width: var(--amx-play-width);
+		background-color: #000;
 	}
 
 	@include e(content) {
@@ -154,7 +206,7 @@ onMounted(async () => {
 			height: var(--amx-play-info-title);
 			overflow: hidden;
 			width: 100%;
-			border: 1px solid #f1f1f1;
+			border-bottom: 1px solid #f1f1f1;
 
 			:deep(.var-tabs) {
 				@apply w-full h-full inline-block shadow-none flex-none;
@@ -162,6 +214,9 @@ onMounted(async () => {
 
 			:deep(.var-tab) {
 				@apply flex-none;
+			}
+
+			.active {
 			}
 		}
 

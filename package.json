@@ -20,6 +20,7 @@
     "@better-scroll/slide": "^2.5.1",
     "@varlet/nuxt": "^0.1.5",
     "@varlet/ui": "^3.5.3",
+    "artplayer": "^5.1.7",
     "nuxt": "^3.13.0",
     "vue": "latest",
     "vue-router": "latest"

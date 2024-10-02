@@ -159,7 +159,7 @@ const list = reactive([
 		bottomT: { type: 2, text: "最新内容11条" },
 	},
 ])
-let bottomPopup = ref(true)
+let bottomPopup = ref(false)
 let sliderScroll: any = null
 let slide = ref<HTMLElement | null>(null)
 const initSlider = () => {
@@ -192,7 +192,7 @@ const handleClick = (active: string | number) => {
 </style>
 <style lang="scss">
 @include b(popup) {
-	height: calc(100vh - var(--amx-play-height));
+	height: calc(100vh - var(--amx-play-height) - var(--amx-play-info-title));
 	@apply w-full box-border;
 
 	@include e(content) {
@@ -200,7 +200,7 @@ const handleClick = (active: string | number) => {
 
 		@include m(title) {
 			height: var(--amx-play-info-title);
-			border: 1px solid #f1f1f1;
+			border-bottom: 1px solid #f1f1f1;
 			padding: 0 15px;
 			font-size: var(--tab-active-font-size);
 			@apply w-full overflow-hidden flex justify-between items-center font-semibold;
