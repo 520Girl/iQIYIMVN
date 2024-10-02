@@ -71,6 +71,7 @@ const list = reactive([
 		more: true,
 		width: 3,
 		tag: "li",
+		bottomT: { type: 2, text: "最新内容11条" },
 	},
 ])
 

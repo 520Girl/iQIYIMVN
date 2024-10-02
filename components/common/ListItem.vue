@@ -1,12 +1,12 @@
 <template>
 	<component :is="tag" :class="['amx-ListItem', 'w-' + width]">
-		<div class="amx-ListItem__img">
+		<div class="amx-ListItem__img img-height">
 			<a
 				:href="src"
 				:title="title"
 				rel=""
 				class="link"
-				:style="'background-image:url(' + imgUrl + ');'"
+				:style="['background-image:url(' + imgUrl + ');']"
 			>
 				<template v-if="rightT.type === 1 || rightT.type === 2">
 					<div :class="'c-rt c-rt-' + rightT.type">
@@ -36,14 +36,42 @@
 					{{ title }}
 				</a>
 			</div>
-			<div class="c-info text-ellipsis">
-				<a href="//m.iqiyi.com/v_12b7e5ue8cc.html" title="小鹿犀利解构容貌焦虑">
-					{{ description }}
-				</a>
-				<div class="more" v-if="more">
-					<var-icon name="dots-vertical" />
+			<template v-if="bottomT && (bottomT.type === 1 || bottomT.type === 2)">
+				<div class="c-info text-ellipsis font-sans" style="font-size: 15px">
+					<a
+						href="//m.iqiyi.com/v_12b7e5ue8cc.html"
+						style="font-size: 12px"
+						title="小鹿犀利解构容貌焦虑"
+					>
+						{{ description }}
+					</a>
 				</div>
-			</div>
+				<div class="c-class c-info">
+					<div :class="['c-tag']" v-if="bottomT.type === 1">
+						<span
+							:class="'c-tag-' + bottomT.type"
+							v-for="(item2, index2) in bottomT.text.split('|')"
+							>{{ item2 }}</span
+						>
+					</div>
+					<div class="c-tag" v-if="bottomT.type === 2">
+						<p class="c-tag-2">{{ bottomT.text }}</p>
+					</div>
+					<div class="more" v-if="more">
+						<var-icon name="dots-vertical" />
+					</div>
+				</div>
+			</template>
+			<template v-else>
+				<div class="c-info text-ellipsis">
+					<a href="//m.iqiyi.com/v_12b7e5ue8cc.html" title="小鹿犀利解构容貌焦虑">
+						{{ bottomT }}
+					</a>
+					<div class="more" v-if="more">
+						<var-icon name="dots-vertical" />
+					</div>
+				</div>
+			</template>
 		</div>
 	</component>
 </template>
@@ -64,6 +92,7 @@ const props = withDefaults(defineProps<ListItem>(), {
 	more: false,
 	tag: "div",
 	width: 2,
+	height: "90px",
 	leftT: () => ({
 		type: 1,
 		text: "",
@@ -80,6 +109,11 @@ const props = withDefaults(defineProps<ListItem>(), {
 		type: 1,
 		text: "",
 	}),
+	bottomT: () => ({
+		//0 不显示
+		type: 0,
+		text: "电影|70后|动漫",
+	}),
 })
 
 onMounted(() => {
@@ -95,7 +129,7 @@ onMounted(() => {
 
 	@include e(img) {
 		@apply w-full h-40 relative;
-		max-height: 90px;
+		height: 90px;
 	}
 
 	@include e(title) {
@@ -119,5 +153,8 @@ onMounted(() => {
 		@apply h-56;
 		max-height: 224px;
 	}
+}
+.img-height {
+	height: v-bind(height);
 }
 </style>

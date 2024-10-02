@@ -63,6 +63,7 @@ const list = reactive([
 	{ name: "小说", disabled: false, ripple: false, src: "/novel" },
 	{ name: "电影", disabled: false, ripple: false, src: "/movie" },
 	{ name: "漫画", disabled: false, ripple: false, src: "/comic" },
+	{ name: "播放", disabled: false, ripple: false, src: "/play" },
 ])
 const route = useRoute()
 const scroll = ref<HTMLElement | null>(null)
@@ -128,7 +129,7 @@ const handleClick = (active: string | number) => {
 			height: 80%;
 			@apply grow;
 
-			::v-deep .var-field-decorator__middle {
+			:deep(.var-field-decorator__middle) {
 				margin: 0;
 
 				.var-input__input {
@@ -202,7 +203,7 @@ const handleClick = (active: string | number) => {
 		}
 
 		.var-tabs--layout-horizontal-padding {
-			padding-right: 35px;
+			// padding-right: 35px;
 		}
 
 		@include b(scrollWrapper) {

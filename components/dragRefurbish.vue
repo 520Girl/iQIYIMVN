@@ -12,10 +12,11 @@
 									width: 100%;
 									display: block;
 									font-size: 12px;
-									color: rgb(136, 136, 136);
+									color: var(--amx-theme-color);
 									position: absolute;
 									top: -20px;
 									z-index: 3;
+									line-height: 50px;
 									text-align: center;
 								"
 								:style="{ top: '-' + STOP + 'px' }"
@@ -31,7 +32,7 @@
 								<var-loading
 									:description="'正在加载...'"
 									type="wave"
-									color="var(--color-success)"
+									color="var(--amx-theme-color)"
 									:style="{ top: '-' + STOP + 'px' }"
 									style="
 										height: 50px;
@@ -39,6 +40,7 @@
 										position: absolute;
 										top: -50px;
 										z-index: 3;
+										color: var(--amx-theme-color);
 										text-align: center;
 										width: 100%;
 									"
@@ -75,6 +77,8 @@
 import { ref, reactive, onMounted } from "vue"
 import BScroll from "@better-scroll/core"
 import PullDown from "@better-scroll/pull-down"
+import { useThrottle } from "~/hooks"
+
 BScroll.use(PullDown)
 
 let bscroll: any = null
@@ -91,19 +95,23 @@ const stateReFurish = reactive({
 })
 
 //子组件给父组件传递一个方法,通知滚动距离
+
 const emit = defineEmits(["scrollHandler", "requestHandler", "update:requestStates"])
-const scrollHandler = async ({ x, y }: { x: number; y: number }) => {
+const scroll = async ({ x, y }: { x: number; y: number }) => {
 	emit("scrollHandler", { x, y })
 }
 
 //子组件传给父组件 通知请求数据，请求完成通知请求完成
 interface ChildProps {
 	requestHandler: () => Promise<any> // 接收的函数类型，可以根据返回的数据类型更改
-	requestStates: {} // 请求状态
+	requestStates: {
+		done: boolean // 请求是否完成
+		data: any // 请求返回的数据
+	}
 }
 const props = withDefaults(defineProps<ChildProps>(), {
 	requestHandler: () => Promise.resolve({}),
-	requestStates: () => ({}),
+	requestStates: () => ({ done: false, data: null }),
 })
 
 onMounted(async () => {
@@ -120,15 +128,14 @@ const initBscroll = () => {
 			stop: STOP,
 		},
 	})
-
+	const throttle = useThrottle(scroll, 40)
 	bscroll.on("pullingDown", pullingDownHandler)
-	bscroll.on("scroll", scrollHandler)
+	bscroll.on("scroll", throttle)
 	bscroll.on("scrollEnd", ({ x, y }: { x: number; y: number }) => {
 		// console.log('scrollEnd', x, y)
 	})
 }
 const pullingDownHandler = async () => {
-	console.log("trigger pullDown")
 	stateReFurish.beforePullDown = false
 	stateReFurish.isPullingDown = true
 	STEP += 1
@@ -136,8 +143,10 @@ const pullingDownHandler = async () => {
 	const { requestHandler, requestStates } = props
 	const result = await requestHandler()
 	// console.log('请求完成',props.requestStates,result)
-	emit("update:requestStates", { ...requestStates, done: true, data: result })
-
+	requestStates.done = true
+	requestStates.data = { result: result }
+	emit("update:requestStates", requestStates)
+	console.log("请求完成", result)
 	stateReFurish.isPullingDown = false
 	finishPullDown()
 }

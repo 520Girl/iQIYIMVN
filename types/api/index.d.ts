@@ -30,10 +30,12 @@ export interface ListItem {
 	rightT?: Item // type 1 绿色免费 2.vip黄色 3.vip|60帧 默认
 	rightB?: Item // type 1. 评分 2. 红色新增弹幕
 	leftB?: Item // type 1. 分类电影
+	bottomT?: Item // type 1.表示分类 使用| 分割  2.单独一个红标签
 	src?: string
 	more?: boolean //更多icon
 	tag?: string // 标签名称类似router-link
 	width?: number // 容器宽度 1 2 4
+	height?: string // 容器高度 1 2 3 有默认高度，可进行配置替代默认
 	[key: string]: any // 字符串索引签名
 }
 

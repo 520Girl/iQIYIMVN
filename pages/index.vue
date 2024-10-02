@@ -2,6 +2,7 @@
 	<div class="amx-index">
 		<!-- Header -->
 		<Header />
+		{{ requestStates }}
 		<main class="amx-index-main" ref="main">
 			<DragRefurbish
 				@scrollHandler="scrollHandler"
@@ -30,14 +31,15 @@ useHead({
 import Header from "@/components/Header.vue" // Import Header component
 import Home from "@/components/home/index.vue"
 import Footer from "@/components/Footer.vue" // Import Footer component
+import type { Item } from "@/types/api"
 import { onMounted, ref } from "vue"
 
 const main = ref<HTMLDivElement | null>(null)
 const homeContent = ref<any>(null) // 引用子组件
-const requestStates = reactive({
+const requestStates = reactive<{ done: boolean; data: Item }>({
 	done: false, // 请求状态
 	data: {}, // 请求结果
-}) // 请求状态
+})
 
 // 监听滚动条位置
 const scrollHandler = ({ y, x }: { y: number; x: number }) => {
@@ -54,14 +56,12 @@ const requestHandler = async () => {
 		}, 2000)
 	})
 }
-
-onMounted(async () => {
-	await nextTick()
-	// dragInit()
-})
-onUnmounted(() => {
-	// bs.destroy() // 销毁 BetterScroll 实例
-})
+watch(
+	() => requestStates.data,
+	(newVal, oldVal) => {
+		console.log("请求结果", newVal, oldVal)
+	}
+)
 </script>
 <style lang="scss" scoped>
 @import url("~/assets/css/common/pageMain.scss");

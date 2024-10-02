@@ -11,7 +11,13 @@ importers:
       '@better-scroll/core':
         specifier: ^2.5.1
         version: 2.5.1
+      '@better-scroll/nested-scroll':
+        specifier: ^2.5.1
+        version: 2.5.1
       '@better-scroll/pull-down':
+        specifier: ^2.5.1
+        version: 2.5.1
+      '@better-scroll/slide':
         specifier: ^2.5.1
         version: 2.5.1
       '@varlet/nuxt':
@@ -30,6 +36,9 @@ importers:
         specifier: latest
         version: 4.4.5(vue@3.5.8(typescript@5.6.2))
     devDependencies:
+      '@better-scroll/pull-up':
+        specifier: ^2.5.1
+        version: 2.5.1
       '@commitlint/cli':
         specifier: ^19.5.0
         version: 19.5.0(@types/node@22.7.0)(typescript@5.6.2)
@@ -264,11 +273,20 @@ packages:
   '@better-scroll/core@2.5.1':
     resolution: {integrity: sha512-koKOuYA55dQ04FJRIVUpMGDr1hbCfWmfX0MGp1hKagkQSWSRpwblqACiwtggVauoj9aaJRJZ9hDsTM4weaavlg==}
 
+  '@better-scroll/nested-scroll@2.5.1':
+    resolution: {integrity: sha512-3cRsARxf9tq1VWBq7YAaET0xGAmgY1ERMmnXDo2gHFrmsJoNOionlpAeHdZvKQp2jG7JrzJ1O27nGCXf40gnkw==}
+
   '@better-scroll/pull-down@2.5.1':
     resolution: {integrity: sha512-Y6XcGu2NlevPg3k9VBRRFvpmfoTA+rO96JGdog2qKHclIPNXnsVwsIHtZfAm9weE/f9UuC4BnB+VUFRlucfupg==}
 
+  '@better-scroll/pull-up@2.5.1':
+    resolution: {integrity: sha512-1hu3xSMxdB8T391KffpNZ7g93lMwZEHjfb1F1Y4KvIkciDt8nXqkGpqrZF+YwR+EJTgYcWqUO8kgmI6XXu7Pkg==}
+
   '@better-scroll/shared-utils@2.5.1':
     resolution: {integrity: sha512-AplkfSjXVYP9LZiD6JsKgmgQJ/mG4uuLmBuwLz8W5OsYc7AYTfN8kw6GqZ5OwCGoXkVhBGyd8NeC4xwYItp0aw==}
+
+  '@better-scroll/slide@2.5.1':
+    resolution: {integrity: sha512-aDOrfsmjAcz6DXN7mDX3tPieAn195R43Yn9e3waI19TIEok/mQlI1a/kb5quqWOoxkiaZQ8xe3vx5ZTj9C+F6Q==}
 
   '@cloudflare/kv-asset-handler@0.3.4':
     resolution: {integrity: sha512-YLPHc8yASwjNkmcDMQMY35yiWjoKAKnhUbPRszBRS0YgH+IXtsMp61j+yTcnCE3oO2DgP0U3iejLC8FTtKDC8Q==}
@@ -4523,11 +4541,23 @@ snapshots:
     dependencies:
       '@better-scroll/shared-utils': 2.5.1
 
+  '@better-scroll/nested-scroll@2.5.1':
+    dependencies:
+      '@better-scroll/core': 2.5.1
+
   '@better-scroll/pull-down@2.5.1':
     dependencies:
       '@better-scroll/core': 2.5.1
 
+  '@better-scroll/pull-up@2.5.1':
+    dependencies:
+      '@better-scroll/core': 2.5.1
+
   '@better-scroll/shared-utils@2.5.1': {}
+
+  '@better-scroll/slide@2.5.1':
+    dependencies:
+      '@better-scroll/core': 2.5.1
 
   '@cloudflare/kv-asset-handler@0.3.4':
     dependencies:

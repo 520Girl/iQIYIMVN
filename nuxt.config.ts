@@ -65,6 +65,8 @@ export default defineNuxtConfig({
 			preprocessorOptions: {
 				scss: {
 					additionalData: `@import "./assets/css/bem.scss";`,
+					api: "modern-compiler", // 或者使用 'modern'
+					silenceDeprecations: ["legacy-js-api"], // 可选，暂时抑制警告
 				},
 			},
 		},

@@ -132,4 +132,33 @@
                 }
             }
         }
+        .c-class{
+            @apply truncate font-sans flex justify-between;
+            color: #444444;
+            .c-tag{
+                @apply text-ellipsis font-sans truncate;
+                width: 100%;
+                font-size: 10px;
+                margin-top: 2px;
+                line-height: 1.5;
+               span{
+                padding: 1px 4px;
+                margin: 0 2px;
+                @apply inline-block;
+               }
+               .c-tag-1{
+               
+                background-color: #f1f1f1;
+            }
+            .c-tag-2{
+                padding: 1px 4px;
+                background-color: #feefea;
+                color: #f4460a;
+                display: inline-block;
+                border-radius: 4px;
+            }
+            }
+            
+            
+        }
 }
