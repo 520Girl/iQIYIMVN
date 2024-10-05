@@ -28,9 +28,6 @@
 </template>
 
 <script setup lang="ts">
-useHead({
-	title: "小说",
-}) // Set page title
 import Header from "@/components/Header.vue" // Import Header component
 import Novel from "@/components/novel/index.vue"
 import Footer from "@/components/Footer.vue" // Import Footer component

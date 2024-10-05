@@ -56,26 +56,39 @@
 </template>
 <script setup lang="ts">
 import BScroll from "@better-scroll/core"
-import type { BScrollInstance } from "@better-scroll/core"
-const active = ref(0)
-const list = reactive([
-	{ name: "首页", disabled: false, ripple: false, src: "/" },
-	{ name: "小说", disabled: false, ripple: false, src: "/novel" },
-	{ name: "电影", disabled: false, ripple: false, src: "/movie" },
-	{ name: "漫画", disabled: false, ripple: false, src: "/comic" },
-	{ name: "播放", disabled: false, ripple: false, src: "/play" },
-])
+import useSetHead from "~/hooks/useSetHead"
+import type { HomeBaseTypes, HomeBaseList, navTypes } from "@/types/api/index.d.ts"
+const { data, pending, error, refresh } = await useAsyncData("dragAsyncData2", () =>
+	$fetch(`${import.meta.env.VITE_API_URL || process.env.NUXT_API_URL}/api.php/Aqiyim/homeBase`)
+)
+
+//! 项目初始化时更新配置
+const store = useHomeStore()
+store.$patch(store => {
+	const { seo, list, from } = JSON.parse(data.value as string)
+	store.base = { seo, list, from }
+})
 const route = useRoute()
 const scroll = ref<HTMLElement | null>(null)
 let bs: BScroll
+const active = ref(0)
+let list = reactive(store.getNavArr)
+//! 1.2 设置头部
+useSetHead()
 
-//实现点击选择状态
-list.some((item, index) => {
-	if (item.src === route.path) {
-		active.value = index
-		return true
-	}
-})
+// const { data, pending, error, refresh } = await useAsyncData('dragAsyncData2', async () => {
+// 	try {
+// 		const response = await $fetch('/api.php/Aqiyim/homeBase');
+// 		return response;
+// 	} catch (err) {
+// 		// 根据需要处理错误
+// 		console.log('s',err)
+// 		const errw = useError()
+// 		console.error('sss',errw);
+// 		throw new Error('数据加载失败！'); // 自定义错误信息
+// 	}
+// })
+// console.log(import.meta.env.VITE_API_URL || process.env.NUXT_API_URL)
 
 onMounted(() => {
 	// scrollInit();

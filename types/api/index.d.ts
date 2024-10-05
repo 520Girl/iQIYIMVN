@@ -27,9 +27,9 @@ export interface ListItem {
 	title?: string
 	description?: string
 	leftT?: Item // type 1 收藏图标
-	rightT?: Item // type 1 绿色免费 2.vip黄色 3.vip|60帧 默认
-	rightB?: Item // type 1. 评分 2. 红色新增弹幕
-	leftB?: Item // type 1. 分类电影
+	rightT?: Item // type 1 绿色免费 2.vip黄色 3.vip|60帧 默认  国语
+	rightB?: Item // type 1. 评分 2. 红色新增弹幕     评分+备忘
+	leftB?: Item // type 1. 分类电影                 type_name 类型名称
 	bottomT?: Item // type 1.表示分类 使用| 分割  2.单独一个红标签
 	src?: string
 	more?: boolean //更多icon
@@ -67,4 +67,51 @@ export interface NItem {
 	description?: string
 	src?: string
 	rightT?: Item // type 1 绿色免费 2.vip黄色 3.vip|60帧 默认
+}
+
+//store 数据的定义
+//定义一个store的枚举类型
+export enum StoreType {
+	Home = "Home",
+}
+
+type HomeBaseList = {
+	type_id: number
+	type_pid: number
+	type_name: string
+	type_title: string
+	type_key: string
+	type_des: string
+	type_extend: TypeExtendList
+}
+
+type TypeExtendList = {
+	class: string
+	area: string
+	lang: string
+	year: string
+	star: string
+	director: string
+	state: string
+	version: string
+}
+type HomeBaseFrom = {
+	name: string
+	alias: string
+	[key: string]: any // 字符串索引签名
+}
+export interface HomeBaseTypes {
+	seo: Item
+	list: HomeBaseList[]
+	from: HomeBaseFrom[]
+}
+interface navTypes {
+	id: number
+	name: string
+	title?: string
+	key?: string
+	des?: string
+	disabled: boolean
+	ripple: boolean
+	[key: string]: any
 }

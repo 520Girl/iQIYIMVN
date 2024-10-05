@@ -11,6 +11,22 @@ export default defineNuxtConfig({
 		host: "0.0.0.0",
 		port: 3000,
 	},
+	sourcemap: {
+		server: false,
+		client: false,
+	},
+	// runtimeConfig:{
+	// 	publicPath: "/nuxt/",
+	// },
+	nitro: {
+		devProxy: {
+			"/api.php": {
+				target: "http://localhost/api.php",
+				changeOrigin: true,
+				// prependPath: true,
+			},
+		},
+	},
 	app: {
 		head: {
 			link: [
@@ -59,7 +75,9 @@ export default defineNuxtConfig({
 			},
 		},
 	},
-
+	// imports: {
+	// 	dirs: ["store/*.ts"]
+	// },
 	vite: {
 		css: {
 			preprocessorOptions: {
@@ -80,6 +98,7 @@ export default defineNuxtConfig({
 			autoImport({
 				dts: "types/auto-imports.d.ts", // 这里是生成的global函数文件
 				imports: ["vue", "vue-router"], // 需要自动导入的插件
+				dirs: ["store/*.ts"],
 				include: [
 					/\.[tj]sx?$/, // .ts, .tsx, .js, .jsx
 					/\.vue$/,
@@ -94,10 +113,18 @@ export default defineNuxtConfig({
 					globalsPropValue: true,
 				},
 			}),
+			autoImport({}),
 		],
 	},
 
-	modules: ["@varlet/nuxt", "nuxt-svgo"],
+	modules: ["@varlet/nuxt", "nuxt-svgo", "@pinia/nuxt", "@pinia-plugin-persistedstate/nuxt"],
+	//pinia 持久化插件
+	piniaPersistedstate: {
+		cookieOptions: {
+			maxAge: 1 * 60 * 60 * 1000,
+		},
+		storage: "localStorage",
+	},
 	svgo: {
 		//svg 图片导入
 		autoImportPath: "./assets/svg-icons/",
