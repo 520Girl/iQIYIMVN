@@ -26,6 +26,7 @@
 
 <script lang="ts" setup>
 import { ref, reactive, onMounted } from "vue"
+import { useGetSlider } from "~/hooks/useGetSlider"
 const swipeList = reactive([
 	{
 		src: "https://varletjs.org/cat.jpg",
@@ -36,9 +37,7 @@ const swipeList = reactive([
 	{ src: "https://varletjs.org/cat3.jpg", imgUrl: "https://varletjs.org/cat.jpg", title: "cat2" },
 ])
 
-onMounted(() => {
-	console.log("mounted")
-})
+onMounted(async () => {})
 </script>
 <style scoped lang="scss">
 @include b(swipe) {

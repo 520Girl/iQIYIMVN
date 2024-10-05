@@ -1,5 +1,7 @@
 <template>
-	<div>novel</div>
+	<div>
+		<Header />
+	</div>
 </template>
 
 <script lang="ts" setup>

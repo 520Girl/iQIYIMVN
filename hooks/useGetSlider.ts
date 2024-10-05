@@ -3,6 +3,11 @@ export function useGetSlider() {
 	const store = useHomeStore()
 	const { path } = route
 	const navMap = store.getNavMap
-	if (navMap.has(path)) {
+	const navClassMap = store.getNavClass
+	const getSlider = () => {
+		if (navMap.has(path)) {
+			// const data = store.dragAsyncData(navMap.get(path))
+		}
 	}
+	return { getSlider }
 }

@@ -105,7 +105,7 @@ export interface HomeBaseTypes {
 	list: HomeBaseList[]
 	from: HomeBaseFrom[]
 }
-interface navTypes {
+export interface navTypes {
 	id: number
 	name: string
 	title?: string

@@ -57,24 +57,31 @@
 <script setup lang="ts">
 import BScroll from "@better-scroll/core"
 import useSetHead from "~/hooks/useSetHead"
-import type { HomeBaseTypes, HomeBaseList, navTypes } from "@/types/api/index.d.ts"
-const { data, pending, error, refresh } = await useAsyncData("dragAsyncData2", () =>
-	$fetch(`${import.meta.env.VITE_API_URL || process.env.NUXT_API_URL}/api.php/Aqiyim/homeBase`)
-)
-
+import { useGetSlider } from "~/hooks/useGetSlider"
+import { getHomeBase } from "@/utils/api"
+import type { HomeBaseTypes } from "@/types/api"
+// const { data, pending, error, refresh } = await useAsyncData('dragAsyncData2', () => $fetch(`${import.meta.env.VITE_API_URL || process.env.NUXT_API_URL}/api.php/Aqiyim/homeBase`))
+const { data, pending, error, refresh } = await useAsyncData("dragAsyncData2", () => getHomeBase())
+console.log("header data", data.value)
 //! 项目初始化时更新配置
 const store = useHomeStore()
 store.$patch(store => {
-	const { seo, list, from } = JSON.parse(data.value as string)
-	store.base = { seo, list, from }
+	if (data.value) {
+		const { list, from, seo } = data!.value as any
+		store.base = { list, from, seo }
+	}
 })
 const route = useRoute()
 const scroll = ref<HTMLElement | null>(null)
 let bs: BScroll
 const active = ref(0)
 let list = reactive(store.getNavArr)
-//! 1.2 设置头部
-useSetHead()
+//! 1.2 设置头部 这样写是为了实现作用域的缓存方便在函数中调用自定义hooks，
+const { setHeader } = useSetHead()
+setHeader()
+//! 1.3 设置swiper
+const { getSlider } = useGetSlider()
+getSlider()
 
 // const { data, pending, error, refresh } = await useAsyncData('dragAsyncData2', async () => {
 // 	try {
@@ -115,8 +122,9 @@ const scrollInit = () => {
 const handleResize = (size: number) => {
 	console.log(size)
 }
-const handleClick = (active: string | number) => {
-	console.log("click", active)
+const handleClick = () => {
+	getSlider()
+	// console.log(route)
 }
 </script>
 <style lang="scss" scoped>

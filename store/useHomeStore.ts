@@ -1,9 +1,12 @@
 import { StoreType } from "@/types/api/index.d"
-import { fetch } from "@/utils/fetchApi"
+import { get } from "@/utils/fetchApi"
 import type { HomeBaseTypes, HomeBaseList, navTypes } from "@/types/api/index.d.ts"
 
-interface StateTree {
-	nav: Array<{ name: string; id: number }> // 根据实际结构修改
+interface idsMap {
+	type_id: number
+	ids: Array<number>
+	type_pid: number
+	type_name: string
 }
 export const useHomeStore = defineStore(StoreType.Home, {
 	state: () => ({
@@ -29,6 +32,7 @@ export const useHomeStore = defineStore(StoreType.Home, {
 		getNavMap(state) {
 			const base = state.base
 			const { seo, list, from } = base
+			console.log("getNavMap", base)
 			const nav = state.nav
 			const home = {
 				id: 100,
@@ -122,13 +126,42 @@ export const useHomeStore = defineStore(StoreType.Home, {
 			}
 			return nav
 		},
+		getNavClass(state) {
+			if (state.base.list) {
+				const { list } = state.base
+				let newMap = new Map<number, idsMap>()
+				list.forEach((item: HomeBaseList) => {
+					if (item.type_pid === 0) {
+						if (newMap.has(item.type_id)) {
+							const value = newMap.get(item.type_id)
+							value?.ids.push(item.type_id)
+							newMap.set(item.type_id, value!)
+						} else {
+							newMap.set(item.type_id, {
+								type_id: item.type_id,
+								ids: [item.type_id],
+								type_pid: item.type_pid,
+								type_name: item.type_name,
+							})
+						}
+					}
+				})
+				list.forEach((item: HomeBaseList) => {
+					if (item.type_pid !== 0) {
+						const value = newMap.get(item.type_pid)
+						value?.ids.push(item.type_id)
+						newMap.set(item.type_pid, value!)
+					}
+				})
+				return newMap
+			}
+		},
 	},
 	actions: {
-		async dragAsyncData(name: string) {
+		async dragAsyncData(ids: string) {
 			const id = useId()
-			const { data } = await useAsyncData("dragAsyncDataSlide", () =>
-				fetch("/api.php/Aqiyim/slide")
-			)
+			const data = await useAsyncData("dragAsyncDataSlide", () => getSlider())
+			console.log("actions", data)
 			return data
 		},
 	},

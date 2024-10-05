@@ -1,5 +1,8 @@
 <template>
-	<div>novel</div>
+	<div>
+		<h1>Comic</h1>
+		<Header />
+	</div>
 </template>
 
 <script lang="ts" setup>
