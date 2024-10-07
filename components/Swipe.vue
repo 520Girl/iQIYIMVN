@@ -3,11 +3,11 @@
 		<!-- //:autoplay="4000" -->
 		<var-swipe class="swipe">
 			<var-swipe-item v-for="(item, index) in swipeList" :key="item.src">
-				<a :href="item.src" :title="item.title">
-					<img class="swipe-image" :src="item.imgUrl" :alt="item.title" />
-					<div class="swipe-title">{{ item.title }}</div>
+				<nuxt-link :to="{ path: '/play', query: { id: item.vod_id } }" :title="item.vod_name">
+					<img class="swipe-image" :src="item.vod_pic" :alt="item.vod_name" />
+					<div class="swipe-title">{{ item.vod_name }}</div>
 					<div class="swipe-AD">广告</div>
-				</a>
+				</nuxt-link>
 			</var-swipe-item>
 			<template #indicator="{ index, length, to }">
 				<div class="amx-swipe__indicators">
@@ -27,15 +27,14 @@
 <script lang="ts" setup>
 import { ref, reactive, onMounted } from "vue"
 import { useGetSlider } from "~/hooks/useGetSlider"
-const swipeList = reactive([
-	{
-		src: "https://varletjs.org/cat.jpg",
-		imgUrl: "https://varletjs.org/cat.jpg",
-		title: "cat好看的小猫",
-	},
-	{ src: "https://varletjs.org/cat2.jpg", imgUrl: "https://varletjs.org/cat.jpg", title: "cat1" },
-	{ src: "https://varletjs.org/cat3.jpg", imgUrl: "https://varletjs.org/cat.jpg", title: "cat2" },
-])
+//! 1.3 设置swiper
+const { getSlider } = useGetSlider()
+const { data } = await getSlider()
+
+const { list } = data.value as any
+// const { getSlider } = useGetSlider()
+// const data = await getSlider()
+const swipeList = reactive(list)
 
 onMounted(async () => {})
 </script>

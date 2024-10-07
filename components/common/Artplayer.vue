@@ -17,17 +17,25 @@ const artRef = ref<HTMLDivElement | string>("")
 
 const emit = defineEmits(["get-instance"])
 
-//将 播放实例 暴露给父组件
+//将全屏 播放实例 暴露给父组件
 const fullscreenVidew = () => {
 	if (instance) {
 		// instance.pip   = true
 		instance.fullscreen = true
 		// instance.fullscreenWeb  = true
-		console.log("ffffffffffffffffffff", instance.fullscreen)
+	}
+}
+//更换视频源
+const changeVideoUrl = (url: string) => {
+	if (instance) {
+		instance.on("ready", () => {
+			instance?.switchUrl(url)
+		})
 	}
 }
 defineExpose({
 	fullscreen: fullscreenVidew,
+	changeVideoUrl,
 })
 onMounted(() => {
 	instance = new Artplayer({

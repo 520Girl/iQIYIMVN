@@ -4,7 +4,6 @@ const useSetHead = () => {
 	const store = useHomeStore()
 	const navMap = store.getNavMap
 	const setHeader = () => {
-		console.log("route use SetHead", route)
 		if (navMap.has(path)) {
 			const header = navMap.get(path)
 			useHead({

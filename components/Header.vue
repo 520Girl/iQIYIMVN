@@ -43,7 +43,7 @@
 					:key="item.name"
 					:ripple="item.ripple"
 					:disabled="item.disabled"
-					:class="{ activeListItem: active === index }"
+					:class="{ activeListItem: activeLi === index }"
 				>
 					<nuxt-link :to="item.src">
 						{{ item.name }}
@@ -58,19 +58,10 @@
 import BScroll from "@better-scroll/core"
 import useSetHead from "~/hooks/useSetHead"
 import { useGetSlider } from "~/hooks/useGetSlider"
-import { getHomeBase } from "@/utils/api"
-import type { HomeBaseTypes } from "@/types/api"
-// const { data, pending, error, refresh } = await useAsyncData('dragAsyncData2', () => $fetch(`${import.meta.env.VITE_API_URL || process.env.NUXT_API_URL}/api.php/Aqiyim/homeBase`))
-const { data, pending, error, refresh } = await useAsyncData("dragAsyncData2", () => getHomeBase())
-console.log("header data", data.value)
-//! 项目初始化时更新配置
+import { getHomeBase, getSliderApi } from "@/utils/api"
 const store = useHomeStore()
-store.$patch(store => {
-	if (data.value) {
-		const { list, from, seo } = data!.value as any
-		store.base = { list, from, seo }
-	}
-})
+// const { data, pending, error, refresh } = await useAsyncData('dragAsyncData2', () => $fetch(`${import.meta.env.VITE_API_URL || process.env.NUXT_API_URL}/api.php/Aqiyim/homeBase`))
+
 const route = useRoute()
 const scroll = ref<HTMLElement | null>(null)
 let bs: BScroll
@@ -80,21 +71,13 @@ let list = reactive(store.getNavArr)
 const { setHeader } = useSetHead()
 setHeader()
 //! 1.3 设置swiper
-const { getSlider } = useGetSlider()
-getSlider()
 
-// const { data, pending, error, refresh } = await useAsyncData('dragAsyncData2', async () => {
-// 	try {
-// 		const response = await $fetch('/api.php/Aqiyim/homeBase');
-// 		return response;
-// 	} catch (err) {
-// 		// 根据需要处理错误
-// 		console.log('s',err)
-// 		const errw = useError()
-// 		console.error('sss',errw);
-// 		throw new Error('数据加载失败！'); // 自定义错误信息
-// 	}
-// })
+//!1.3 路由切换选中状态切换
+const activeLi = computed(() => {
+	const path = route.path
+	const index = list.findIndex(item => item.src === path)
+	return index > -1 ? index : 0
+})
 // console.log(import.meta.env.VITE_API_URL || process.env.NUXT_API_URL)
 
 onMounted(() => {
@@ -123,7 +106,7 @@ const handleResize = (size: number) => {
 	console.log(size)
 }
 const handleClick = () => {
-	getSlider()
+	// getSlider()
 	// console.log(route)
 }
 </script>

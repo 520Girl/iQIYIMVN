@@ -1,7 +1,6 @@
 import { StoreType } from "@/types/api/index.d"
-import { get } from "@/utils/fetchApi"
-import type { HomeBaseTypes, HomeBaseList, navTypes } from "@/types/api/index.d.ts"
-
+import type { HomeBaseTypes, HomeBaseList, navTypes, SliderTypes } from "@/types/api/index.d.ts"
+import setting from "public/setting.json"
 interface idsMap {
 	type_id: number
 	ids: Array<number>
@@ -27,12 +26,14 @@ export const useHomeStore = defineStore(StoreType.Home, {
 			return state.nav
 		},
 		getHomeSeo(state) {
-			return state.base.seo
+			let name = {
+				name: setting.title,
+			}
+			return state.base.seo ?? name
 		},
 		getNavMap(state) {
 			const base = state.base
 			const { seo, list, from } = base
-			console.log("getNavMap", base)
 			const nav = state.nav
 			const home = {
 				id: 100,
@@ -40,9 +41,9 @@ export const useHomeStore = defineStore(StoreType.Home, {
 				disabled: false,
 				ripple: false,
 				src: "/",
-				title: seo.name,
-				key: seo.key,
-				des: seo.des,
+				title: seo.name || setting.title,
+				key: seo.key || setting.key,
+				des: seo.des || setting.des,
 			}
 			let play = {
 				name: "播放",
@@ -90,9 +91,9 @@ export const useHomeStore = defineStore(StoreType.Home, {
 					disabled: false,
 					ripple: false,
 					src: "/",
-					title: base.seo.name,
-					key: base.seo.key,
-					des: base.seo.des,
+					title: base.seo.name || setting.title,
+					key: base.seo.key || setting.key,
+					des: base.seo.des || setting.des,
 				}
 				nav = base.list
 					.map((item: HomeBaseList): navTypes | null => {
@@ -153,19 +154,35 @@ export const useHomeStore = defineStore(StoreType.Home, {
 						newMap.set(item.type_pid, value!)
 					}
 				})
-				return newMap
+				//将key 和 路由path 一一对应
+				const navMap = this.getNavMap
+				let pathMap = new Map<string, idsMap>()
+
+				newMap.forEach((value, key) => {
+					for (const [key2, value2] of navMap) {
+						if (value.ids.includes(value2.id)) {
+							pathMap.set(key2, value)
+							break
+						}
+					}
+				})
+				pathMap.set("/", { ids: [], type_id: 100, type_pid: 100, type_name: "首页" })
+				console.log("pathMap", pathMap)
+				return pathMap
 			}
+		},
+		getFrom(state) {
+			return state.base.from
 		},
 	},
 	actions: {
-		async dragAsyncData(ids: string) {
+		async dragAsyncData(query: SliderTypes) {
 			const id = useId()
-			const data = await useAsyncData("dragAsyncDataSlide", () => getSlider())
-			console.log("actions", data)
-			return data
+			return await useAsyncData("dragAsyncDataSlide", () => getSliderApi(query))
 		},
+		// async get
 	},
-	// persist: {
-	//     key: 'a-s-h',
-	// }
+	persist: {
+		key: "a-s-h",
+	},
 })

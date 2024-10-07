@@ -1,13 +1,14 @@
 <template>
 	<component :is="tag" :class="['amx-ListItem', 'w-' + width]">
 		<div class="amx-ListItem__img img-height">
-			<a
-				:href="src"
-				:title="title"
-				rel=""
-				class="link"
-				:style="['background-image:url(' + imgUrl + ');']"
-			>
+			<nuxt-link :to="src" :title="title" class="link">
+				<nuxt-img
+					class="link object-cover"
+					:src="imgUrl"
+					:placeholder="img(`/loading/loading.svg`, { h: 20 })"
+					loading="lazy"
+					preload
+				/>
 				<template v-if="rightT.type === 1 || rightT.type === 2">
 					<div :class="'c-rt c-rt-' + rightT.type">
 						{{ rightT.text }}
@@ -28,23 +29,19 @@
 				<div class="c-lt" v-if="leftT.type === 1">
 					<var-icon name="star-outline" />
 				</div>
-			</a>
+			</nuxt-link>
 		</div>
 		<div class="amx-ListItem__title">
 			<div class="c-title text-ellipsis">
-				<a href="//m.iqiyi.com/v_12b7e5ue8cc.html" title="喜剧之王单口季">
+				<nuxt-link :to="src" :title="title">
 					{{ title }}
-				</a>
+				</nuxt-link>
 			</div>
 			<template v-if="bottomT && (bottomT.type === 1 || bottomT.type === 2)">
-				<div class="c-info text-ellipsis font-sans" style="font-size: 15px">
-					<a
-						href="//m.iqiyi.com/v_12b7e5ue8cc.html"
-						style="font-size: 12px"
-						title="小鹿犀利解构容貌焦虑"
-					>
+				<div class="c-info text-ellipsis font-sans">
+					<nuxt-link to="src" :title="description">
 						{{ description }}
-					</a>
+					</nuxt-link>
 				</div>
 				<div class="c-class c-info">
 					<div :class="['c-tag']" v-if="bottomT.type === 1">
@@ -64,9 +61,9 @@
 			</template>
 			<template v-else>
 				<div class="c-info text-ellipsis">
-					<a href="//m.iqiyi.com/v_12b7e5ue8cc.html" title="小鹿犀利解构容貌焦虑">
+					<NuxtLink :to="src" :title="title">
 						{{ bottomT }}
-					</a>
+					</NuxtLink>
 					<div class="more" v-if="more">
 						<var-icon name="dots-vertical" />
 					</div>
@@ -84,6 +81,7 @@ const rightText = computed(() => {
 	const { type, text } = props.rightT || { type: 1, text: "" }
 	return text?.split("|") || []
 })
+
 const props = withDefaults(defineProps<ListItem>(), {
 	imgUrl: "",
 	title: "",
@@ -115,7 +113,7 @@ const props = withDefaults(defineProps<ListItem>(), {
 		text: "电影|70后|动漫",
 	}),
 })
-
+const img = useImage()
 onMounted(() => {
 	console.log("mounted")
 })
@@ -154,6 +152,7 @@ onMounted(() => {
 		max-height: 224px;
 	}
 }
+
 .img-height {
 	height: v-bind(height);
 }

@@ -2,12 +2,13 @@ export function useGetSlider() {
 	const route = useRoute()
 	const store = useHomeStore()
 	const { path } = route
-	const navMap = store.getNavMap
-	const navClassMap = store.getNavClass
-	const getSlider = () => {
-		if (navMap.has(path)) {
-			// const data = store.dragAsyncData(navMap.get(path))
+	const navClassMap = store.getNavClass || new Map()
+	const getSlider = async () => {
+		let query = { type_ids: "" }
+		if (navClassMap.has(path)) {
+			query = { type_ids: navClassMap.get(path)?.ids?.join(",") }
 		}
+		return await store.dragAsyncData(query)
 	}
 	return { getSlider }
 }

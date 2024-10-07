@@ -2,7 +2,7 @@
 	<div class="amx-index">
 		<!-- Header -->
 		<Header />
-		{{ requestStates }}
+		<!-- {{ requestStates.data?.list[0] ?? [] }} -->
 		<main class="amx-index-main" ref="main">
 			<DragRefurbish
 				@scrollHandler="scrollHandler"

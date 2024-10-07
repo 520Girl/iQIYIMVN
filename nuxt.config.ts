@@ -117,7 +117,13 @@ export default defineNuxtConfig({
 		],
 	},
 
-	modules: ["@varlet/nuxt", "nuxt-svgo", "@pinia/nuxt", "@pinia-plugin-persistedstate/nuxt"],
+	modules: [
+		"@varlet/nuxt",
+		"nuxt-svgo",
+		"@pinia/nuxt",
+		"@pinia-plugin-persistedstate/nuxt",
+		"@nuxt/image",
+	],
 	//pinia 持久化插件
 	piniaPersistedstate: {
 		cookieOptions: {

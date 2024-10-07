@@ -65,6 +65,13 @@ import setting from "public/setting.json"
 
 BScroll.use(NestedScroll)
 BScroll.use(Slide)
+//! 1. 请求详细数据，并进行处理
+const { params } = useRoute()
+const store = usePlayStore()
+const query = { t: params.type_id as string, ids: params.vod_id as string, ac: "detail" }
+await store.getPlayVodDetail(query)
+const detail = store.getPlayData
+console.log("detail1", detail)
 
 let slide = ref<HTMLElement | null>(null)
 let listDOM = ref<HTMLElement | null>(null)
@@ -79,14 +86,13 @@ const requestStates = reactive<{ done: boolean; data: number }>({
 })
 
 //artPlayer 播放器
-
 const option = reactive({
-	url: "https://artplayer.org/assets/sample/video.mp4",
+	url: detail.defaultUrl,
 	autoSize: true,
 	// 视频的海报，只会出现在播放器初始化且未播放的状态下
-	poster: "/home/4274bd8105cc43dab19b180dadeafac4.webp",
+	poster: detail.imgUrl || "/image/video.png",
 	// 视频标题，目前会出现在视频截图和迷你模式下
-	title: "这个是title",
+	title: detail.vod_name,
 	// 播放器主题颜色，目前只作用于进度条上
 	theme: "var(--amx-theme-color)",
 	// 播放器的默认音量
@@ -116,7 +122,7 @@ const scrollHandler = ({ x, y }: { x: number; y: number }) => {
 		console.log("scrollHandler", x, y)
 		listDOM.value!.style.transform = `translate3d(0,${y}px,0)`
 		playDOM.value!.style.transform = `translate3d(0,${y}px,0)`
-		if (y > 20) {
+		if (y > 100) {
 			artPlayer.value.fullscreen()
 		}
 	}
@@ -141,10 +147,10 @@ const initSlider = () => {
 			loop: false,
 			autoplay: false,
 			interval: 3000,
+			threshold: 0.4,
 		},
 		momentum: false,
 		nestedScroll: true,
-
 		bounce: false,
 		probeType: 3,
 		// preventDefault:false
@@ -171,15 +177,20 @@ const _onScrollEnd = () => {
 }
 //! 4. 实现点击切换分类
 watch(active, (newVal, oldVal) => {
-	const width = listDOM.value!.getBoundingClientRect().width
-	slideWrapper.value!.style.transform = `translateX(${-newVal * width}px)`
+	sliderScroll.goToPage(newVal, newVal)
 })
+// watch(()=>playCurrent, (newVal, oldVal) => {
+//     console.log('playCurrentVideo1', newVal)
+// })
 
 onMounted(async () => {
 	// await nextTick()
 	initSlider()
 	//初始化时隐藏 所以Item 显示第一个,解决显示问题
 	slideWrapper.value!.style.display = "flex"
+})
+onUnmounted(() => {
+	sliderScroll.destroy()
 })
 </script>
 <style scoped lang="scss">
@@ -189,7 +200,7 @@ onMounted(async () => {
 // }
 @include b(playMovie) {
 	height: 100vh;
-
+	@apply bg-black;
 	overflow: hidden;
 
 	@include e(play) {
@@ -201,12 +212,15 @@ onMounted(async () => {
 	@include e(content) {
 		height: calc(100vh - var(--amx-play-height));
 		width: 100%;
+		@apply bg-white;
+		border-radius: 8px 8px 0 0;
 
 		@include e(Title) {
 			height: var(--amx-play-info-title);
 			overflow: hidden;
 			width: 100%;
 			border-bottom: 1px solid #f1f1f1;
+			border-radius: 8px;
 
 			:deep(.var-tabs) {
 				@apply w-full h-full inline-block shadow-none flex-none;

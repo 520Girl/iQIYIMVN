@@ -204,7 +204,10 @@ const pullingDownHandler = async () => {
 	STEP += 1
 
 	const { requestHandler, requestStates } = props
-	const result = await store.dragAsyncData("888")
+	// const result = await store.dragAsyncData("888")
+	const result = await setTimeout(() => {
+		return requestHandler()
+	}, REQUEST_TIME)
 	// console.log('请求完成',props.requestStates,result)
 	requestStates.done = true
 	requestStates.data = { result: result }

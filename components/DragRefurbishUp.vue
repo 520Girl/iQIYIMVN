@@ -82,7 +82,7 @@ const initBScroll = () => {
 		// click: true,   // 启用点击事件
 		// probeType: 3,  // 探测类型，3表示全量探测，即每次滚动都触发事件
 	})
-	const throttle = useThrottle(scroll, 40)
+	const throttle = useThrottle(scroll, 0)
 
 	bscroll.on("pullingUp", pullingUpHandler)
 	bscroll.on("scroll", throttle)

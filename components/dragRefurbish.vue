@@ -1,5 +1,5 @@
 <template>
-	<div class="pulldown">
+	<div class="pulldown" ref="pulldownContent">
 		<div class="pulldown-bswrapper" style="overflow: hidden" ref="bsWrapper">
 			<div class="pulldown-scroller">
 				<div class="pulldown-wrapper">
@@ -69,7 +69,7 @@
 				</div>
 				<slot name="content"></slot>
 				<div class="pulldown-wrapper">
-					<div v-show="stateReFurish.beforePullDown">
+					<div v-show="stateReFurish.beforePullUp">
 						<!-- //拉下来显示的内容 -->
 						<slot name="pulldown">
 							<span
@@ -79,7 +79,6 @@
 									display: block;
 									font-size: 12px;
 									color: var(--amx-theme-color);
-									z-index: 3;
 									line-height: 50px;
 									text-align: center;
 								"
@@ -89,8 +88,8 @@
 							</span>
 						</slot>
 					</div>
-					<div v-show="!stateReFurish.beforePullDown">
-						<div v-show="stateReFurish.isPullingDown">
+					<div v-show="!stateReFurish.beforePullUp">
+						<div v-show="stateReFurish.isPullingUp">
 							<slot name="loading">
 								<var-loading
 									:description="'正在加载...'"
@@ -99,7 +98,6 @@
 									style="
 										height: 50px;
 										font-size: 10px;
-										z-index: 3;
 										color: var(--amx-theme-color);
 										text-align: center;
 										width: 100%;
@@ -107,7 +105,7 @@
 								/>
 							</slot>
 						</div>
-						<div v-show="!stateReFurish.isPullingDown">
+						<div v-show="!stateReFurish.isPullingUp">
 							<slot name="finish">
 								<span
 									style="
@@ -116,8 +114,6 @@
 										display: block;
 										font-size: 12px;
 										color: rgb(136, 136, 136);
-										position: absolute;
-										top: -20px;
 										z-index: 3;
 										text-align: center;
 									"
@@ -138,29 +134,42 @@ import BScroll from "@better-scroll/core"
 import PullDown from "@better-scroll/pull-down"
 import Pullup from "@better-scroll/pull-up"
 import { useThrottle } from "~/hooks"
+import { useGetList } from "~/hooks/useGetList"
 
 BScroll.use(Pullup)
 BScroll.use(PullDown)
 const id = useId()
 let bscroll: any = null
 const bsWrapper = ref<HTMLElement | null>(null)
+const pulldownContent = ref<HTMLElement | null>(null)
 const TIME_BOUNCE = 800 //回弹时间
-const REQUEST_TIME = 1000
+const REQUEST_TIME = 1000 //什么时候可以二次请求方式返回数据过快反复拖拽
 const THRESHOLD = 70 //下拉刷新距离
 const STOP = 56 //下拉刷新后停留的高度
 let STEP = 0
 const stateReFurish = reactive({
 	beforePullDown: true, //是否上下拉动
 	isPullingDown: false, //是否刷新成功
+	isPullingUp: false, //是否上拉加载
+	beforePullUp: true, //是否下拉刷新
+	isOverDataStatus: false, //是否已经拉到底部
+	isOverData: "亲没有更多数据了不要再拉了", //是否已经拉到底部
 	dataList: [], // 获得的数据列表
 })
-const store = useHomeStore()
-//子组件给父组件传递一个方法,通知滚动距离
 
+//子组件给父组件传递一个方法,通知滚动距离
 const emit = defineEmits(["scrollHandler", "requestHandler", "update:requestStates"])
 const scroll = async ({ x, y }: { x: number; y: number }) => {
+	const { top } = pulldownContent.value!.getBoundingClientRect()
+	const headerTop = document.getElementsByTagName("header")[0].clientHeight
+	// console.log('y', y, top, headerTop)
 	emit("scrollHandler", { x, y })
 }
+//! 1. 获取列表数据
+const store = useHomeStore()
+const { getList } = useGetList()
+const data = await getList({})
+console.log("datasssss", data)
 
 //子组件传给父组件 通知请求数据，请求完成通知请求完成
 interface ChildProps {
@@ -170,11 +179,19 @@ interface ChildProps {
 		data: any // 请求返回的数据
 	}
 }
+
 const props = withDefaults(defineProps<ChildProps>(), {
 	requestHandler: () => Promise.resolve({}),
 	requestStates: () => ({ done: false, data: null }),
 })
-
+//! 1.2 数据的传递当得到数据将其注入到对象中然后在子组件总获取
+const { requestHandler, requestStates } = props
+requestStates.done = true
+requestStates.data = data
+//! 1.1.1 在这个data 中我可以获取到 pagecount 也就是总页码
+emit("update:requestStates", requestStates)
+console.log("初始化", requestStates)
+provide("requestStatesList", requestStates)
 onMounted(async () => {
 	initBscroll()
 })
@@ -182,7 +199,10 @@ onMounted(async () => {
 const initBscroll = () => {
 	bscroll = new BScroll(bsWrapper.value!, {
 		scrollY: true,
-		pullUpLoad: true,
+		click: true,
+		pullUpLoad: {
+			threshold: 100,
+		},
 		bounceTime: TIME_BOUNCE,
 		useTransition: false,
 		pullDownRefresh: {
@@ -190,44 +210,52 @@ const initBscroll = () => {
 			stop: STOP,
 		},
 	})
-	const throttle = useThrottle(scroll, 40)
+	const throttle = useThrottle(scroll, 0)
 	bscroll.on("pullingDown", pullingDownHandler)
-	bscroll.on("pullingUp", pullingDownHandler)
+	bscroll.on("pullingUp", pullingUpHandler)
 	bscroll.on("scroll", throttle)
 	bscroll.on("scrollEnd", ({ x, y }: { x: number; y: number }) => {
 		// console.log('scrollEnd', x, y)
 	})
 }
+//下拉
 const pullingDownHandler = async () => {
 	stateReFurish.beforePullDown = false
 	stateReFurish.isPullingDown = true
-	STEP += 1
-
-	const { requestHandler, requestStates } = props
-	const result = await store.dragAsyncData("888")
+	STEP = 1
+	// const { requestHandler, requestStates } = props
+	const result = await getList({ pg: STEP })
 	// console.log('请求完成',props.requestStates,result)
 	requestStates.done = true
-	requestStates.data = { result: result }
+	requestStates.data = result
 	emit("update:requestStates", requestStates)
-	console.log("请求完成", result)
+	console.log("请求完成Down", result)
 	stateReFurish.isPullingDown = false
-	finishPullDown()
-}
-const finishPullDown = async () => {
-	//结束下拉刷新行为
+	stateReFurish.beforePullDown = true
 	bscroll.finishPullDown()
-	setTimeout(() => {
-		stateReFurish.beforePullDown = true
-		//dom 发生变化刷新bscroll
-		bscroll.refresh()
-	}, TIME_BOUNCE + 100)
+	bscroll.refresh()
 }
-const requestData = async () => {
-	return new Promise(resolve => {
-		setTimeout(() => {
-			resolve("success")
-		}, 2000)
-	})
+//上拉
+const pullingUpHandler = async () => {
+	stateReFurish.beforePullUp = false
+	stateReFurish.isPullingUp = true
+	STEP += 1
+	// const { requestHandler, requestStates } = props
+	const result = await getList({ pg: STEP })
+	// console.log('请求完成',props.requestStates,result)
+	requestStates.done = true
+	requestStates.data = result
+	emit("update:requestStates", requestStates)
+	console.log("请求完成up", result)
+	console.log("请求完成up requestStates", requestStates)
+	bscroll.finishPullUp()
+	bscroll.refresh()
+	stateReFurish.isPullingUp = false
+	stateReFurish.beforePullUp = true
+}
+const handleClick = () => {
+	requestStates.data = { name: 888 + 1 }
+	console.log("点击", requestStates.data)
 }
 </script>
 

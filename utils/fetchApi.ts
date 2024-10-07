@@ -6,7 +6,7 @@ export interface IResponse<T> extends FetchResponse<T> {
 	code: number
 	success: boolean
 	headers: Headers
-	data: T
+	data: T & T
 }
 function fetch<T>(url: string, options?: any): Promise<IResponse<T>> {
 	if (import.meta.env.SSR === true) {
@@ -16,7 +16,6 @@ function fetch<T>(url: string, options?: any): Promise<IResponse<T>> {
 		// 客户端请求
 		url = url
 	}
-	console.log("fetch url:", url, import.meta.env.SSR)
 	return $fetch<IResponse<T>>(url, {
 		...options,
 		onResponse({ response }) {
@@ -66,10 +65,10 @@ function fetch<T>(url: string, options?: any): Promise<IResponse<T>> {
 	})
 }
 // 此处的url，无需包含baseUrl
-export function get<T>(url: string, params?: any, options?: any) {
-	return fetch<T>(url, { method: "get", params, ...options })
+export function get<T>(url: string, query?: any, options?: any) {
+	return fetch<T>(url, { method: "get", query, ...options })
 }
-
+// body: { hello: 'world '}
 export function post<T>(url: string, body?: any, options?: any) {
 	return fetch<T>(url, { method: "post", body, ...options })
 }

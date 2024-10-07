@@ -18,6 +18,7 @@
     "@better-scroll/nested-scroll": "^2.5.1",
     "@better-scroll/pull-down": "^2.5.1",
     "@better-scroll/slide": "^2.5.1",
+    "@nuxt/image": "^1.8.1",
     "@pinia-plugin-persistedstate/nuxt": "^1.2.1",
     "@pinia/nuxt": "^0.5.5",
     "@varlet/nuxt": "^0.1.5",
