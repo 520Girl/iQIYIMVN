@@ -5,7 +5,9 @@ const useSetHead = () => {
 	const navMap = store.getNavMap
 	const setHeader = () => {
 		if (navMap.has(path)) {
+			console.log("-------------------")
 			const header = navMap.get(path)
+			console.log(header)
 			useHead({
 				title: header?.name,
 				meta: [

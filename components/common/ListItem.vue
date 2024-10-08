@@ -1,9 +1,13 @@
 <template>
-	<component :is="tag" :class="['amx-ListItem', 'w-' + width]">
+	<component
+		@click.stop.prevent
+		:is="tag"
+		:class="['amx-ListItem', 'w-' + width, { 'disable-click': isDisable }]"
+	>
 		<div class="amx-ListItem__img img-height">
 			<nuxt-link :to="src" :title="title" class="link">
 				<nuxt-img
-					class="link object-cover"
+					class="link"
 					:src="imgUrl"
 					:placeholder="img(`/loading/loading.svg`, { h: 20 })"
 					loading="lazy"
@@ -39,7 +43,7 @@
 			</div>
 			<template v-if="bottomT && (bottomT.type === 1 || bottomT.type === 2)">
 				<div class="c-info text-ellipsis font-sans">
-					<nuxt-link to="src" :title="description">
+					<nuxt-link :to="src" :title="description">
 						{{ description }}
 					</nuxt-link>
 				</div>
@@ -86,7 +90,10 @@ const props = withDefaults(defineProps<ListItem>(), {
 	imgUrl: "",
 	title: "",
 	description: "",
-	src: "",
+	src: () => ({
+		name: "lay-type_id-vod_id",
+		params: { type_id: 0, vod_id: 0 },
+	}),
 	more: false,
 	tag: "div",
 	width: 2,
@@ -113,6 +120,17 @@ const props = withDefaults(defineProps<ListItem>(), {
 		text: "电影|70后|动漫",
 	}),
 })
+
+const isDisable = ref(false)
+const { params } = useRoute()
+if (
+	typeof props.src === "object" &&
+	props.src !== null &&
+	Number(params.type_id) === Number(props.src.params?.type_id) &&
+	Number(params.vod_id) === props.src.params?.vod_id
+) {
+	isDisable.value = true
+}
 const img = useImage()
 onMounted(() => {
 	console.log("mounted")
@@ -155,5 +173,11 @@ onMounted(() => {
 
 .img-height {
 	height: v-bind(height);
+}
+
+.disable-click {
+	@apply pointer-events-none;
+	opacity: 0.5;
+	/* 可选：增加透明度以表示禁用状态 */
 }
 </style>

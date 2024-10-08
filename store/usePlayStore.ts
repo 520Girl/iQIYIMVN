@@ -3,7 +3,7 @@ import { StoreType } from "@/types/api/index.d"
 export const usePlayStore = defineStore(StoreType.PlayStore, {
 	state: () => ({
 		base: <ListItemApi>{},
-		currentVideo: <{ name: string; url: string }>{},
+		currentVideo: <{ name: string; url: string; index: number; from: string }>{},
 	}),
 	getters: {
 		getPlayData(state) {
@@ -19,13 +19,17 @@ export const usePlayStore = defineStore(StoreType.PlayStore, {
 				from: Array<string>(), //来源
 				vod_play_url: base.vod_play_url, //播放地址
 				url: new Map(), //播放地址
+				defaultPlayName: "", //默认播放名称
 				defaultUrl: "", //默认播放地址 为最新的
 				vod_down_url: base.vod_down_url, //下载地址
 				type_id_1: base.type_id_1, //一级类型ID
 				play: base.vod_play_level, //是否可以播放
 				imgUrl: base.vod_pic, //封面图
 				desc: base.vod_blurb, //简介
-				content: base.vod_content.replace(/<[^>]+>/g, "").replace(/&nbsp;/g, ""), //内容
+				content: base.vod_content
+					.replace(/<[^>]+>/g, "")
+					.replace(/&nbsp;/g, "")
+					.replace(/\n/g, ""), //内容
 				tag: base.vod_tag.split(","), //标签
 				class: base.vod_class, //分类
 				actor: base.vod_actor.split(","), //演员
@@ -79,6 +83,7 @@ export const usePlayStore = defineStore(StoreType.PlayStore, {
 				if (defaultUrlArr && defaultUrlArr.length > 0) {
 					const defaultUrlObj = defaultUrlArr[0]
 					handleData.defaultUrl = defaultUrlObj.url
+					handleData.defaultPlayName = defaultUrlObj.name
 				}
 			}
 			return handleData
@@ -90,7 +95,7 @@ export const usePlayStore = defineStore(StoreType.PlayStore, {
 			this.base = data.value as any
 			return data
 		},
-		setCurrentVideo(video: { name: string; url: string }) {
+		setCurrentVideo(video: { name: string; url: string; index: number; from: string }) {
 			Object.assign(this.currentVideo, video)
 		},
 	},

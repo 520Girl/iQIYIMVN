@@ -16,6 +16,7 @@
 					<li class="amx-p-i__li" :ripple="false" style="color: rgb(255 102 125)">
 						{{ detail.vod_score }}分
 					</li>
+					<li class="amx-p-i__li" :ripple="false">{{ detail.type_name }}</li>
 					<li class="amx-p-i__li" :ripple="false">{{ detail.remarks }}</li>
 					<li class="amx-p-i__li" :ripple="false">{{ detail.class }}</li>
 					<li class="amx-p-i__li" :ripple="false">{{ detail.director }}</li>
@@ -36,7 +37,7 @@
 				</ul>
 			</section>
 		</div>
-		<div class="amx-moviePlay-info__title">
+		<div class="amx-moviePlay-info__title" v-if="detail.from.length > 0">
 			<section class="amx-p-t">
 				<div class="amx-p-t__h2 flex items-center">
 					<h5>选集</h5>
@@ -75,7 +76,8 @@
 			<div class="AD">广告</div>
 		</div>
 		<div class="anmx-moviePlay-info__list">
-			<CommonListItem v-for="(item, index) in list" :key="index" :="item" />
+			<HomeComponentsList />
+			<!-- <CommonListItem v-for="(item, index) in list" :key="index" :="item" /> -->
 		</div>
 		<div class="amx-moviePlay-info__more__popup">
 			<var-popup position="bottom" class="amx-popup" v-model:show="popupDetail" :overlay="false">
@@ -87,41 +89,38 @@
 					<div class="amx-popup__content--body">
 						<div class="img-type">
 							<div class="img">
-								<img src="public/home/4274bd8105cc43dab19b180dadeafac4.webp" alt="" />
+								<nuxt-img
+									:src="detail.imgUrl"
+									:alt="detail.vod_name"
+									:placeholder="img(`/loading/loading.svg`, { h: 20 })"
+									loading="lazy"
+									preload
+								/>
 							</div>
 							<div class="type">
-								<h5 class="h5">抓娃娃</h5>
+								<h5 class="h5">{{ detail.vod_name }}</h5>
 								<div class="tags">
-									<span>抓娃娃</span>
-									<span>70后</span>
-									<span>70后喜剧</span>
-									<span>70后喜剧</span>
-									<span>70后喜剧</span>
-									<span>70后喜剧</span>
+									<span>{{ detail.class }}</span>
+									<span v-for="(item, index) in detail.tag" :key="index">{{ item }}</span>
+									<span>{{ detail.type_name }}</span>
 								</div>
 							</div>
 						</div>
 						<div class="score" justify="space-between">
 							<div class="score-num-text">
-								<div class="num">9.8</div>
+								<div class="num">{{ detail.vod_score }}</div>
 								<div class="text">观众评分</div>
 							</div>
 							<div class="score-pro">
 								<var-progress
-									:value="40"
-									color="linear-gradient(131.53deg, #3fecff 0%, #6149f6 100%)"
-								/>
-								<var-progress
-									:value="60"
-									color="linear-gradient(131.53deg, #3fecff 0%, #6149f6 100%)"
-								/>
-								<var-progress
-									:value="80"
-									color="linear-gradient(131.53deg, #3fecff 0%, #6149f6 100%)"
+									:value="item"
+									v-for="(item, index) in scoreRate"
+									:key="index"
+									:color="`linear-gradient(131.53deg, #3fecff ${item}%, #6149f6 ${item}%)`"
 								/>
 							</div>
 							<div class="score-num-text">
-								<div class="num n-1">9852</div>
+								<div class="num n-1">{{ detail.vod_hits }}</div>
 								<div class="text t-1">
 									<var-icon name="fire" />
 									热度值
@@ -129,20 +128,24 @@
 							</div>
 						</div>
 						<div class="desc">
-							这是一堆堆内容的描这是一堆堆内容的描这是一堆 堆内容的描这是一堆堆内容的描这是一堆堆
-							内容的描这是一堆堆内容的描这是一堆堆内 容的描这是 一堆堆内容的描这是一堆堆内容的描
+							{{ detail.content }}
 						</div>
 						<div class="people">
 							<h5 class="h5">演员列表：</h5>
 							<div class="list">
 								<var-space>
 									<var-space direction="column" align="center">
-										<var-avatar src="https://varletjs.org/cat.jpg" fit="fill" />
-										<span>fill</span>
+										<var-avatar src="/image/director.png" fit="fill" />
+										<span>{{ detail.director }}</span>
 									</var-space>
-									<var-space direction="column" align="center">
-										<var-avatar>昇腾 </var-avatar>
-										<span>昇腾</span>
+									<var-space
+										direction="column"
+										align="center"
+										v-for="(item, index) in detail.actor"
+										:key="index"
+									>
+										<var-avatar src="/image/actor.png"></var-avatar>
+										<span>{{ item }}</span>
 									</var-space>
 								</var-space>
 							</div>
@@ -150,7 +153,13 @@
 					</div>
 				</div>
 			</var-popup>
-			<var-popup position="bottom" class="amx-popup" v-model:show="popupLevel" :overlay="false">
+			<var-popup
+				position="bottom"
+				class="amx-popup"
+				v-model:show="popupLevel"
+				:overlay="false"
+				v-if="detail.from.length > 0"
+			>
 				<div class="amx-popup__content">
 					<div class="amx-popup__content--title">
 						<div class="p-t-1">选集</div>
@@ -220,7 +229,7 @@ import NestedScroll from "@better-scroll/nested-scroll"
 BScroll.use(NestedScroll)
 const store = usePlayStore()
 const detail = store.getPlayData
-
+const img = useImage()
 const list = reactive([
 	{
 		imgUrl: "/home/4274bd8105cc43dab19b180dadeafac4.webp",
@@ -272,7 +281,7 @@ let popupDetail = ref(false)
 let popupLevel = ref(false)
 let source = ref(0)
 let episodeActive = ref(1)
-let currentEpisode = reactive({ name: "", src: "", index: 0, from: "" }) //当前章节
+let currentEpisode = reactive({ name: "", url: "", index: 1, from: "" }) //当前章节
 let leaveTitleSwitch = ref(false)
 let sliderScroll: any = null
 let slide = ref<HTMLElement | null>(null)
@@ -309,6 +318,15 @@ const closeMorePopup = (type = "detail") => {
 //! 计算播放源的名称
 const homeStore = useHomeStore()
 const from = homeStore.getFrom || []
+//初始化处理
+Object.assign(
+	currentEpisode,
+	{ url: detail.defaultUrl },
+	{ name: detail.defaultPlayName },
+	{ index: episodeActive.value },
+	{ from: detail.from[source.value] }
+)
+store.setCurrentVideo(currentEpisode)
 console.log("detail2", detail)
 console.log("from", from)
 const playSourceFrom = computed(() => {
@@ -322,33 +340,50 @@ const playSourceFrom = computed(() => {
 const episode = computed(() => {
 	return detail.url.get(detail.from[source.value])
 })
+//计算得到的评分率
+const scoreRate = computed(() => {
+	let score = detail.vod_score_all
+	let up = detail.vod_up
+	let down = detail.vod_down
+	let hits = detail.vod_hits
+	let arr = [up, down, hits, score]
+	function getRate(arr: number[]): number[] {
+		arr = arr.sort((a, b) => a - b)
+
+		let newArr = arr.map((item: number, index) => {
+			return (item / 10).toFixed(2)
+		})
+		let maxNum = newArr.find((item: string) => parseFloat(item) > 100)
+		let resArr = newArr.map((item: string) => parseFloat(item))
+		if (maxNum) {
+			return getRate(resArr)
+		}
+		return resArr
+	}
+	return getRate(arr)
+})
+console.log("scoreRate", scoreRate)
 console.log("playSourceFrom", playSourceFrom)
 console.log("from", from)
 //! 1.3点击源
 const sourceClick = (index: number) => {
 	source.value = index
-	if (episodeActive.value > 0) {
-		Object.assign(
-			currentEpisode,
-			episode.value[episodeActive.value],
-			{ index: episodeActive.value },
-			{ from: detail.from[source.value] }
-		)
-	}
-	//这里还有些问题
 	episodeActive.value = 0
 	if (detail.from[source.value] === currentEpisode.from) {
-		console.log("当前源相同", currentEpisode)
 		episodeActive.value = currentEpisode.index
-		return
 	}
-
-	console.log(currentEpisode)
 }
 
 //! 1.4点击集数
 const episodeClick = (index: number) => {
 	episodeActive.value = index + 1
+	Object.assign(
+		currentEpisode,
+		episode.value[episodeActive.value],
+		{ index: episodeActive.value },
+		{ from: detail.from[source.value] }
+	)
+	store.setCurrentVideo(currentEpisode)
 }
 
 onUnmounted(() => {
@@ -454,8 +489,8 @@ onUnmounted(() => {
 
 			.desc {
 				font-size: 14px;
-				@apply text-gray-950 text-ellipsis;
-				max-height: 140px;
+				@apply text-gray-950 text-ellipsis overflow-hidden w-full line-clamp-6;
+				max-height: 12em;
 			}
 
 			.people {

@@ -31,6 +31,10 @@ type ItemList = {
 	type: number
 	text: string
 }
+type ItemList2 = {
+	name: string
+	params: { type_id: number; vod_id: number }
+}
 export interface ListItem {
 	imgUrl: string
 	title: string
@@ -40,7 +44,7 @@ export interface ListItem {
 	rightB: ItemList // type 1. 评分 2. 红色新增弹幕     评分+备忘
 	leftB: ItemList // type 1. 分类电影                 type_name 类型名称
 	bottomT: ItemList // type 1.表示分类 使用| 分割  2.单独一个红标签
-	src: string
+	src: ItemList2 | string // 详情页跳转链接
 	more?: boolean //更多icon
 	tag: string // 标签名称类似router-link
 	width?: number // 容器宽度 1 2 4

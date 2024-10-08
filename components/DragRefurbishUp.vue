@@ -55,7 +55,7 @@ const THRESHOLD = -70 //下拉刷新距离
 // const listDOM = inject('listDOM')
 const emit = defineEmits(["scrollHandler", "requestHandler", "update:requestStates"])
 interface ChildProps {
-	requestHandler: () => Promise<any> // 接收的函数类型，可以根据返回的数据类型更改
+	requestHandler: (params: { page: number }) => Promise<any> // 接收的函数类型，可以根据返回的数据类型更改
 	requestStates: {
 		done: boolean // 请求是否完成
 		data: any // 请求返回的数据
@@ -74,10 +74,12 @@ onMounted(() => {
 //初始化拖拽
 const initBScroll = () => {
 	bscroll = new BScroll(bsWrapper.value!, {
-		pullUpLoad: true,
 		scrollX: true,
 		bounceTime: 300,
 		momentum: true,
+		pullUpLoad: {
+			threshold: 100,
+		},
 		// // bounce: false, // 禁止弹性效果，从而禁止拖拽的回弹
 		// click: true,   // 启用点击事件
 		// probeType: 3,  // 探测类型，3表示全量探测，即每次滚动都触发事件
@@ -101,12 +103,12 @@ const scroll = (position: { x: number; y: number; z: number }) => {
 const pullingUpHandler = async () => {
 	isPullUpLoad.value = true
 	STEP += 1
-	console.log("111111 为什么反复请求", STEP)
+
 	const { requestHandler, requestStates } = props
-	const result = await requestHandler()
+	const result = await requestHandler({ page: STEP })
 	//请求完成
 	requestStates.done = true
-	requestStates.data = result * STEP
+	requestStates.data = result
 
 	emit("update:requestStates", requestStates)
 

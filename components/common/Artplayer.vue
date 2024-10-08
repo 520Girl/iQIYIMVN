@@ -20,17 +20,17 @@ const emit = defineEmits(["get-instance"])
 //将全屏 播放实例 暴露给父组件
 const fullscreenVidew = () => {
 	if (instance) {
-		// instance.pip   = true
+		// instance.pip  = true
+
 		instance.fullscreen = true
-		// instance.fullscreenWeb  = true
+		instance.fullscreenWeb = true
+		console.log("jinlial", instance)
 	}
 }
 //更换视频源
 const changeVideoUrl = (url: string) => {
 	if (instance) {
-		instance.on("ready", () => {
-			instance?.switchUrl(url)
-		})
+		instance!.url = url
 	}
 }
 defineExpose({

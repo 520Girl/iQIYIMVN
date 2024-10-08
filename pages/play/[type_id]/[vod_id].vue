@@ -1,6 +1,7 @@
 <template>
 	<div class="amx-playMovie">
 		<var-watermark :content="setting.title" :fullscreen="true">
+			<SvgIcon name="svgo-back" class="amx-playMovie__back" @click="goBack" />
 			<div class="amx-playMovie__play" ref="playDOM">
 				<CommonArtplayer
 					ref="artPlayer"
@@ -62,6 +63,8 @@ import BScroll from "@better-scroll/core"
 import Slide from "@better-scroll/slide"
 import NestedScroll from "@better-scroll/nested-scroll"
 import setting from "public/setting.json"
+import { useGetList } from "@/hooks/useGetList"
+import type { Item } from "@/types/api/index"
 
 BScroll.use(NestedScroll)
 BScroll.use(Slide)
@@ -80,9 +83,9 @@ let artPlayer = ref<any>(null)
 const slideWrapper = ref<HTMLElement | null>(null)
 let active = ref<number>(0)
 let sliderScroll: any = null
-const requestStates = reactive<{ done: boolean; data: number }>({
+const requestStates = reactive<{ done: boolean; data: Item }>({
 	done: false, // 请求状态
-	data: 20, // 请求结果
+	data: {}, // 请求结果
 })
 
 //artPlayer 播放器
@@ -122,19 +125,23 @@ const scrollHandler = ({ x, y }: { x: number; y: number }) => {
 		console.log("scrollHandler", x, y)
 		listDOM.value!.style.transform = `translate3d(0,${y}px,0)`
 		playDOM.value!.style.transform = `translate3d(0,${y}px,0)`
-		if (y > 100) {
+		if (y > 50) {
 			artPlayer.value.fullscreen()
 		}
 	}
 }
 //! 2. 请求数据
-const requestHandler = async () => {
+//! 5. 获取slide 数据
+const { getList } = useGetList()
+const data = await getList({ ac: "list", t: params.type_id as string, pagesize: 6 })
+requestStates.done = true // 显示请求状态
+requestStates.data = data
+provide("requestStatesList", requestStates)
+const requestHandler = async (query: { page: number }) => {
+	console.log("params", query)
+	console.log("requestStates", requestStates)
 	requestStates.done = false // 显示请求状态
-	return new Promise((resolve, reject) => {
-		setTimeout(() => {
-			resolve(5)
-		}, 1000)
-	})
+	return await getList({ ac: "list", t: params.type_id as string, pagesize: 6, pg: query.page })
 }
 
 //! 3. 初始化 slide 拖拽 左右
@@ -179,9 +186,17 @@ const _onScrollEnd = () => {
 watch(active, (newVal, oldVal) => {
 	sliderScroll.goToPage(newVal, newVal)
 })
-// watch(()=>playCurrent, (newVal, oldVal) => {
-//     console.log('playCurrentVideo1', newVal)
-// })
+//5. 返回上一页
+const router = useRouter()
+const goBack = () => {
+	// router.back()
+	router.push("/")
+}
+//当播放源数据发生变化时，更新播放器的url
+watch(store.currentVideo, (newVal, oldVal) => {
+	console.log("newVal", artPlayer.value)
+	artPlayer.value?.changeVideoUrl(newVal.url)
+})
 
 onMounted(async () => {
 	// await nextTick()
@@ -202,6 +217,17 @@ onUnmounted(() => {
 	height: 100vh;
 	@apply bg-black;
 	overflow: hidden;
+
+	@include e(back) {
+		@apply absolute;
+		z-index: 23;
+		font-size: 30px;
+		left: 5px;
+		top: 5px;
+	}
+
+	@include e(play) {
+	}
 
 	@include e(play) {
 		height: var(--amx-play-height);

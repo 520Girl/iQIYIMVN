@@ -21,7 +21,7 @@ if (!home.base.seo) {
 	})
 }
 useHead({
-	title: "我的",
+	title: "首页",
 	titleTemplate: titleChunk => {
 		let title = home.getHomeSeo.name ? home.getHomeSeo.name : setting.title
 		return titleChunk ? `${title} - ${titleChunk}` : `${title}`

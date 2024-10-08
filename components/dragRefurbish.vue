@@ -169,7 +169,6 @@ const scroll = async ({ x, y }: { x: number; y: number }) => {
 const store = useHomeStore()
 const { getList } = useGetList()
 const data = await getList({})
-console.log("datasssss", data)
 
 //子组件传给父组件 通知请求数据，请求完成通知请求完成
 interface ChildProps {

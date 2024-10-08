@@ -47,7 +47,6 @@
 <script lang="ts" setup>
 import { ref, reactive, type Reactive } from "vue"
 import type { ListItemApi, ListItem } from "@/types/api/index"
-import Vod_id from "~/pages/movie/play/[type_id]/[vod_id].vue"
 // const props = withDefaults(defineProps<Props>(), {
 //     imgUrl: '',
 //     title: '',
@@ -61,33 +60,61 @@ import Vod_id from "~/pages/movie/play/[type_id]/[vod_id].vue"
 const props = inject<{ data: Reactive<{ list: ListItemApi[]; page: number }> }>("requestStatesList")
 console.log("propsList", props)
 console.log("4444", props?.data)
-const { path } = useRoute()
+const { path, params } = useRoute()
 const store = useHomeStore()
-const navClass = store.getNavClass || new Map()
 
+const navClass = store.getNavClass || new Map()
+console.log("params", useRoute())
 const changeList = () => {
 	let newArrList: ListItem[] | undefined = []
-	switch (path) {
-		case "/":
-			console.log("首页", navClass)
-			newArrList = props?.data?.list.map((item: ListItemApi) => {
-				let obj = {
-					imgUrl: item.vod_pic,
-					title: item.vod_name,
-					description: item.vod_content.replace(/<[^>]*>/g, ""),
-					leftT: { type: 1, text: "图标" },
-					rightT: { type: 1, text: item.vod_lang },
-					rightB: { type: 1, text: item.vod_score },
-					leftB: { type: 1, text: item.type_name },
-					bottomT: { type: 1, text: item.vod_tag.replace(/,/g, "|") },
-					src: `play/${item.type_id}/${item.vod_id}`,
-					vod_id: item.vod_id,
-					tag: "li",
-					more: true,
-				}
-				return obj
-			})
+	if (path == "/" && Object.keys(params).length == 0) {
+		console.log("首页", navClass)
+		newArrList = props?.data?.list.map((item: ListItemApi) => {
+			let obj = {
+				imgUrl: item.vod_pic,
+				title: item.vod_name,
+				description: item.vod_content.replace(/<[^>]*>/g, ""),
+				leftT: { type: 1, text: "图标" },
+				rightT: { type: 1, text: item.vod_lang },
+				rightB: { type: 1, text: item.vod_score },
+				leftB: { type: 1, text: item.type_name },
+				bottomT: { type: 1, text: item.vod_tag.replace(/,/g, "|") },
+				src: {
+					name: "play-type_id-vod_id",
+					params: { type_id: item.type_id, vod_id: item.vod_id },
+				},
+				vod_id: item.vod_id,
+				tag: "li",
+				more: true,
+			}
+			return obj
+		})
+	} else if (path.includes("/play")) {
+		console.log("播放页", navClass)
+		newArrList = props?.data?.list.map((item: ListItemApi) => {
+			let obj = {
+				imgUrl: item.vod_pic,
+				title: item.vod_name,
+				description: item.vod_content.replace(/<[^>]*>/g, ""),
+				leftT: { type: 1, text: "图标" },
+				rightT: { type: 3, text: "60帧|VIP" },
+				rightB: { type: 2, text: `新增加访问量${item.vod_hits}个` },
+				leftB: { type: 1, text: item.type_name },
+				bottomT: { type: 2, text: `最新点赞数${item.vod_up}` },
+				src: {
+					name: "play-type_id-vod_id",
+					params: { type_id: item.type_id, vod_id: item.vod_id },
+				},
+				vod_id: item.vod_id,
+				more: true,
+				width: 2,
+				height: "234px",
+				tag: "li",
+			}
+			return obj
+		})
 	}
+
 	return newArrList
 }
 

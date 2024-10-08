@@ -14,11 +14,29 @@ export const useHomeStore = defineStore(StoreType.Home, {
 		dragDown: false, //拖拽后请求数据状态
 		base: <HomeBaseTypes>{}, //基础配置项
 		nav: [
-			{ name: "首页", disabled: false, ripple: false, src: "/", id: 100 },
+			{
+				name: setting.title,
+				disabled: false,
+				ripple: false,
+				src: "/",
+				id: 100,
+				title: setting.title,
+				key: setting.key,
+				des: setting.des,
+			},
 			{ name: "小说", disabled: false, ripple: false, src: "/novel", id: 4 },
 			{ name: "电影", disabled: false, ripple: false, src: "/movie", id: 6 },
 			{ name: "漫画", disabled: false, ripple: false, src: "/comic", id: 57 },
-			{ name: "播放", disabled: false, ripple: false, src: "/play", id: 101 },
+			{
+				name: "播放",
+				disabled: false,
+				ripple: false,
+				src: "/play",
+				id: 101,
+				title: "播放列表",
+				key: "play_list",
+				des: "播放列表",
+			},
 		], //导航配置项 更具nav 得到的数据
 	}),
 	getters: {
@@ -33,31 +51,11 @@ export const useHomeStore = defineStore(StoreType.Home, {
 		},
 		getNavMap(state) {
 			const base = state.base
-			const { seo, list, from } = base
+			const { list } = base
 			const nav = state.nav
-			const home = {
-				id: 100,
-				name: "首页",
-				disabled: false,
-				ripple: false,
-				src: "/",
-				title: seo.name || setting.title,
-				key: seo.key || setting.key,
-				des: seo.des || setting.des,
-			}
-			let play = {
-				name: "播放",
-				disabled: false,
-				ripple: false,
-				src: "/play",
-				id: 101,
-				title: "播放列表",
-				key: "play_list",
-				des: "播放列表",
-			}
 			let mapNav = new Map<string, navTypes>()
-			mapNav.set("/", home)
-			mapNav.set("/play", play)
+			mapNav.set("/", nav[0])
+			mapNav.set("/play", nav[4])
 			if (base.list) {
 				list.forEach((item: HomeBaseList) => {
 					let item2 = nav.find(item3 => item3.id === item.type_id)
@@ -82,19 +80,9 @@ export const useHomeStore = defineStore(StoreType.Home, {
 		},
 		getNavArr(state): Array<navTypes> {
 			let nav = []
+			let arr = state.nav
 			if (state.base.list) {
-				let arr = state.nav
 				const base = state.base
-				const home = {
-					id: 100,
-					name: "首页",
-					disabled: false,
-					ripple: false,
-					src: "/",
-					title: base.seo.name || setting.title,
-					key: base.seo.key || setting.key,
-					des: base.seo.des || setting.des,
-				}
 				nav = base.list
 					.map((item: HomeBaseList): navTypes | null => {
 						let item2 = arr.find(item3 => item3.id === item.type_id)
@@ -111,19 +99,10 @@ export const useHomeStore = defineStore(StoreType.Home, {
 						return null
 					})
 					.filter((item): item is navTypes => item !== null) // 过滤掉返回为null的项
-				nav.unshift(home)
-				nav.push({
-					name: "播放",
-					disabled: false,
-					ripple: false,
-					src: "/play",
-					id: 101,
-					title: "播放列表",
-					key: "play_list",
-					des: "播放列表",
-				})
+				nav.unshift(arr[0])
+				nav.push(arr[4])
 			} else {
-				nav = state.nav
+				nav = arr
 			}
 			return nav
 		},
@@ -167,7 +146,6 @@ export const useHomeStore = defineStore(StoreType.Home, {
 					}
 				})
 				pathMap.set("/", { ids: [], type_id: 100, type_pid: 100, type_name: "首页" })
-				console.log("pathMap", pathMap)
 				return pathMap
 			}
 		},

@@ -12,7 +12,7 @@
 			>
 		</div>
 		<div class="amx-chat-body">
-			<div class="amx-chat-item" v-show="active === 0">
+			<div class="amx-chat-item" v-if="false">
 				<div class="amx-chat-item__list" v-for="(item, index) in 5" :key="index">
 					<div class="amx-chat-item__avatar">
 						<var-avatar src="https://varletjs.org/cat.jpg" size="small" />
@@ -20,14 +20,7 @@
 					<div class="amx-chat-item__content">
 						<div class="amx-chat-item__header">
 							<h5 class="content-title">喜欢浅睡的猫猫</h5>
-							<article class="content-text">
-								这里是内容这里是内容这里是内容这 里是内容这里是内容这里是内容这里是内容这里是内容这
-								里是内容这里是内容这里是内容这里是内容这里是内容这里是内容
-								这里是内容这里是内容这里是内容这里是内容这里是内容这里是内容这里是
-								内容这里是内容这里是内容这里是内容这里是内容这里是内容这里是内容这里是内容
-								这里是内容这里是内容这里是内容这里是内容这里是内容这里是内容这里是
-								内容这里是内容这里是内容这里是内容这里是内容这里是内容
-							</article>
+							<article class="content-text">内容</article>
 						</div>
 						<div class="amx-chat-item__footer">
 							<div class="footer-time">
@@ -36,12 +29,19 @@
 								<span class="reply">回复</span>
 							</div>
 							<div class="footer-like">
-								<SvgIcon name="svgo-upvote" width="14px" />
+								<SvgIcon name="svgo-upvote" width="28px" />
 								<var-icon name="thumb-down" />
 							</div>
 						</div>
 					</div>
 				</div>
+			</div>
+			<div class="amx-chat-item" v-else>
+				<SvgIcon
+					name="svgo-noContent"
+					width="14px"
+					style="height: 150px; text-align: center; font-size: 35px; width: 100%; margin-top: 15px"
+				/>
 			</div>
 		</div>
 	</div>
