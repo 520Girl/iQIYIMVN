@@ -87,6 +87,7 @@ export interface NItem {
 export enum StoreType {
 	Home = "Home",
 	PlayStore = "PlayStore",
+	MovieStore = "MovieStore",
 }
 
 type HomeBaseList = {

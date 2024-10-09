@@ -60,14 +60,15 @@ import type { ListItemApi, ListItem } from "@/types/api/index"
 const props = inject<{ data: Reactive<{ list: ListItemApi[]; page: number }> }>("requestStatesList")
 console.log("propsList", props)
 console.log("4444", props?.data)
-const { path, params } = useRoute()
+const route = useRoute()
+const { path, params, query } = toRefs(route)
 const store = useHomeStore()
 
 const navClass = store.getNavClass || new Map()
-console.log("params", useRoute())
+console.log("params", useRoute(), path.value)
 const changeList = () => {
 	let newArrList: ListItem[] | undefined = []
-	if (path == "/" && Object.keys(params).length == 0) {
+	if (path.value == "/" && Object.keys(params.value).length == 0) {
 		console.log("首页", navClass)
 		newArrList = props?.data?.list.map((item: ListItemApi) => {
 			let obj = {
@@ -89,7 +90,7 @@ const changeList = () => {
 			}
 			return obj
 		})
-	} else if (path.includes("/play")) {
+	} else if (path.value.includes("/play")) {
 		console.log("播放页", navClass)
 		newArrList = props?.data?.list.map((item: ListItemApi) => {
 			let obj = {
@@ -109,6 +110,37 @@ const changeList = () => {
 				more: true,
 				width: 2,
 				height: "234px",
+				tag: "li",
+			}
+			return obj
+		})
+	} else if (path.value.includes("/movie")) {
+		console.log("电影页面", navClass)
+		newArrList = props?.data?.list.map((item: ListItemApi) => {
+			let RTtype = item.vod_remarks.length > 4 ? 2 : 1
+			let obj = {
+				imgUrl: item.vod_pic,
+				title: item.vod_name,
+				description: item.vod_content.replace(/<[^>]*>/g, ""),
+				leftT: { type: 0, text: "图标" },
+				rightT: {
+					type: RTtype,
+					text: item.vod_remarks.length > 4 ? item.vod_lang : item.vod_remarks,
+				},
+				rightB: {
+					type: parseFloat(item.vod_score) > 6 ? 1 : 0,
+					text: parseFloat(item.vod_score) > 6 ? item.vod_score : "",
+				},
+				leftB: { type: 1, text: item.vod_class },
+				bottomT: { type: 3, text: `最新点赞数${item.vod_up}` },
+				src: {
+					name: "play-type_id-vod_id",
+					params: { type_id: item.type_id, vod_id: item.vod_id },
+				},
+				vod_id: item.vod_id,
+				more: true,
+				width: 3,
+				height: "153px",
 				tag: "li",
 			}
 			return obj

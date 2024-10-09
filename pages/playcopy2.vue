@@ -68,7 +68,7 @@ let data = ref<number>(5)
 let active = ref<number>(0)
 let distance = reactive<Map<number, any>>(new Map())
 const isClient = ref(false)
-const requestStates = reactive<{ done: boolean; data: number }>({
+let requestStates = reactive<{ done: boolean; data: number }>({
 	done: false, // 请求状态
 	data: 9, // 请求结果
 }) // 请求状态

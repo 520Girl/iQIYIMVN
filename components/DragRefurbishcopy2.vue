@@ -203,7 +203,7 @@ const pullingDownHandler = async () => {
 	stateReFurish.isPullingDown = true
 	STEP += 1
 
-	const { requestHandler, requestStates } = props
+	let { requestHandler, requestStates } = props
 	// const result = await store.dragAsyncData("888")
 	const result = await setTimeout(() => {
 		return requestHandler()

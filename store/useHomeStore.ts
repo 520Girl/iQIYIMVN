@@ -15,7 +15,7 @@ export const useHomeStore = defineStore(StoreType.Home, {
 		base: <HomeBaseTypes>{}, //基础配置项
 		nav: [
 			{
-				name: setting.title,
+				name: "首页",
 				disabled: false,
 				ripple: false,
 				src: "/",
@@ -25,7 +25,7 @@ export const useHomeStore = defineStore(StoreType.Home, {
 				des: setting.des,
 			},
 			{ name: "小说", disabled: false, ripple: false, src: "/novel", id: 4 },
-			{ name: "电影", disabled: false, ripple: false, src: "/movie", id: 6 },
+			{ name: "电影", disabled: false, ripple: false, src: "/movie", id: 1 },
 			{ name: "漫画", disabled: false, ripple: false, src: "/comic", id: 57 },
 			{
 				name: "播放",
@@ -60,7 +60,7 @@ export const useHomeStore = defineStore(StoreType.Home, {
 				list.forEach((item: HomeBaseList) => {
 					let item2 = nav.find(item3 => item3.id === item.type_id)
 					if (item2) {
-						const { type_id, type_name, type_title, type_key, type_des } = item
+						const { type_id, type_name, type_title, type_key, type_des, type_extend } = item
 						mapNav.set(item2.src, {
 							...item2,
 							id: type_id,
@@ -68,6 +68,7 @@ export const useHomeStore = defineStore(StoreType.Home, {
 							title: type_title,
 							key: type_key,
 							des: type_des,
+							class: type_extend.class,
 						})
 					}
 				})
@@ -94,6 +95,7 @@ export const useHomeStore = defineStore(StoreType.Home, {
 								title: item.type_title,
 								key: item.type_key,
 								des: item.type_des,
+								class: item.type_extend.class,
 							}
 						}
 						return null

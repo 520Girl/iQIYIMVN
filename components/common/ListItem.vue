@@ -66,7 +66,7 @@
 			<template v-else>
 				<div class="c-info text-ellipsis">
 					<NuxtLink :to="src" :title="title">
-						{{ bottomT }}
+						{{ description }}
 					</NuxtLink>
 					<div class="more" v-if="more">
 						<var-icon name="dots-vertical" />
@@ -166,7 +166,7 @@ onMounted(() => {
 	@apply w-4/12;
 
 	.amx-ListItem__img {
-		@apply h-56;
+		// @apply h-56;
 		max-height: 224px;
 	}
 }

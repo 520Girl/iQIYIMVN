@@ -104,7 +104,7 @@ const pullingUpHandler = async () => {
 	isPullUpLoad.value = true
 	STEP += 1
 
-	const { requestHandler, requestStates } = props
+	let { requestHandler, requestStates } = props
 	const result = await requestHandler({ page: STEP })
 	//请求完成
 	requestStates.done = true

@@ -139,14 +139,14 @@ import { useGetList } from "~/hooks/useGetList"
 BScroll.use(Pullup)
 BScroll.use(PullDown)
 const id = useId()
-let bscroll: any = null
+let bscroll: any = ref(null)
 const bsWrapper = ref<HTMLElement | null>(null)
 const pulldownContent = ref<HTMLElement | null>(null)
 const TIME_BOUNCE = 800 //回弹时间
 const REQUEST_TIME = 1000 //什么时候可以二次请求方式返回数据过快反复拖拽
 const THRESHOLD = 70 //下拉刷新距离
 const STOP = 56 //下拉刷新后停留的高度
-let STEP = 0
+let STEP = ref(1) //请求的页码
 const stateReFurish = reactive({
 	beforePullDown: true, //是否上下拉动
 	isPullingDown: false, //是否刷新成功
@@ -167,12 +167,10 @@ const scroll = async ({ x, y }: { x: number; y: number }) => {
 }
 //! 1. 获取列表数据
 const store = useHomeStore()
-const { getList } = useGetList()
-const data = await getList({})
 
 //子组件传给父组件 通知请求数据，请求完成通知请求完成
 interface ChildProps {
-	requestHandler: () => Promise<any> // 接收的函数类型，可以根据返回的数据类型更改
+	requestHandler: (params: { page: number; class?: string | undefined }) => Promise<any> // 接收的函数类型，可以根据返回的数据类型更改
 	requestStates: {
 		done: boolean // 请求是否完成
 		data: any // 请求返回的数据
@@ -184,17 +182,20 @@ const props = withDefaults(defineProps<ChildProps>(), {
 	requestStates: () => ({ done: false, data: null }),
 })
 //! 1.2 数据的传递当得到数据将其注入到对象中然后在子组件总获取
-const { requestHandler, requestStates } = props
-requestStates.done = true
-requestStates.data = data
+// const { requestHandler, requestStates } = props
+// requestStates.done = true
+// requestStates.data = data
 //! 1.1.1 在这个data 中我可以获取到 pagecount 也就是总页码
-emit("update:requestStates", requestStates)
-console.log("初始化", requestStates)
-provide("requestStatesList", requestStates)
+// emit("update:requestStates", requestStates)
+// console.log("初始化", requestStates)
+// provide("requestStatesList", requestStates)
 onMounted(async () => {
 	initBscroll()
+	console.log("bsscrolll", bscroll)
 })
-
+onUnmounted(() => {
+	bscroll.destroy()
+})
 const initBscroll = () => {
 	bscroll = new BScroll(bsWrapper.value!, {
 		scrollY: true,
@@ -218,12 +219,12 @@ const initBscroll = () => {
 	})
 }
 //下拉
-const pullingDownHandler = async () => {
+const pullingDownHandler = async (item: any) => {
 	stateReFurish.beforePullDown = false
 	stateReFurish.isPullingDown = true
-	STEP = 1
-	// const { requestHandler, requestStates } = props
-	const result = await getList({ pg: STEP })
+	STEP.value = 1
+	let { requestHandler, requestStates } = props
+	const result = await requestHandler({ page: STEP.value, class: item })
 	// console.log('请求完成',props.requestStates,result)
 	requestStates.done = true
 	requestStates.data = result
@@ -238,9 +239,9 @@ const pullingDownHandler = async () => {
 const pullingUpHandler = async () => {
 	stateReFurish.beforePullUp = false
 	stateReFurish.isPullingUp = true
-	STEP += 1
-	// const { requestHandler, requestStates } = props
-	const result = await getList({ pg: STEP })
+	STEP.value += 1
+	let { requestHandler, requestStates } = props
+	const result = await requestHandler({ page: STEP.value })
 	// console.log('请求完成',props.requestStates,result)
 	requestStates.done = true
 	requestStates.data = result
@@ -252,10 +253,13 @@ const pullingUpHandler = async () => {
 	stateReFurish.isPullingUp = false
 	stateReFurish.beforePullUp = true
 }
-const handleClick = () => {
-	requestStates.data = { name: 888 + 1 }
-	console.log("点击", requestStates.data)
+//将实例 暴露出去 还有STEP 页面都暴露出去
+const refreshBscroll = (item: any) => {
+	bscroll.scrollTo(0, 0, 300)
+	pullingDownHandler(item)
 }
+provide("bscroll", refreshBscroll)
+provide("STEP", STEP)
 </script>
 
 <style scoped lang="scss">

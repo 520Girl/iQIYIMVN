@@ -73,7 +73,7 @@ let artPlayer = ref<any>(null)
 const slideWrapper = ref<HTMLElement | null>(null)
 let active = ref<number>(0)
 let sliderScroll: any = null
-const requestStates = reactive<{ done: boolean; data: number }>({
+let requestStates = reactive<{ done: boolean; data: number }>({
 	done: false, // 请求状态
 	data: 20, // 请求结果
 })

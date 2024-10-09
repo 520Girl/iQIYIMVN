@@ -61,6 +61,7 @@ declare global {
 	const useId: (typeof import("vue"))["useId"]
 	const useLink: (typeof import("vue-router"))["useLink"]
 	const useModel: (typeof import("vue"))["useModel"]
+	const useMovieStore: (typeof import("../store/useMovieStore"))["useMovieStore"]
 	const usePlayStore: (typeof import("../store/usePlayStore"))["usePlayStore"]
 	const useRoute: (typeof import("vue-router"))["useRoute"]
 	const useRouter: (typeof import("vue-router"))["useRouter"]
