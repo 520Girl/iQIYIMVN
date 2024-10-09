@@ -34,6 +34,16 @@
 				</li>
 			</ul>
 		</div>
+		<div class="amx-novel-m-l__more">
+			<div class="more-btn">
+				<SvgIcon name="svgo-cplay" class="more-btn__icon" />
+				<span class="more-btn__text">更多推荐</span>
+			</div>
+			<div class="refresh-btn">
+				<SvgIcon name="svgo-crefresh" class="more-btn__icon" />
+				<span class="more-btn__text">换一批</span>
+			</div>
+		</div>
 	</div>
 </template>
 
@@ -43,61 +53,6 @@ import type { NovelList, NItem, NovelItem } from "@/types/api/index"
 const props = withDefaults(defineProps<{ list?: NovelList }>(), {
 	list: () => [
 		{
-			title: "精品短片",
-			data: [
-				{
-					imgUrl: "/home/4274bd8105cc43dab19b180dadeafac4.webp",
-					title: "天龙八部",
-					description: "这是一部好看",
-					src: "",
-					rightT: {
-						type: 1,
-						text: "短片",
-					},
-				},
-				{
-					imgUrl: "/home/4274bd8105cc43dab19b180dadeafac4.webp",
-					title: "天龙八部",
-					description: "这是一部好看",
-					src: "",
-					rightT: {
-						type: 1,
-						text: "短片",
-					},
-				},
-				{
-					imgUrl: "/home/4274bd8105cc43dab19b180dadeafac4.webp",
-					title: "天龙八部",
-					description: "这是一部好看",
-					src: "",
-					rightT: {
-						type: 1,
-						text: "短片",
-					},
-				},
-				{
-					imgUrl: "/home/4274bd8105cc43dab19b180dadeafac4.webp",
-					title: "天龙八部",
-					description: "这是一部好看",
-					src: "",
-					rightT: {
-						type: 1,
-						text: "短片",
-					},
-				},
-				{
-					imgUrl: "/home/4274bd8105cc43dab19b180dadeafac4.webp",
-					title: "天龙八部",
-					description: "这是一部好看",
-					src: "",
-					rightT: {
-						type: 1,
-						text: "短片",
-					},
-				},
-			],
-		},
-		{
 			title: "最近在读",
 			data: [
 				{
@@ -106,8 +61,8 @@ const props = withDefaults(defineProps<{ list?: NovelList }>(), {
 					description: "这是一部好看",
 					src: "",
 					rightT: {
-						type: 0,
-						text: "",
+						type: 1,
+						text: "漫画",
 					},
 				},
 				{
@@ -116,8 +71,8 @@ const props = withDefaults(defineProps<{ list?: NovelList }>(), {
 					description: "这是一部好看",
 					src: "",
 					rightT: {
-						type: 0,
-						text: "",
+						type: 1,
+						text: "漫画",
 					},
 				},
 				{
@@ -126,8 +81,8 @@ const props = withDefaults(defineProps<{ list?: NovelList }>(), {
 					description: "这是一部好看",
 					src: "",
 					rightT: {
-						type: 0,
-						text: "",
+						type: 1,
+						text: "漫画",
 					},
 				},
 				{
@@ -136,8 +91,8 @@ const props = withDefaults(defineProps<{ list?: NovelList }>(), {
 					description: "这是一部好看",
 					src: "",
 					rightT: {
-						type: 0,
-						text: "",
+						type: 1,
+						text: "漫画",
 					},
 				},
 				{
@@ -146,8 +101,8 @@ const props = withDefaults(defineProps<{ list?: NovelList }>(), {
 					description: "这是一部好看",
 					src: "",
 					rightT: {
-						type: 0,
-						text: "",
+						type: 1,
+						text: "漫画",
 					},
 				},
 			],
@@ -162,27 +117,46 @@ onMounted(() => {
 <style scoped lang="scss">
 @import "/assets/css/mixin.scss";
 @include ListItem_1;
-.amx-ListItem__img {
-	height: 115px;
-}
+
 @include b(novel-m-l) {
 	padding: 0 4px 0 4px;
 	@apply w-full box-border;
 	.title {
-		@apply flex text-lg p-7 font-medium font-sans;
+		@apply flex text-lg p-7;
 		padding: 0 15px 12px 5px;
-		font-size: 16px;
 	}
 
 	@include e(list) {
 		@apply w-full;
 	}
-	@include e(article) {
-		margin-bottom: 15px;
-	}
 	.amx-ListItem {
-		@apply inline-block w-1/4 box-border;
+		@apply inline-block w-1/3 box-border;
 		padding: 0 5px;
+	}
+	@include e(more) {
+		@apply flex justify-between items-center box-border w-full flex-row;
+		padding: 8px 2px;
+	}
+	.more-btn {
+		margin-right: 8px;
+		@apply box-border text-center flex items-center justify-center;
+		width: 50%;
+		background-color: #f2f5fa;
+		font-size: 15px;
+		padding: 5px 0;
+	}
+	.refresh-btn {
+		@apply box-border text-center flex items-center justify-center;
+		width: 50%;
+		background-color: #f2f5fa;
+		border-radius: 4px;
+		font-size: 15px;
+		padding: 5px 0;
+	}
+	.more-btn__text {
+		margin-left: 2px;
+	}
+	.more-btn__icon {
 	}
 }
 </style>

@@ -117,6 +117,7 @@ onMounted(() => {
 
 	@include b(movie-main) {
 		background-color: var(--amx-bc);
+		border-radius: 8px;
 	}
 }
 

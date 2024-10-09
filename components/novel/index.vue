@@ -1,7 +1,7 @@
 <template>
 	<div class="amx-novel-main">
 		<div class="amx-novel-main__aside">
-			<CommonAside v-for="(item, index) in list" :="item" :key="index"></CommonAside>
+			<CommonAside v-for="(item, index) in list" :item="item" :key="item.bc"></CommonAside>
 		</div>
 		<div class="amx-novel-main__List">
 			<NovelComponentsList />
@@ -19,26 +19,31 @@ const list = reactive([
 		text: "男频",
 		src: 1,
 		icon: "boy",
+		bc: "#d9f4fd",
 	},
 	{
 		text: "女频",
 		src: 2,
 		icon: "girl",
+		bc: "#fee4e7",
 	},
 	{
 		text: "听书",
 		src: 3,
 		icon: "tingBook",
+		bc: "#fdf5c4",
 	},
 	{
 		text: "书架",
 		src: 4,
 		icon: "shu",
+		bc: "#defaeb",
 	},
 	{
 		text: "找书",
 		src: 5,
 		icon: "searchNovel",
+		bc: "#f2eaff",
 	},
 ])
 
@@ -52,6 +57,7 @@ onMounted(() => {
 		@apply flex;
 		padding: 15px 9px;
 	}
+
 	@include e(List) {
 	}
 }

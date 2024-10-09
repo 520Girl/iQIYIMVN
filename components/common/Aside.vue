@@ -1,7 +1,7 @@
 <template>
 	<aside class="amx-novel-aside">
 		<nuxt-link :to="{ path: '/', query: { t: src } }" tag="a" class="amx-aside-inner">
-			<div :class="['amx-aside-inner__logo', icon]">
+			<div class="amx-aside-inner__logo background" :style="{ background: bc }">
 				<SvgIcon :name="'svgo-' + icon" />
 				<!-- <component :is="'svgo-'+icon" class="amx-aside-inner__logo-icon"></component> -->
 			</div>
@@ -16,16 +16,24 @@
 import { ref, reactive, onMounted } from "vue"
 import type { AsideItem } from "@/types/api/index.d.ts"
 const router = useRouter()
-const props = withDefaults(defineProps<AsideItem>(), {
-	text: "男频",
-	src: 1,
-	icon: "boy",
+const props = withDefaults(defineProps<{ item: AsideItem }>(), {
+	item: () => ({
+		text: "男频",
+		src: 1,
+		icon: "boy",
+		bc: "#fff",
+	}),
 })
+const { text, src, icon, bc } = toRefs(props.item)
 onMounted(() => {
 	console.log("mounted")
 })
 </script>
 <style scoped lang="scss">
+.background {
+	background-color: v-bind(bc);
+}
+
 @import "~/assets/virtual.icons.css";
 
 @include b(novel-aside) {
@@ -37,25 +45,30 @@ onMounted(() => {
 
 	@include e(logo) {
 		font-size: 28px;
-		background-color: red;
+		background-color: var(--amx-theme-color);
 		width: 45px;
 		height: 45px;
 		border-radius: 50%;
 		@apply flex items-center justify-center rounded-full m-auto;
 		// background-color: red;
 	}
+
 	.boy {
 		background-color: #d9f4fd;
 	}
+
 	.girl {
 		background-color: #fee4e7;
 	}
+
 	.searchNovel {
 		background-color: #f2eaff;
 	}
+
 	.shu {
 		background-color: #defaeb;
 	}
+
 	.tingBook {
 		background-color: #fdf5c4;
 	}

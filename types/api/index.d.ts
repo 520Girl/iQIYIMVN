@@ -57,6 +57,7 @@ export interface AsideItem {
 	icon: string
 	text: string
 	src: number
+	bc?: string
 	[key: string]: any // 字符串索引签名
 }
 
