@@ -17,7 +17,6 @@ enum API {
 // }
 export async function getHomeBase() {
 	const res = await get<HomeBaseTypes>(API.GET_HOME_BASE)
-	console.log("res", res)
 	return res
 }
 
@@ -27,7 +26,6 @@ export async function getSliderApi(query: SliderTypes) {
 }
 
 export async function getVodListApi(query: ListTypesParams) {
-	console.log("query", query)
 	const res = await get<ListTypesData>(API.GET_VOD_LIST, query)
 	return res
 }

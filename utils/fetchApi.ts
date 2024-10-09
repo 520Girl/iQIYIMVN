@@ -1,4 +1,4 @@
-const baseURL = import.meta.env.VITE_API_URL || process.env.VITE_API_URL || "http://localhost"
+const baseURL = "http://localhost"
 import type { FetchError, FetchResponse, SearchParameters } from "ofetch"
 // 指定后端返回的基本数据类型
 
@@ -26,7 +26,7 @@ function fetch<T>(url: string, options?: any): Promise<IResponse<T>> {
 				// 这里的_data，会被后面catch捕获，因为你可能还需要获取headers等数据，所以需要在这里处理一下数据
 				response._data = {
 					code: -1,
-					data: "请求已到达服务器但未正常响应：" + response.statusText,
+					data: "请求已到达服务器但未正常响应：" + response.statusText + response.url,
 					headers: response.headers,
 				}
 				return

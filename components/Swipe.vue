@@ -3,7 +3,13 @@
 		<!-- //:autoplay="4000" -->
 		<var-swipe class="swipe">
 			<var-swipe-item v-for="(item, index) in swipeList" :key="item.src">
-				<nuxt-link :to="{ path: '/play', query: { id: item.vod_id } }" :title="item.vod_name">
+				<nuxt-link
+					:to="{
+						name: 'play-type_id-vod_id',
+						params: { type_id: item.type_id, vod_id: item.vod_id },
+					}"
+					:title="item.vod_name"
+				>
 					<img class="swipe-image" :src="item.vod_pic" :alt="item.vod_name" />
 					<div class="swipe-title">{{ item.vod_name }}</div>
 					<div class="swipe-AD">广告</div>

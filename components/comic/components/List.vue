@@ -124,10 +124,14 @@ onMounted(() => {
 	.title {
 		@apply flex text-lg p-7;
 		padding: 0 15px 12px 5px;
+		font-size: 16px;
 	}
 
 	@include e(list) {
 		@apply w-full;
+	}
+	@include e(article) {
+		margin-bottom: 15px;
 	}
 	.amx-ListItem {
 		@apply inline-block w-1/3 box-border;

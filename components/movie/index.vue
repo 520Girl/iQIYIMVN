@@ -124,18 +124,19 @@ onMounted(() => {
 @include b(class) {
 	width: 100%;
 	@apply w-full box-border;
+	padding: 10px 5px 0 5px;
 
 	@include b(class-wrapper) {
-		@apply inline-block whitespace-nowrap;
-		padding: 10px 5px 0 5px;
+		@apply inline-block whitespace-nowrap text-ellipsis overflow-hidden text-center m-auto;
 	}
 
 	@include e(item) {
 		@apply inline-block whitespace-nowrap;
-		padding: 12px 8px;
 		margin-right: 8px;
 		background-color: var(--amx-play-button-bc);
 		border-radius: 28px;
+		width: 75px;
+		line-height: 2.5;
 	}
 }
 

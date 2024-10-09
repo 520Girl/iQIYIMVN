@@ -15,16 +15,29 @@ export default defineNuxtConfig({
 		server: false,
 		client: false,
 	},
+	// 生成环境变量
 	// runtimeConfig:{
 	// 	publicPath: "/nuxt/",
 	// },
+
+	//配置跨域服务相关配置
 	nitro: {
+		baseURL: "http://localhost",
 		devProxy: {
 			"/api.php": {
 				target: "http://localhost/api.php",
 				changeOrigin: true,
 				// prependPath: true,
 			},
+		},
+		prerender: {
+			//crawlLinks: 设置为 true 之后，预渲染过程会自动爬取链接，这样能确保你的网站中的所有链接都会被访问并渲染。
+			crawlLinks: true,
+			failOnError: true,
+			//这个配置确定了同时进行的预渲染请求数。设置为 2 意味着将会同时处理两个请求，以提高预渲染的效率，但并不会造成过大的负载。
+			concurrency: 2,
+			//这个值以毫秒为单位设置了请求之间的间隔。设置为 1000 表示在发起新请求之间会有1秒的延迟，有助于控制请求速率，避免对服务器造成过大压力。
+			interval: 1000,
 		},
 	},
 	app: {
@@ -33,6 +46,10 @@ export default defineNuxtConfig({
 				// {rel: 'icon', type: 'image/x-icon', href:'@/static/favicon1.ico' },
 			],
 			meta: [{ name: "viewport", content: "width=device-width, initial-scale=1" }],
+		},
+		pageTransition: {
+			name: "page",
+			mode: "out-in",
 		},
 	},
 	typescript: {

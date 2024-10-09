@@ -57,8 +57,6 @@
 <script setup lang="ts">
 import BScroll from "@better-scroll/core"
 import useSetHead from "~/hooks/useSetHead"
-import { useGetSlider } from "~/hooks/useGetSlider"
-import { getHomeBase, getSliderApi } from "@/utils/api"
 const store = useHomeStore()
 // const { data, pending, error, refresh } = await useAsyncData('dragAsyncData2', () => $fetch(`${import.meta.env.VITE_API_URL || process.env.NUXT_API_URL}/api.php/Aqiyim/homeBase`))
 

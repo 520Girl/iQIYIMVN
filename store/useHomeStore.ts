@@ -27,16 +27,16 @@ export const useHomeStore = defineStore(StoreType.Home, {
 			{ name: "小说", disabled: false, ripple: false, src: "/novel", id: 4 },
 			{ name: "电影", disabled: false, ripple: false, src: "/movie", id: 1 },
 			{ name: "漫画", disabled: false, ripple: false, src: "/comic", id: 57 },
-			{
-				name: "播放",
-				disabled: false,
-				ripple: false,
-				src: "/play",
-				id: 101,
-				title: "播放列表",
-				key: "play_list",
-				des: "播放列表",
-			},
+			// {
+			// 	name: "播放",
+			// 	disabled: false,
+			// 	ripple: false,
+			// 	src: "/play",
+			// 	id: 101,
+			// 	title: "播放列表",
+			// 	key: "play_list",
+			// 	des: "播放列表",
+			// },
 		], //导航配置项 更具nav 得到的数据
 	}),
 	getters: {
@@ -55,7 +55,7 @@ export const useHomeStore = defineStore(StoreType.Home, {
 			const nav = state.nav
 			let mapNav = new Map<string, navTypes>()
 			mapNav.set("/", nav[0])
-			mapNav.set("/play", nav[4])
+			// mapNav.set("/play", nav[4])
 			if (base.list) {
 				list.forEach((item: HomeBaseList) => {
 					let item2 = nav.find(item3 => item3.id === item.type_id)
@@ -102,7 +102,7 @@ export const useHomeStore = defineStore(StoreType.Home, {
 					})
 					.filter((item): item is navTypes => item !== null) // 过滤掉返回为null的项
 				nav.unshift(arr[0])
-				nav.push(arr[4])
+				// nav.push(arr[4])
 			} else {
 				nav = arr
 			}

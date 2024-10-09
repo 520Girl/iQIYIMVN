@@ -113,6 +113,7 @@ onMounted(() => {
 	}
 	@include e(aside) {
 		@apply flex;
+		padding: 0 0 15px 0;
 	}
 
 	@include e(List) {
