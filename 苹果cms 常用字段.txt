@@ -1,0 +1,30 @@
+{maccms:vod type="current"  num="24" order="desc" by="time" }
+{/maccms:vod}
+
+{$vo.vod_name}
+{$vo.vod_blurb}
+{$vo.vod_remarks}
+{$vo|mac_url_vod_detail}
+{$vo.vod_pic|mac_url_img}
+{$vo.vod_score}
+ {$vo.vod_content|mac_filter_html|mac_substring=100}
+{$maccms.path_tpl}static/2024815165039
+{$vo|mac_url_vod_play}
+{include file="block/status"}
+{$vo.vod_hits|mac_default=$vo.vod_up}
+演员：{$vo.vod_actor|mac_url_create='actor','vod','search',' '}
+导演：{$vo.vod_director|mac_url_create='director','vod','search',' '}
+更新：<span>{$vo.vod_time|date='Y-m-d H:i:s',###}
+href="{:mac_url('label/top')}"
+{:mac_url('vod/search')}
+
+{maccms:foreach name=":explode(',',$maccms.search_hot)" id="vo2" key="key2"}
+   <a href="{:mac_url('vod/search',['wd'=>$vo2])}">{$vo2}</a>
+   {/maccms:foreach}
+
+{maccms:type ids="child" parent="'.$type['type_id'].'" num="7" by="sort" order="asc" id="child" key="child_key"}{/maccms:type }
+
+{php}$spliter=array(' / ', '/', '|', ',', '，', ',,');{/php}
+{maccms:foreach name=":explode(',',trim(str_replace($spliter, ',', $obj.vod_director),','))" id="actor"}{/maccms:foreach }
+
+(共<span class="red">{$type.type_id|mac_data_count=all}</span>部）
