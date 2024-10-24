@@ -1,4 +1,4 @@
-const baseURL = "http://localhost"
+const baseURL = import.meta.env.VITE_API_URL || process.env.VITE_API_URL || "http://localhost"
 import type { FetchError, FetchResponse, SearchParameters } from "ofetch"
 // 指定后端返回的基本数据类型
 

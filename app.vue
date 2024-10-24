@@ -7,6 +7,30 @@
 
 <script setup lang="ts">
 import setting from "public/setting.json"
+
+import DisableDevtool from "disable-devtool"
+if (process.client) {
+	import("@/utils/NOdevtool")
+	// 仅在客户端加载 disable-devtool 插件
+	// import('disable-devtool').then(module => {
+	// 	const DisableDevtool = module.default;
+
+	// 	const options = {
+	// 		md5: 'GallopingSteak', // 加密密钥，默认为空，不加密
+	// 		clearLog: true, // 是否每次都清除log
+	// 		disableSelect: true, // 是否禁用选择文本 默认为false
+	// 		disableCopy: true, // 是否禁用复制 默认为false
+	// 		disableCut: true, // 是否禁用剪切 默认为false
+	// 		disablePaste: true, // 是否禁用粘贴 默认为false
+	// 		// rewriteHTML:'禁止访问！！',
+	// 		timeOutUrl: `${window.location.host}/devtool?url=${window.location.href}`, // 超时跳转地址，默认为空，不跳转
+	// 	};
+
+	// 	DisableDevtool(options);
+	// }).catch(err => {
+	// 	console.error("Failed to load disable-devtool:", err);
+	// });
+}
 // const router = useRouter()
 const home = useHomeStore()
 // const { data, pending, error, refresh } = await useAsyncData('dragAsyncData2', () => $fetch(`${import.meta.env.VITE_API_URL || process.env.NUXT_API_URL}/api.php/Aqiyim/homeBase`))
@@ -44,6 +68,7 @@ useHead({
 	opacity: 0;
 	transform: translate(-20px, 0);
 }
+
 .page-leave-to {
 	opacity: 0;
 	transform: translate(20px, 0);

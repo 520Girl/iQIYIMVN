@@ -43,8 +43,6 @@ import BScroll from "@better-scroll/core"
 import Pullup from "@better-scroll/pull-up"
 import { useThrottle } from "@/hooks"
 
-BScroll.use(Pullup)
-
 let bscroll: any = null
 const bsWrapper = ref<HTMLElement | null>(null)
 let isPullUpLoad = ref<boolean>(false)
@@ -73,6 +71,7 @@ onMounted(() => {
 
 //初始化拖拽
 const initBScroll = () => {
+	BScroll.use(Pullup)
 	bscroll = new BScroll(bsWrapper.value!, {
 		scrollX: true,
 		bounceTime: 300,
@@ -118,7 +117,7 @@ const pullingUpHandler = async () => {
 }
 
 onUnmounted(() => {
-	bscroll.destroy()
+	// bscroll.destroy()
 })
 </script>
 <style scoped lang="scss">

@@ -60,7 +60,7 @@ import { ref, reactive, onMounted } from "vue"
 import BScroll from "@better-scroll/core"
 import Pullup from "@better-scroll/pull-up"
 import type { Item } from "@/types/api"
-BScroll.use(Pullup)
+// BScroll.use(Pullup)
 let bscroll: any = null
 const bsWrapper = ref<HTMLElement | null>(null)
 let isPullUpLoad = ref<boolean>(false)

@@ -136,8 +136,6 @@ import Pullup from "@better-scroll/pull-up"
 import { useThrottle } from "~/hooks"
 import { useGetList } from "~/hooks/useGetList"
 
-BScroll.use(Pullup)
-BScroll.use(PullDown)
 const id = useId()
 let bscroll: any = ref(null)
 const bsWrapper = ref<HTMLElement | null>(null)
@@ -194,9 +192,11 @@ onMounted(async () => {
 	console.log("bsscrolll", bscroll)
 })
 onUnmounted(() => {
-	bscroll.destroy()
+	// bscroll.destroy()
 })
 const initBscroll = () => {
+	BScroll.use(Pullup)
+	BScroll.use(PullDown)
 	bscroll = new BScroll(bsWrapper.value!, {
 		scrollY: true,
 		click: true,

@@ -55,14 +55,14 @@
 	</header>
 </template>
 <script setup lang="ts">
-import BScroll from "@better-scroll/core"
+// import BScroll from "@better-scroll/core"
 import useSetHead from "~/hooks/useSetHead"
 const store = useHomeStore()
 // const { data, pending, error, refresh } = await useAsyncData('dragAsyncData2', () => $fetch(`${import.meta.env.VITE_API_URL || process.env.NUXT_API_URL}/api.php/Aqiyim/homeBase`))
 
 const route = useRoute()
 const scroll = ref<HTMLElement | null>(null)
-let bs: BScroll
+// let bs: BScroll
 const active = ref(0)
 let list = reactive(store.getNavArr)
 //! 1.2 设置头部 这样写是为了实现作用域的缓存方便在函数中调用自定义hooks，
@@ -74,7 +74,7 @@ setHeader()
 const activeLi = computed(() => {
 	const path = route.path
 	const index = list.findIndex(item => item.src === path)
-	return index > -1 ? index : 0
+	return index > -1 ? index : ""
 })
 // console.log(import.meta.env.VITE_API_URL || process.env.NUXT_API_URL)
 
@@ -86,19 +86,19 @@ onBeforeUnmount(() => {
 	// bs.destroy();
 })
 const scrollInit = () => {
-	bs = new BScroll(scroll.value!, {
-		scrollX: true,
-		probeType: 3, // listening scroll event
-	})
-	bs.on("scrollStart", () => {
-		console.log("scrollStart-")
-	})
-	bs.on("scroll", ({ y }: { y: number }) => {
-		console.log("scrolling-", y)
-	})
-	bs.on("scrollEnd", () => {
-		console.log("scrollingEnd")
-	})
+	// bs = new BScroll(scroll.value!, {
+	// 	scrollX: true,
+	// 	probeType: 3, // listening scroll event
+	// })
+	// bs.on("scrollStart", () => {
+	// 	console.log("scrollStart-")
+	// })
+	// bs.on("scroll", ({ y }: { y: number }) => {
+	// 	console.log("scrolling-", y)
+	// })
+	// bs.on("scrollEnd", () => {
+	// 	console.log("scrollingEnd")
+	// })
 }
 const handleResize = (size: number) => {
 	console.log(size)

@@ -5,7 +5,7 @@
 		:class="['amx-ListItem', 'w-' + width, { 'disable-click': isDisable }]"
 	>
 		<div class="amx-ListItem__img img-height">
-			<nuxt-link :to="src" :title="title" class="link">
+			<nuxt-link :to="src" :title="title" class="link" replace>
 				<nuxt-img
 					class="link"
 					:src="imgUrl"
@@ -37,13 +37,13 @@
 		</div>
 		<div class="amx-ListItem__title">
 			<div class="c-title text-ellipsis">
-				<nuxt-link :to="src" :title="title">
+				<nuxt-link :to="src" :title="title" replace>
 					{{ title }}
 				</nuxt-link>
 			</div>
 			<template v-if="bottomT && (bottomT.type === 1 || bottomT.type === 2)">
 				<div class="c-info text-ellipsis font-sans">
-					<nuxt-link :to="src" :title="description">
+					<nuxt-link :to="src" :title="description" replace>
 						{{ description }}
 					</nuxt-link>
 				</div>
@@ -65,7 +65,7 @@
 			</template>
 			<template v-else>
 				<div class="c-info text-ellipsis">
-					<NuxtLink :to="src" :title="title">
+					<NuxtLink :to="src" :title="title" replace>
 						{{ description }}
 					</NuxtLink>
 					<div class="more" v-if="more">

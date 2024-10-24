@@ -12,7 +12,7 @@
 			>
 		</div>
 		<div class="amx-chat-body">
-			<div class="amx-chat-item" v-if="false">
+			<div class="amx-chat-item" v-show="false">
 				<div class="amx-chat-item__list" v-for="(item, index) in 5" :key="index">
 					<div class="amx-chat-item__avatar">
 						<var-avatar src="https://varletjs.org/cat.jpg" size="small" />
@@ -36,7 +36,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="amx-chat-item" v-else>
+			<div class="amx-chat-item" show="true">
 				<SvgIcon
 					name="svgo-noContent"
 					width="14px"

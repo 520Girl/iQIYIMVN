@@ -63,9 +63,6 @@ import Slide from "@better-scroll/slide"
 import NestedScroll from "@better-scroll/nested-scroll"
 import setting from "public/setting.json"
 
-BScroll.use(NestedScroll)
-BScroll.use(Slide)
-
 let slide = ref<HTMLElement | null>(null)
 let listDOM = ref<HTMLElement | null>(null)
 let playDOM = ref<HTMLElement | null>(null)
@@ -133,6 +130,8 @@ const requestHandler = async () => {
 
 //! 3. 初始化 slide 拖拽 左右
 const initSlider = () => {
+	BScroll.use(NestedScroll)
+	BScroll.use(Slide)
 	sliderScroll = new BScroll(slide.value!, {
 		scrollX: true,
 		scrollY: false,

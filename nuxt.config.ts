@@ -3,7 +3,7 @@ import components from "unplugin-vue-components/vite"
 import autoImport from "unplugin-auto-import/vite"
 import { VarletImportResolver } from "@varlet/import-resolver"
 import { resolve } from "node:path"
-
+import TerserPlugin from "terser-webpack-plugin"
 const svgIconsDir = resolve(__dirname, "./assets/svg-icons")
 
 export default defineNuxtConfig({
@@ -22,7 +22,7 @@ export default defineNuxtConfig({
 
 	//配置跨域服务相关配置
 	nitro: {
-		baseURL: "http://localhost",
+		// baseURL: "http://localhost",
 		devProxy: {
 			"/api.php": {
 				target: "http://localhost/api.php",
@@ -32,7 +32,8 @@ export default defineNuxtConfig({
 		},
 		prerender: {
 			//crawlLinks: 设置为 true 之后，预渲染过程会自动爬取链接，这样能确保你的网站中的所有链接都会被访问并渲染。
-			crawlLinks: true,
+			// crawlLinks: true,
+			//，如果预渲染过程中发生错误，构建过程将会失败。也就是说，如果在预渲染某个页面时出现了错误，构建不会完成并会显示错误信息。
 			failOnError: true,
 			//这个配置确定了同时进行的预渲染请求数。设置为 2 意味着将会同时处理两个请求，以提高预渲染的效率，但并不会造成过大的负载。
 			concurrency: 2,
@@ -96,6 +97,9 @@ export default defineNuxtConfig({
 	// 	dirs: ["store/*.ts"]
 	// },
 	vite: {
+		esbuild: {
+			drop: ["console"], //去掉console
+		},
 		css: {
 			preprocessorOptions: {
 				scss: {
@@ -133,7 +137,71 @@ export default defineNuxtConfig({
 			autoImport({}),
 		],
 	},
-
+	webpack: {
+		extractCSS: true, //提取CSS
+		optimization: {
+			//进行二次压缩
+			minimize: true,
+			minimizer: [
+				new TerserPlugin({
+					test: /\.js(\?.*)?$/i,
+					parallel: true,
+					extractComments: true,
+					terserOptions: {
+						output: {
+							// 是否输出可读性较强的代码，即会保留空格和制表符，默认为输出，为了达到更好的压缩效果，可以设置为false
+							beautify: false,
+							// 是否保留代码中的注释，默认为保留，为了达到更好的压缩效果，可以设置为false
+							comments: false,
+						},
+						compress: {
+							// 是否在UglifyJS删除没有用到的代码时输出警告信息，默认为输出，可以设置为false关闭这些作用不大的警告
+							// 是否删除代码中所有的console语句，默认为不删除，开启后，会删除所有的console语句
+							drop_console: true,
+							drop_debugger: true,
+							// 是否内嵌虽然已经定义了，但是只用到一次的变量，比如将 var x = 1; y = x, 转换成 y = 5, 默认为不转换，为了达到更好的压缩效果，可以设置为false
+							collapse_vars: true,
+							// 是否提取出现了多次但是没有定义成变量去引用的静态值，比如将 x = 'xxx'; y = 'xxx'  转换成var a = 'xxxx'; x = a; y = a; 默认为不转换，为了达到更好的压缩效果，可以设置为false
+							reduce_vars: true,
+							pure_funcs: ["console.log"], // 移除console
+						},
+					},
+				}),
+			],
+			splitChunks: {
+				chunks: "all", // 针对所有类型的代码进行分割（同步和异步）
+				automaticNameDelimiter: ".", // 分割后的文件名中自动包含一个指定的分隔符
+				// name: true, // 确保每个chunk都能得到一个具有唯一名称的文件
+				minSize: 10000, // 最小被分割的文件大小（字节）
+				maxSize: 244000, // 分割文件的最大大小（字节）
+				cacheGroups: {
+					iview: {
+						name: "iview", // 分割出的文件名
+						test: /[\\/]iview[\\/]/, // 匹配views中的文件
+						chunks: "all", // 针对所有文件
+						priority: 1,
+						maxSize: 244000,
+					},
+					vendor: {
+						name: "node_vendors", // 分割出的文件名
+						test: /[\\/]node_modules[\\/]/, // 匹配node_modules中的文件
+						chunks: "all", // 针对所有文件
+						priority: -10,
+						maxSize: 244000,
+					},
+					commons: {
+						name: "common",
+						test: /[\\/]src[\\/]/,
+						chunks: "all", // 针对所有文件
+						minChunks: 2, //minChunks 选项用于指定一个模块必须被多少个块（chunk）引用，才能被放入公共块（common chunk）中
+						maxSize: 244000,
+						priority: -5,
+						reuseExistingChunk: true,
+					},
+				},
+			},
+		},
+	},
 	modules: [
 		"@varlet/nuxt",
 		"nuxt-svgo",

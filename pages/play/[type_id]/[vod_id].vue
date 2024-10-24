@@ -66,8 +66,6 @@ import setting from "public/setting.json"
 import { useGetList } from "@/hooks/useGetList"
 import type { Item } from "@/types/api/index"
 
-BScroll.use(NestedScroll)
-BScroll.use(Slide)
 //! 1. 请求详细数据，并进行处理
 const { params } = useRoute()
 const store = usePlayStore()
@@ -146,6 +144,8 @@ const requestHandler = async (query: { page: number }) => {
 
 //! 3. 初始化 slide 拖拽 左右
 const initSlider = () => {
+	BScroll.use(NestedScroll)
+	BScroll.use(Slide)
 	sliderScroll = new BScroll(slide.value!, {
 		scrollX: true,
 		scrollY: false,
@@ -190,7 +190,8 @@ watch(active, (newVal, oldVal) => {
 const router = useRouter()
 const goBack = () => {
 	// router.back()
-	router.push("/")
+	router.go(-1)
+	// router.push("/")
 }
 //当播放源数据发生变化时，更新播放器的url
 watch(store.currentVideo, (newVal, oldVal) => {

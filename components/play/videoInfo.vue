@@ -226,7 +226,6 @@ import { ref, reactive, onMounted } from "vue"
 import BScroll from "@better-scroll/core"
 import NestedScroll from "@better-scroll/nested-scroll"
 
-BScroll.use(NestedScroll)
 const store = usePlayStore()
 const detail = store.getPlayData
 const img = useImage()
@@ -287,6 +286,7 @@ let sliderScroll: any = null
 let slide = ref<HTMLElement | null>(null)
 let slideLevel = ref<HTMLElement | null>(null)
 const initSlider = () => {
+	BScroll.use(NestedScroll)
 	sliderScroll = new BScroll(slide.value!, {
 		scrollX: true,
 		scrollY: false,
@@ -387,7 +387,7 @@ const episodeClick = (index: number) => {
 }
 
 onUnmounted(() => {
-	sliderScroll.destroy()
+	// sliderScroll.destroy()
 })
 </script>
 <style scoped lang="scss">

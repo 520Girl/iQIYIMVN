@@ -5,6 +5,7 @@
   "scripts": {
     "build": "nuxt build --dotenv .env.production",
     "dev": "nuxt dev --dotenv .env.development",
+    "start": "nuxt start",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
@@ -36,6 +37,8 @@
     "@typescript-eslint/eslint-plugin": "^8.7.0",
     "@varlet/import-resolver": "^3.5.3",
     "autoprefixer": "^10.4.20",
+    "disable-devtool": "^0.3.8",
+    "terser-webpack-plugin": "^5.3.10",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-define-config": "^2.1.0",
