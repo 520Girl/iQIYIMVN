@@ -41,9 +41,9 @@ export interface ListItem {
 	description: string
 	leftT: ItemList // type 1 收藏图标
 	rightT: ItemList // type 1 绿色免费 2.vip黄色 3.vip|60帧 默认  国语
-	rightB: ItemList // type 1. 评分 2. 红色新增弹幕     评分+备忘
-	leftB: ItemList // type 1. 分类电影                 type_name 类型名称
-	bottomT: ItemList // type 1.表示分类 使用| 分割  2.单独一个红标签
+	rightB: ItemList // type 1. 评分 2. 红色新增弹幕     评分+备忘 3. 朴素白色字体
+	leftB: ItemList // type 1. 分类电影  2. 朴素白色字体               type_name 类型名称
+	bottomT: ItemList // type 1.表示分类 使用| 分割  2.单独一个红标签 3. 表示不需要desc 显示其他1，2内容
 	src: ItemList2 | string // 详情页跳转链接
 	more?: boolean //更多icon
 	tag: string // 标签名称类似router-link

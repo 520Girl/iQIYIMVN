@@ -38,6 +38,7 @@ export const useHomeStore = defineStore(StoreType.Home, {
 			// 	des: "播放列表",
 			// },
 		], //导航配置项 更具nav 得到的数据
+		searchHits: <string[]>[], //历史搜索
 	}),
 	getters: {
 		getNav(state) {

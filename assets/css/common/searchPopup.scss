@@ -1,0 +1,145 @@
+.amx-popup {
+	height: calc(100vh - var(--amx-header-input-height)) !important;
+	@apply shadow-none;
+}
+
+.amx-popup__content {
+	border-top: 0;
+	flex: 1;
+	@apply h-full overflow-y-auto box-border;
+
+	@include b(s-r-title) {
+		padding-top: 14px;
+		font-size: 15px;
+		padding: 14px 9px 0 9px;
+		border-bottom: 1px solid #f1f1f1;
+
+		.super {
+			margin-right: 4px;
+			@apply font-semibold;
+		}
+
+		.hits-item {
+			font-size: 14px;
+			padding: 4px 12px;
+			margin-right: 9px;
+			margin-bottom: 8px;
+			border-radius: 14px;
+			background-color: var(--amx-play-button-bc);
+		}
+
+		.vip {
+			background-color: #feede6;
+			color: #ff794a;
+			padding: 2px 4px;
+			font-size: 12px;
+			border-radius: 8px;
+			@apply font-sans;
+		}
+
+		.recommend-item {
+			font-size: 14px;
+		}
+
+		.icon {
+			font-size: 14px;
+			color: var(--amx-play-text-smail-color);
+		}
+	}
+
+	@include b(s-r-body) {
+		padding: 16px 9px 0 9px;
+	
+
+		.super {
+			@apply font-semibold font-sans;
+			color: var(--amx-theme-color);
+		}
+
+		.classify {
+			margin-top: 14px;
+			margin-bottom: 15px;
+		}
+
+		.body-item {
+			padding: 8px 12px;
+			border-radius: 24px;
+			@apply inline-block;
+			font-size: 14px;
+
+		}
+
+		.body-item_active {
+			color: var(--amx-theme-color);
+			background-color: var(--amx-theme-color-simple);
+		}
+
+		@include e(classify) {
+			position: sticky;
+			top: 0px;
+			background-color: #fff;
+		}
+		@include e(article) {}
+
+		@include e(list) {
+
+			.article-list {
+				margin-bottom: 12px;
+
+				.rank {
+					width: 30px;
+					font-size: 15px;
+					@apply font-semibold text-left;
+				}
+
+				.content {
+					@apply flex justify-start items-center box-border;
+
+					.img {
+						height: 62px;
+						width: 42px;
+						overflow: hidden;
+						border-radius: 8px;
+
+					}
+
+					.info {
+						margin-left: 8px;
+						@apply flex-1;
+
+						.title {
+							font-size: 14px;
+							color: var(--amx-header-title-simple);
+
+							span {
+								margin-left: 4px;
+								padding: 1px 4px;
+								border-radius: 2px;
+								font-size: 12px;
+							}
+						}
+
+						.desc {
+							font-size: 12px;
+
+							span {
+								margin-right: 4px;
+								border-radius: 2px;
+								padding: 0 4px;
+							}
+						}
+
+						.tags {
+							font-size: 12px;
+							color: var(--amx-play-text-smail-color);
+						}
+
+						.sub {
+							padding: 0 2px;
+						}
+					}
+				}
+			}
+		}
+	}
+}

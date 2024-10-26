@@ -24,7 +24,9 @@
 						<span>{{ rightText[1] }}</span>
 					</div>
 				</template>
-				<div class="c-lb" v-if="leftB.type === 1">{{ leftB.text }}</div>
+				<div :class="'c-lb c-lb' + leftB.type" v-if="leftB.type === 1 || leftB.type === 2">
+					{{ leftB.text }}
+				</div>
 				<div :class="'c-rb c-rb-' + rightB.type" v-if="rightB.type">
 					<span class="c-date">
 						{{ rightB.text }}
@@ -64,10 +66,13 @@
 				</div>
 			</template>
 			<template v-else>
-				<div class="c-info text-ellipsis">
-					<NuxtLink :to="src" :title="title" replace>
+				<div class="c-info c-class text-ellipsis">
+					<NuxtLink :to="src" :title="title" replace v-if="bottomT.type != 3">
 						{{ description }}
 					</NuxtLink>
+					<div class="c-tag" v-else>
+						<p class="c-tag-2">{{ bottomT.text }}</p>
+					</div>
 					<div class="more" v-if="more">
 						<var-icon name="dots-vertical" />
 					</div>

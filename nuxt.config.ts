@@ -97,9 +97,9 @@ export default defineNuxtConfig({
 	// 	dirs: ["store/*.ts"]
 	// },
 	vite: {
-		esbuild: {
-			drop: ["console"], //去掉console
-		},
+		// esbuild: {
+		// 	drop: ["console"], //去掉console
+		// },
 		css: {
 			preprocessorOptions: {
 				scss: {

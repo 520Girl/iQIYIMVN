@@ -62,6 +62,7 @@ console.log("propsList", props)
 console.log("4444", props?.data)
 const route = useRoute()
 const { path, params, query } = toRefs(route)
+console.log("params", path.value)
 const store = useHomeStore()
 
 const navClass = store.getNavClass || new Map()
@@ -145,6 +146,27 @@ const changeList = () => {
 			}
 			return obj
 		})
+	} else if (path.value.includes("/trending")) {
+		console.log("热门页面", props?.data?.list)
+		newArrList = props?.data?.list.map((item: ListItemApi) => {
+			let obj = {
+				imgUrl: item.imgUrl,
+				title: item.title,
+				description: item.description,
+				src: item.src,
+				leftT: item.leftT,
+				rightT: item.rightT,
+				rightB: item.rightB,
+				leftB: item.leftB,
+				bottomT: item.bottomT,
+				more: true,
+				width: 3,
+				height: "153px",
+				tag: "li",
+			}
+			return obj
+		})
+		console.log("ss", newArrList)
 	}
 
 	return newArrList
@@ -169,9 +191,6 @@ const list = reactive<ListItem[]>([
 list.push(...changeList()!)
 console.log(list)
 
-onMounted(() => {
-	console.log("mounted")
-})
 watch(
 	() => props?.data,
 	(newVal, oldVal) => {

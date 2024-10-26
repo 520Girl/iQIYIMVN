@@ -7,14 +7,13 @@
 
 <script setup lang="ts">
 import setting from "public/setting.json"
-
-import DisableDevtool from "disable-devtool"
+console.log(888)
+// import DisableDevtool from "disable-devtool"
 if (process.client) {
-	import("@/utils/NOdevtool")
+	// import("@/utils/NOdevtool")
 	// 仅在客户端加载 disable-devtool 插件
 	// import('disable-devtool').then(module => {
 	// 	const DisableDevtool = module.default;
-
 	// 	const options = {
 	// 		md5: 'GallopingSteak', // 加密密钥，默认为空，不加密
 	// 		clearLog: true, // 是否每次都清除log
@@ -25,7 +24,6 @@ if (process.client) {
 	// 		// rewriteHTML:'禁止访问！！',
 	// 		timeOutUrl: `${window.location.host}/devtool?url=${window.location.href}`, // 超时跳转地址，默认为空，不跳转
 	// 	};
-
 	// 	DisableDevtool(options);
 	// }).catch(err => {
 	// 	console.error("Failed to load disable-devtool:", err);
