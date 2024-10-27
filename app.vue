@@ -7,10 +7,9 @@
 
 <script setup lang="ts">
 import setting from "public/setting.json"
-console.log(888)
 // import DisableDevtool from "disable-devtool"
 if (process.client) {
-	// import("@/utils/NOdevtool")
+	import("@/utils/NOdevtool")
 	// 仅在客户端加载 disable-devtool 插件
 	// import('disable-devtool').then(module => {
 	// 	const DisableDevtool = module.default;
@@ -22,7 +21,7 @@ if (process.client) {
 	// 		disableCut: true, // 是否禁用剪切 默认为false
 	// 		disablePaste: true, // 是否禁用粘贴 默认为false
 	// 		// rewriteHTML:'禁止访问！！',
-	// 		timeOutUrl: `${window.location.host}/devtool?url=${window.location.href}`, // 超时跳转地址，默认为空，不跳转
+	// 		timeOutUrl: `/`, // 超时跳转地址，默认为空，不跳转
 	// 	};
 	// 	DisableDevtool(options);
 	// }).catch(err => {
@@ -71,4 +70,17 @@ useHead({
 	opacity: 0;
 	transform: translate(20px, 0);
 }
+/* .page-enter-active {
+  transition: all 0.3s ease-out;
+}
+
+.page-leave-active {
+  transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.page-enter-from,
+.page-leave-to {
+  transform: translateX(20px);
+  opacity: 0;
+} */
 </style>

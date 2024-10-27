@@ -9,8 +9,10 @@
     --amx-play-height:215px;
     --amx-play-width:100%;
     --amx-play-info-title:30px;
-    --amx-play-button-bc:#f2f5fa;
+    --amx-play-button-bc:#f2f5fa; 
+    /* 背景色--amx-bc 相互覆盖 */
     --amx-play-text-smail-color:#9f9a9a;
     --amx-bc:#fff;
+    --amx-bc-simple:#afb0b25e;
     
 }

@@ -41,7 +41,6 @@ const requestStates = reactive<{ done: boolean; data: Item }>({
 	done: false, // 请求状态
 	data: {}, // 请求结果
 })
-
 // 监听滚动条位置
 const scrollHandler = ({ y, x }: { y: number; x: number }) => {
 	homeContent.value.scrollTo(y) // 调用子组件的方法来设置 scrollTop

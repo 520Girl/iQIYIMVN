@@ -39,7 +39,7 @@ export interface ListItem {
 	imgUrl: string
 	title: string
 	description: string
-	leftT: ItemList // type 1 收藏图标
+	leftT: ItemList // type 1 收藏图标 2. 年份白字灰色透明底部
 	rightT: ItemList // type 1 绿色免费 2.vip黄色 3.vip|60帧 默认  国语
 	rightB: ItemList // type 1. 评分 2. 红色新增弹幕     评分+备忘 3. 朴素白色字体
 	leftB: ItemList // type 1. 分类电影  2. 朴素白色字体               type_name 类型名称

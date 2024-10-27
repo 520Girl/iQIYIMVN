@@ -167,6 +167,27 @@ const changeList = () => {
 			return obj
 		})
 		console.log("ss", newArrList)
+	} else if (path.value.includes("/search")) {
+		console.log("热门页面", props?.data?.list)
+		newArrList = props?.data?.list.map((item: ListItemApi) => {
+			let obj = {
+				imgUrl: item.imgUrl,
+				title: item.title,
+				description: item.description,
+				src: item.src,
+				leftT: item.leftT,
+				rightT: item.rightT,
+				rightB: item.rightB,
+				leftB: item.leftB,
+				bottomT: item.bottomT,
+				more: true,
+				width: 3,
+				height: "153px",
+				tag: "li",
+			}
+			return obj
+		})
+		console.log("ss", newArrList)
 	}
 
 	return newArrList

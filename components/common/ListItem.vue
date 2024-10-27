@@ -35,6 +35,9 @@
 				<div class="c-lt" v-if="leftT.type === 1">
 					<var-icon name="star-outline" />
 				</div>
+				<div class="c-lt_2" v-if="leftT.type === 2">
+					{{ leftT.text }}
+				</div>
 			</nuxt-link>
 		</div>
 		<div class="amx-ListItem__title">

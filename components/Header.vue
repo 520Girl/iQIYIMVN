@@ -95,9 +95,10 @@ const handleClick = () => {
 		width: 100%;
 		overflow: hidden;
 		height: var(--amx-header-scroll-height);
+		background-color: var(--amx-bc);
 
 		.activeListItem {
-			font-size: 17px;
+			font-size: 16px;
 			transition: font-size 0.2s;
 			color: #000;
 			@apply font-semibold;
