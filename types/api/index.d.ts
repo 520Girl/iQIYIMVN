@@ -127,8 +127,8 @@ export interface navTypes {
 	title?: string
 	key?: string
 	des?: string
-	disabled: boolean
-	ripple: boolean
+	disabled?: boolean
+	ripple?: boolean
 	[key: string]: any
 }
 

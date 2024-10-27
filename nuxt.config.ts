@@ -32,7 +32,7 @@ export default defineNuxtConfig({
 		},
 		prerender: {
 			//crawlLinks: 设置为 true 之后，预渲染过程会自动爬取链接，这样能确保你的网站中的所有链接都会被访问并渲染。
-			crawlLinks: true,
+			// crawlLinks: true,
 			//，如果预渲染过程中发生错误，构建过程将会失败。也就是说，如果在预渲染某个页面时出现了错误，构建不会完成并会显示错误信息。
 			failOnError: true,
 			//这个配置确定了同时进行的预渲染请求数。设置为 2 意味着将会同时处理两个请求，以提高预渲染的效率，但并不会造成过大的负载。

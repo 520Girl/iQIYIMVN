@@ -1,11 +1,11 @@
 <template>
 	<div class="amx-trending">
 		<div class="amx-trending-header">
-			<CommonHeadNav>
+			<HeadLeftCenterRight>
 				<template #left>
 					<var-icon name="chevron-left" size="28px" @click="$router.go(-1)" />
 				</template>
-			</CommonHeadNav>
+			</HeadLeftCenterRight>
 		</div>
 		<div class="amx-trending-content">
 			<div class="amx-trending-content__classify">

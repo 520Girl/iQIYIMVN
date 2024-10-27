@@ -1,8 +1,8 @@
 <template>
 	<div class="amx-Galloping-steak">
-		<var-overlay v-model:show="home.loadingShow">
+		<!-- <var-overlay v-model:show="home.loadingShow">
 			<img src="@/public/loading/loading.webp" alt="" />
-		</var-overlay>
+		</var-overlay> -->
 		<slot />
 	</div>
 </template>

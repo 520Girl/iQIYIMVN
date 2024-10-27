@@ -2,33 +2,35 @@
 	<header class="amx-header">
 		<Search />
 		<div class="amx-scroll">
-			<!-- <div class="amx-scrollWrapper" ref="scroll"> -->
-			<!-- <var-tabs elevation class="amx-scroll__scrollContent" color="var(--color-primary)"
-                active-color="var(--color-on-primary)" inactive-color="var(--color-on-info)" v-model:active="active"> -->
-			<var-tabs
-				@click="handleClick"
-				elevation
-				disabled
-				class="amx-scroll__scrollContent"
-				active-color="#000"
-				inactive-color="#000"
-				indicator-size="0"
-				v-model:active="active"
-			>
-				<var-tab
-					v-for="(item, index) in list"
-					:key="item.name"
-					:ripple="item.ripple"
-					:disabled="item.disabled"
-					:class="{ activeListItem: activeLi === index }"
+			<div class="amx-scroll__nav">
+				<var-tabs
+					@click="handleClick"
+					elevation
+					disabled
+					class="amx-scroll__scrollContent"
+					active-color="#000"
+					inactive-color="#000"
+					indicator-size="0"
+					v-model:active="active"
 				>
-					<nuxt-link :to="item.src">
-						{{ item.name }}
-					</nuxt-link>
-				</var-tab>
-			</var-tabs>
-			<!-- </div> -->
+					<var-tab
+						v-for="(item, index) in list"
+						:key="item.name"
+						:ripple="item.ripple"
+						:disabled="item.disabled"
+						:class="{ activeListItem: active === index }"
+					>
+						<nuxt-link :to="item.src">
+							{{ item.name }}
+						</nuxt-link>
+					</var-tab>
+				</var-tabs>
+			</div>
+			<div class="amx-scroll__bar">
+				<SvgIcon name="svgo-menu" class="more-btn__icon" @click="barClick" />
+			</div>
 		</div>
+		<HeadBarNav v-model="barNavShow" />
 	</header>
 </template>
 <script setup lang="ts">
@@ -43,19 +45,11 @@ const scroll = ref<HTMLElement | null>(null)
 // let bs: BScroll
 const active = ref(0)
 let list = reactive(store.getNavArr)
+const barNavShow = ref(true)
+
 //! 1.2 设置头部 这样写是为了实现作用域的缓存方便在函数中调用自定义hooks，
 const { setHeader } = useSetHead()
 setHeader()
-//! 1.3 设置swiper
-
-//!1.3 路由切换选中状态切换
-const activeLi = computed(() => {
-	const path = route.path
-	const index = list.findIndex(item => item.src === path)
-	return index > -1 ? index : ""
-})
-// console.log(import.meta.env.VITE_API_URL || process.env.NUXT_API_URL)
-
 onMounted(() => {
 	// scrollInit();
 	// console.log(scroll, bs);
@@ -82,8 +76,12 @@ const handleResize = (size: number) => {
 	console.log(size)
 }
 const handleClick = () => {
+	console.log("handleClick", active.value)
 	// getSlider()
 	// console.log(route)
+}
+const barClick = () => {
+	barNavShow.value = !barNavShow.value
 }
 </script>
 <style lang="scss" scoped>
@@ -92,8 +90,7 @@ const handleClick = () => {
 
 	@include b(scroll) {
 		// --tabs-padding:50px;
-		width: 100%;
-		overflow: hidden;
+		@apply w-full h-full flex items-center justify-between overflow-hidden;
 		height: var(--amx-header-scroll-height);
 		background-color: var(--amx-bc);
 
@@ -107,6 +104,22 @@ const handleClick = () => {
 		.var-tabs--layout-horizontal-padding {
 			// padding-right: 35px;
 		}
+		@include e(nav) {
+			width: calc(100% - var(--amx-header-scroll-bar-width));
+			@apply box-border h-full;
+			--tabs-padding: 0px;
+			padding: 0 0 0 12px;
+		}
+		@include e(bar) {
+			width: var(--amx-header-scroll-bar-width);
+			// background-color: red;
+			@apply box-border h-full text-center flex justify-center items-end cursor-pointer;
+
+			font-size: 32px;
+			svg {
+				margin-bottom: 2px;
+			}
+		}
 
 		@include b(scrollWrapper) {
 			white-space: nowrap;
@@ -114,7 +127,7 @@ const handleClick = () => {
 		}
 
 		@include e(scrollContent) {
-			display: inline-block;
+			// display: inline-block;
 			box-shadow: none;
 		}
 	}

@@ -89,8 +89,17 @@ export const useHomeStore = defineStore(StoreType.Home, {
 				nav = base.list
 					.map((item: HomeBaseList): navTypes | null => {
 						let item2 = arr.find(item3 => item3.id === item.type_id)
+						let obj: navTypes | null = {
+							id: item.type_id,
+							name: item.type_name,
+							title: item.type_title,
+							key: item.type_key,
+							des: item.type_des,
+							class: item.type_extend.class,
+						}
 						if (item2) {
-							return {
+							//匹配到指定路由
+							obj = {
 								...item2,
 								id: item.type_id,
 								name: item.type_name,
@@ -99,8 +108,14 @@ export const useHomeStore = defineStore(StoreType.Home, {
 								des: item.type_des,
 								class: item.type_extend.class,
 							}
+						} else {
+							//未匹配到指定路由
+							obj = {
+								...obj,
+								src: `/comic?type_id=${item.type_id}`,
+							}
 						}
-						return null
+						return obj
 					})
 					.filter((item): item is navTypes => item !== null) // 过滤掉返回为null的项
 				nav.unshift(arr[0])

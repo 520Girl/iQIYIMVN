@@ -136,7 +136,7 @@
 								<var-space>
 									<var-space direction="column" align="center">
 										<var-avatar src="/image/director.png" fit="fill" />
-										<span>{{ detail.director }}</span>
+										<span class="name">{{ detail.director }}</span>
 									</var-space>
 									<var-space
 										direction="column"
@@ -145,7 +145,7 @@
 										:key="index"
 									>
 										<var-avatar src="/image/actor.png"></var-avatar>
-										<span>{{ item }}</span>
+										<span class="name">{{ item }}</span>
 									</var-space>
 								</var-space>
 							</div>
@@ -496,11 +496,17 @@ onUnmounted(() => {
 			.people {
 				.h5 {
 					@apply text-sm font-bold;
+					font-size: 16px;
 				}
 
 				.list {
 					@apply flex flex-wrap justify-start items-center w-full box-border;
 					padding-left: 30px;
+					.name {
+						font-size: 14px;
+						max-width: 50px;
+						@apply text-ellipsis overflow-hidden line-clamp-1;
+					}
 				}
 			}
 		}
