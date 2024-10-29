@@ -7,9 +7,10 @@
 		<div class="amx-ListItem__img img-height">
 			<nuxt-link :to="src" :title="title" class="link" replace>
 				<nuxt-img
-					class="link"
+					class="link object-cover"
 					:src="imgUrl"
-					:placeholder="img(`/loading/loading.svg`, { h: 20 })"
+					:placeholder="img(`/loading/loading.svg`, { h: 10, f: 'png', blur: 2, q: 10 })"
+					placeholder-class="w-full h-full"
 					loading="lazy"
 					preload
 				/>

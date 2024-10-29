@@ -1,7 +1,7 @@
 <template>
 	<div class="amx-index">
 		<!-- Header -->
-		<Header />
+
 		<!-- {{ requestStates.data?.list[0] ?? [] }} -->
 		<main class="amx-index-main" ref="main">
 			<DragRefurbish
@@ -20,13 +20,13 @@
 		<!-- <ContentGrid /> -->
 
 		<!-- Footer -->
-		<Footer />
+		<!-- <Footer /> -->
 	</div>
 </template>
 
 <script setup lang="ts">
 useHead({
-	title: "首页",
+	title: "视频",
 }) // 调用 useHead() 钩子函数
 import Header from "@/components/Header.vue" // Import Header component
 import Movie from "@/components/movie/index.vue"

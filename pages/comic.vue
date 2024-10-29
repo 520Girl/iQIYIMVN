@@ -1,7 +1,7 @@
 <template>
 	<div class="amx-index">
 		<!-- Header -->
-		<Header />
+		<!-- <Header /> -->
 		<main class="amx-index-main" ref="main">
 			<DragRefurbish
 				@scrollHandler="scrollHandler"
@@ -23,7 +23,7 @@
 		<!-- <ContentGrid /> -->
 
 		<!-- Footer -->
-		<Footer />
+		<!-- <Footer /> -->
 	</div>
 </template>
 

@@ -11,14 +11,14 @@
 			:style="translateY.content ? `transform: translate3d(0,${translateY.content}px,0)` : ''"
 		>
 			<div class="amx-class" ref="slide">
-				<ul class="amx-class-wrapper" v-if="movieClass">
+				<ul class="amx-class-wrapper" v-if="movieClass.length">
 					<li
 						class="amx-class__item"
 						v-for="(item, index) in movieClass"
-						:key="index"
+						:key="item.id"
 						@click.stop.prevent.capture="event => goClass(event, item)"
 					>
-						<span class="text" :class="{ active: item === classActive }">{{ item }}</span>
+						<span class="text" :class="{ active: item === classActive }">{{ item.name }}</span>
 					</li>
 				</ul>
 			</div>
@@ -42,7 +42,7 @@
 import { ref, reactive, onMounted, type Reactive } from "vue"
 import BScroll from "@better-scroll/core"
 import { useGetList } from "@/hooks/useGetList"
-
+import variable from "~/variable"
 const translateY = reactive({
 	content: 0,
 	swipe: 0,
@@ -53,10 +53,13 @@ const slide = ref<HTMLElement | null>(null)
 let bsScroll: any = null
 const homeMain = ref<HTMLDivElement>()
 const store = useHomeStore()
-const navClass = store.getNavMap
-const { path } = useRoute()
-const movieClass = navClass?.get(path)?.class.split(",") || []
-console.log("path", movieClass)
+const { idsMap: navClass = new Map() } = store.getNavClass || {}
+const { path, params } = useRoute()
+//获取分类
+
+const type_id = ref(+params.type_id)
+const movieClass: any = reactive(navClass?.get(type_id.value)?.class_name || {})
+
 //! 1. 实例化分类拖拽
 const initBScroll = () => {
 	bsScroll = new BScroll(slide.value!, {
@@ -85,12 +88,15 @@ const scrollTo = (scrollTo: number) => {
 //! 点击分类 发送请求，将数据发送的pinia 中传给list 组件
 const router = useRouter()
 const bsScrollInject: Function = inject("bscroll") || (() => {})
-const goClass = async (event: MouseEvent, item: string) => {
-	router.push({ name: "movie", query: { class: item } })
+const goClass = async (event: MouseEvent, item: { id: number; name: string }) => {
+	router.push({
+		path: `${variable.router.trending}/${item.id}`,
+		query: { class: item.id, name: item.name },
+	})
 	let startTime = new Date().getTime()
 
 	classActiveLoading.value = true
-	classActive.value = item
+	classActive.value = item.name
 
 	bsScrollInject(item)
 	// Object.assign(res, { data: res, done: true })

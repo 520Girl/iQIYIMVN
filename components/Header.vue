@@ -30,7 +30,7 @@
 				<SvgIcon name="svgo-menu" class="more-btn__icon" @click="barClick" />
 			</div>
 		</div>
-		<HeadBarNav v-model="barNavShow" />
+		<HeadBarNav v-model="barNavShow" v-model:active="active" />
 	</header>
 </template>
 <script setup lang="ts">
@@ -38,43 +38,34 @@
 import useSetHead from "~/hooks/useSetHead"
 import Search from "./search.vue"
 const store = useHomeStore()
+const navMap = store.getNavArr
 // const { data, pending, error, refresh } = await useAsyncData('dragAsyncData2', () => $fetch(`${import.meta.env.VITE_API_URL || process.env.NUXT_API_URL}/api.php/Aqiyim/homeBase`))
 
-const route = useRoute()
-const scroll = ref<HTMLElement | null>(null)
-// let bs: BScroll
-const active = ref(0)
-let list = reactive(store.getNavArr)
-const barNavShow = ref(true)
+const { params } = toRefs(useRoute())
 
+const active = ref(0)
+let list = reactive(store.currentNav)
+const barNavShow = ref(false)
 //! 1.2 设置头部 这样写是为了实现作用域的缓存方便在函数中调用自定义hooks，
-const { setHeader } = useSetHead()
-setHeader()
-onMounted(() => {
-	// scrollInit();
-	// console.log(scroll, bs);
-})
-onBeforeUnmount(() => {
-	// bs.destroy();
-})
-const scrollInit = () => {
-	// bs = new BScroll(scroll.value!, {
-	// 	scrollX: true,
-	// 	probeType: 3, // listening scroll event
-	// })
-	// bs.on("scrollStart", () => {
-	// 	console.log("scrollStart-")
-	// })
-	// bs.on("scroll", ({ y }: { y: number }) => {
-	// 	console.log("scrolling-", y)
-	// })
-	// bs.on("scrollEnd", () => {
-	// 	console.log("scrollingEnd")
-	// })
-}
-const handleResize = (size: number) => {
-	console.log(size)
-}
+
+watch(
+	() => params.value.type_id,
+	() => {
+		//! 设置title
+		const currentNav = navMap.find(item => item.id === Number(params.value.type_id))
+		if (currentNav) {
+			useHead({
+				title: currentNav?.name,
+				meta: [
+					{ name: "viewport", content: "width=device-width, initial-scale=1.0" },
+					{ name: "keywords", content: currentNav?.key },
+					{ name: "description", content: currentNav?.desc },
+					{ name: "author", content: store.getHomeSeo.name },
+				],
+			}) // Set page title
+		}
+	}
+)
 const handleClick = () => {
 	console.log("handleClick", active.value)
 	// getSlider()
@@ -104,18 +95,21 @@ const barClick = () => {
 		.var-tabs--layout-horizontal-padding {
 			// padding-right: 35px;
 		}
+
 		@include e(nav) {
 			width: calc(100% - var(--amx-header-scroll-bar-width));
 			@apply box-border h-full;
 			--tabs-padding: 0px;
 			padding: 0 0 0 12px;
 		}
+
 		@include e(bar) {
 			width: var(--amx-header-scroll-bar-width);
 			// background-color: red;
 			@apply box-border h-full text-center flex justify-center items-end cursor-pointer;
 
 			font-size: 32px;
+
 			svg {
 				margin-bottom: 2px;
 			}

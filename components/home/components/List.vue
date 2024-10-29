@@ -65,12 +65,11 @@ const { path, params, query } = toRefs(route)
 console.log("params", path.value)
 const store = useHomeStore()
 
-const navClass = store.getNavClass || new Map()
 console.log("params", useRoute(), path.value)
 const changeList = () => {
 	let newArrList: ListItem[] | undefined = []
 	if (path.value == "/" && Object.keys(params.value).length == 0) {
-		console.log("首页", navClass)
+		console.log("首页")
 		newArrList = props?.data?.list.map((item: ListItemApi) => {
 			let obj = {
 				imgUrl: item.vod_pic,
@@ -92,7 +91,7 @@ const changeList = () => {
 			return obj
 		})
 	} else if (path.value.includes("/play")) {
-		console.log("播放页", navClass)
+		console.log("播放页")
 		newArrList = props?.data?.list.map((item: ListItemApi) => {
 			let obj = {
 				imgUrl: item.vod_pic,
@@ -116,7 +115,7 @@ const changeList = () => {
 			return obj
 		})
 	} else if (path.value.includes("/movie")) {
-		console.log("电影页面", navClass)
+		console.log("电影页面")
 		newArrList = props?.data?.list.map((item: ListItemApi) => {
 			let RTtype = item.vod_remarks.length > 4 ? 2 : 1
 			let obj = {

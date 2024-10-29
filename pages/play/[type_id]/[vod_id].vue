@@ -67,6 +67,9 @@ import { useGetList } from "@/hooks/useGetList"
 import type { Item } from "@/types/api/index"
 
 //! 1. 请求详细数据，并进行处理
+definePageMeta({
+	layout: "play-layout",
+})
 const { params } = useRoute()
 const store = usePlayStore()
 const query = { t: params.type_id as string, ids: params.vod_id as string, ac: "detail" }

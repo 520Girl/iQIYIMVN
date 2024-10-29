@@ -264,7 +264,7 @@ provide("STEP", STEP)
 
 <style scoped lang="scss">
 .pulldown {
-	height: 100%;
+	@apply h-full relative;
 }
 
 .pulldown-bswrapper {

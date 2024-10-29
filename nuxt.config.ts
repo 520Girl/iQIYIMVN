@@ -4,9 +4,14 @@ import autoImport from "unplugin-auto-import/vite"
 import { VarletImportResolver } from "@varlet/import-resolver"
 import { resolve } from "node:path"
 import TerserPlugin from "terser-webpack-plugin"
+import customHTMLPlugin from "./vite-plugins/vite-plugin-custom-html"
 const svgIconsDir = resolve(__dirname, "./assets/svg-icons")
-
+import fs from "fs-extra"
+import path from "path"
+// import { defineNuxtConfig, createResolver } from '@nuxt/kit';
+// const { resolve } = createResolver(import.meta.url);
 export default defineNuxtConfig({
+	ssr: true,
 	devServer: {
 		host: "0.0.0.0",
 		port: 3000,
@@ -25,12 +30,13 @@ export default defineNuxtConfig({
 		// baseURL: "http://localhost",
 		devProxy: {
 			"/api.php": {
-				target: "http://localhost/api.php",
+				target: "http://localhost:3002/api.php",
 				changeOrigin: true,
 				// prependPath: true,
 			},
 		},
 		prerender: {
+			routes: ["/"],
 			//crawlLinks: 设置为 true 之后，预渲染过程会自动爬取链接，这样能确保你的网站中的所有链接都会被访问并渲染。
 			// crawlLinks: true,
 			//，如果预渲染过程中发生错误，构建过程将会失败。也就是说，如果在预渲染某个页面时出现了错误，构建不会完成并会显示错误信息。
@@ -96,10 +102,61 @@ export default defineNuxtConfig({
 	// imports: {
 	// 	dirs: ["store/*.ts"]
 	// },
+	// debug: true,
+	experimental: {},
+	features: {
+		inlineStyles: false, // 禁用内联样式
+	},
 	vite: {
 		// esbuild: {
 		// 	drop: ["console"], //去掉console
 		// },
+		build: {
+			rollupOptions: {
+				output: {
+					// inlineDynamicImports: true, // 内联动态导入
+					//! 最关键的拆分出变量的配置/
+					manualChunks: id => {
+						if (id.includes("/variable/index.js")) {
+							return "globals"
+						}
+					},
+					// manualChunks: (id) => {
+					// 	console.log(';id', id)
+					// 	if (/pages\/.*\.vue$/.test(id)) {
+					// 		return 'app';
+					// 	}
+					// 	// 检查是否是 globals.js 文件
+					// 	else if (id.includes('/globals.js')) {
+					// 		return 'app'; // 打包到页面 chunk 中
+					// 	}
+					// }
+				},
+				// output: {
+				// 	// 强制内联所有 chunk
+				// 	entryFileNames: 'inline.[hash].js',
+				// 	chunkFileNames: 'inline.[hash].js',
+				// 	assetFileNames: 'inline.[hash].[ext]'
+				// }
+			},
+			// 或者指定为 'terser' 并且配置 terserOptions
+			minify: "terser",
+			terserOptions: {
+				compress: {
+					drop_console: true, // 根据需要移除 console.log 等
+					drop_debugger: true,
+				},
+				mangle: false, // 不混淆变量名
+				format: {
+					comments: "all", // 不移除注释
+					beautify: false, // 格式化输出
+					inline_script: true, // 内联 script 标签
+					indent_start: 4,
+					keep_numbers: true,
+					keep_quoted_props: true,
+				},
+			},
+		},
 		css: {
 			preprocessorOptions: {
 				scss: {
@@ -135,6 +192,7 @@ export default defineNuxtConfig({
 				},
 			}),
 			autoImport({}),
+			customHTMLPlugin(),
 		],
 	},
 	webpack: {
@@ -227,5 +285,65 @@ export default defineNuxtConfig({
 		// 	dir: svgIconsDir,
 		// 	generatedFilename: "./assets/virtual.icons.css",
 		// },
+	},
+	build: {
+		transpile: [/^vue/], // 确保 Vue 被转译
+	},
+	hooks: {
+		// 'build:before': () => {
+		// 	// 生成全局变量 JSON 文件
+		// 	// const resolver = resolve('./globals.js');
+		// 	const globalsModule = require('./globals.js');
+		// 	const globalVariables = globalsModule.globalVariables;
+		// 	console.log(JSON.stringify(globalsModule), 8888, globalVariables)
+		// 	// 将全局变量保存到 JSON 文件中
+		// 	fs.writeFile(resolve('./global-vars.json'), JSON.stringify(globalsModule), (err) => {
+		// 		if (err) throw err;
+		// 		console.log('Global variables saved to JSON file.');
+		// 	});
+		// },
+		// 在构建结束后处理输出
+		// 'postBuild': async () => {
+		// 	const fs = require('fs');
+		// 	const path = require('path');
+
+		// 	// 获取输出目录
+		// 	const distDir = path.resolve(__dirname, '.output/public');
+
+		// 	// 读取 index.html 并插入内联的 js
+		// 	const indexPath = path.join(distDir, 'index.html');
+		// 	let html = fs.readFileSync(indexPath, 'utf-8');
+
+		// 	// 假设有一个 <script> 标签用于引用外部 js 文件
+		// 	const scriptTag = '<script type="module" src="/_nuxt/entry.js"></script>';
+
+		// 	// 读取对应的 js 文件内容
+		// 	const jsFilePath = path.join(distDir, '_nuxt', 'entry.js');
+		// 	if (fs.existsSync(jsFilePath)) {
+		// 		const inlineScript = fs.readFileSync(jsFilePath, 'utf-8');
+
+		// 		// 替换 <script> 标签为内联脚本
+		// 		html = html.replace(scriptTag, `<script type="module">${inlineScript}</script>`);
+
+		// 		// 写回修改后的 HTML 文件
+		// 		fs.writeFileSync(indexPath, html, 'utf-8');
+		// 	}
+		// }
+		async "build:done"() {
+			const distPath = path.resolve(__dirname, "dist/")
+			const htmlFiles = await fs.readdir(distPath)
+			const htmlFilesFiltered = htmlFiles.filter(file => file.endsWith("index.html"))
+			console.log("htmlFilesFiltered", htmlFilesFiltered)
+			for (const file of htmlFilesFiltered) {
+				const filePath = path.join(distPath, file)
+				let html = await fs.readFile(filePath, "utf8")
+
+				// 这里你可以对 html 进行任何你需要的操作，例如恢复格式化
+				// 示例：简单地将换行符和缩进添加回 HTML 文件
+				html = html.replace(/<([^\s>]+)>/g, "\n<$1>").replace(/</g, "\n<")
+
+				await fs.writeFile(filePath, html, "utf8")
+			}
+		},
 	},
 })

@@ -777,9 +777,7 @@
 		</svg>
 		<div class="title">What Are You Looking For</div>
 		<div class="desc">
-			From &lt;<span id=" host">
-				{{ host }} </span
-			>&gt;?
+			From &lt;<span id=" host"> {{ host }} </span>&gt;?
 		</div>
 	</div>
 </template>

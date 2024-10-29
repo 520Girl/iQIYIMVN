@@ -1,5 +1,6 @@
 import type { ListTypesParams, ListItemApi } from "@/types/api"
-import { StoreType } from "@/types/api/index.d"
+import { StoreType, UseAsyncDataKeys } from "@/types/api/index.d"
+
 export const usePlayStore = defineStore(StoreType.PlayStore, {
 	state: () => ({
 		base: <ListItemApi>{},
@@ -91,7 +92,7 @@ export const usePlayStore = defineStore(StoreType.PlayStore, {
 	},
 	actions: {
 		async getPlayVodDetail(query: ListTypesParams) {
-			const { data } = await useAsyncData("playVodDetail", () => getVodListApi(query))
+			const { data } = await useAsyncData(UseAsyncDataKeys.GET_VOD_LIST, () => getVodListApi(query))
 			this.base = data.value as any
 			return data
 		},

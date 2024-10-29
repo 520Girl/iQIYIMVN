@@ -1,11 +1,14 @@
 import { StoreType } from "@/types/api/index.d"
 import type { HomeBaseTypes, HomeBaseList, navTypes, SliderTypes } from "@/types/api/index.d.ts"
 import setting from "public/setting.json"
+import variable from "~/variable"
+
 interface idsMap {
 	type_id: number
 	ids: Array<number>
 	type_pid: number
 	type_name: string
+	class_name: Array<{ name: string; id: number }>
 }
 export const useHomeStore = defineStore(StoreType.Home, {
 	state: () => ({
@@ -24,9 +27,9 @@ export const useHomeStore = defineStore(StoreType.Home, {
 				key: setting.key,
 				des: setting.des,
 			},
-			{ name: "小说", disabled: false, ripple: false, src: "/novel", id: 4 },
-			{ name: "电影", disabled: false, ripple: false, src: "/movie", id: 1 },
-			{ name: "漫画", disabled: false, ripple: false, src: "/comic", id: 57 },
+			{ name: "小说", disabled: false, ripple: false, src: variable.router.novel, id: 101 }, //4
+			{ name: "电影", disabled: false, ripple: false, src: variable.router.movie, id: 20 },
+			{ name: "漫画", disabled: false, ripple: false, src: variable.router.comic, id: 102 }, //57
 			// {
 			// 	name: "播放",
 			// 	disabled: false,
@@ -40,6 +43,9 @@ export const useHomeStore = defineStore(StoreType.Home, {
 		], //导航配置项 更具nav 得到的数据
 		searchHits: <string[]>[], //历史搜索
 		loadingShow: true, //loading 显示状态
+		headerNavDefult: <navTypes[]>[], //导航默认的配置项
+		currentNav: <navTypes[]>[], //当前导航配置项
+		otherNav: <navTypes[]>[], //其他导航配置项
 	}),
 	getters: {
 		getNav(state) {
@@ -51,36 +57,8 @@ export const useHomeStore = defineStore(StoreType.Home, {
 			}
 			return state.base.seo ?? name
 		},
-		getNavMap(state) {
-			const base = state.base
-			const { list } = base
-			const nav = state.nav
-			let mapNav = new Map<string, navTypes>()
-			mapNav.set("/", nav[0])
-			// mapNav.set("/play", nav[4])
-			if (base.list) {
-				list.forEach((item: HomeBaseList) => {
-					let item2 = nav.find(item3 => item3.id === item.type_id)
-					if (item2) {
-						const { type_id, type_name, type_title, type_key, type_des, type_extend } = item
-						mapNav.set(item2.src, {
-							...item2,
-							id: type_id,
-							name: type_name,
-							title: type_title,
-							key: type_key,
-							des: type_des,
-							class: type_extend.class,
-						})
-					}
-				})
-			} else {
-				nav.forEach((item: navTypes) => {
-					mapNav.set(item.src, item)
-				})
-			}
-			return mapNav
-		},
+
+		//通过type_id 分配路由,默认配置项,当前配置项
 		getNavArr(state): Array<navTypes> {
 			let nav = []
 			let arr = state.nav
@@ -108,32 +86,53 @@ export const useHomeStore = defineStore(StoreType.Home, {
 								des: item.type_des,
 								class: item.type_extend.class,
 							}
+							if (item.type_id === 20) {
+								//!当匹配到电影时需要进行处理一下
+								obj.src = `${variable.router.movie}/${item.type_id}`
+							}
 						} else {
-							//未匹配到指定路由
+							//未匹配到指定路由 使用type_pid=0 进行分类，进行确定页面路由问题
+							// console.log("未匹配到指定路由", item)
+							switch (item.type_pid) {
+								case 20: //电影
+								case 21: //电视剧
+								case 22: //综艺
+								case 23: //动漫
+									obj.src = `${variable.router.movie}/${item.type_id}`
+									break
+								case 0: // 大分类
+									obj.src = `${variable.router.movie}/${item.type_id}?pid=${item.type_pid}`
+									break
+								default:
+									obj.src = `${variable.router.devtool}/${item.type_id}`
+							}
 							obj = {
 								...obj,
-								src: `/comic?type_id=${item.type_id}`,
 							}
 						}
 						return obj
 					})
 					.filter((item): item is navTypes => item !== null) // 过滤掉返回为null的项
 				nav.unshift(arr[0])
+				nav.push(arr[1])
+				nav.push(arr[3])
 				// nav.push(arr[4])
 			} else {
 				nav = arr
 			}
 			return nav
 		},
+		//（根据type_pid 分类 获取大分类小分类ids集合 & {name:string,id:number} 小分类name 和 id） idsMap & (和定义的nav路径进行匹配进行分类用于slider)以及路径分类 pathMap
 		getNavClass(state) {
 			if (state.base.list) {
-				const { list } = state.base
+				const { base, nav } = state
 				let newMap = new Map<number, idsMap>()
-				list.forEach((item: HomeBaseList) => {
+				base.list.forEach((item: HomeBaseList) => {
 					if (item.type_pid === 0) {
 						if (newMap.has(item.type_id)) {
 							const value = newMap.get(item.type_id)
 							value?.ids.push(item.type_id)
+							value?.class_name.push({ name: item.type_name, id: item.type_id })
 							newMap.set(item.type_id, value!)
 						} else {
 							newMap.set(item.type_id, {
@@ -141,31 +140,39 @@ export const useHomeStore = defineStore(StoreType.Home, {
 								ids: [item.type_id],
 								type_pid: item.type_pid,
 								type_name: item.type_name,
+								class_name: [{ name: "全部", id: item.type_id }],
 							})
 						}
 					}
 				})
-				list.forEach((item: HomeBaseList) => {
+				base.list.forEach((item: HomeBaseList) => {
 					if (item.type_pid !== 0) {
 						const value = newMap.get(item.type_pid)
 						value?.ids.push(item.type_id)
+						value?.class_name.push({ name: item.type_name, id: item.type_id })
 						newMap.set(item.type_pid, value!)
 					}
 				})
 				//将key 和 路由path 一一对应
-				const navMap = this.getNavMap
 				let pathMap = new Map<string, idsMap>()
-
+				console.log("newMap", newMap)
 				newMap.forEach((value, key) => {
-					for (const [key2, value2] of navMap) {
+					for (const value2 of nav) {
 						if (value.ids.includes(value2.id)) {
-							pathMap.set(key2, value)
+							pathMap.set(value2.src, value)
 							break
 						}
 					}
 				})
-				pathMap.set("/", { ids: [], type_id: 100, type_pid: 100, type_name: "首页" })
-				return pathMap
+				pathMap.set("/", {
+					ids: [],
+					type_id: 100,
+					type_pid: 100,
+					type_name: "首页",
+					class_name: [],
+				})
+				console.log("pathMap=========", pathMap, newMap)
+				return { pathMap, idsMap: newMap }
 			}
 		},
 		getFrom(state) {
@@ -173,11 +180,63 @@ export const useHomeStore = defineStore(StoreType.Home, {
 		},
 	},
 	actions: {
+		//初始化一下当前配置项 和默认配置项 和 其他配置
+		setInitNav(list: HomeBaseList[]) {
+			if (list) {
+				//默认配置项
+				this.headerNavDefult = list
+					.map(item => {
+						if (item.type_pid === 0) {
+							return {
+								id: item.type_id,
+								name: item.type_name,
+								src: `${variable.router.movie}/${item.type_id}?pid=${item.type_pid}`,
+							}
+						}
+						return null // 返回 null 或者一个默认值
+					})
+					.filter(item => item !== null) // 过滤掉 null
+				this.headerNavDefult.unshift(this.nav[0])
+				this.headerNavDefult.push(this.nav[1])
+				this.headerNavDefult.push(this.nav[3])
+				//当前配置项
+				this.currentNav = [...this.headerNavDefult]
+				//其他配置项
+				const { idsMap = new Map() } = this.getNavClass || {}
+				console.log(idsMap, "======================")
+				idsMap.forEach((value: idsMap, key: string) => {
+					if (!this.otherNav.find(item => item.id === value.type_id)) {
+						let obj = {
+							id: value.type_id,
+							name: value.type_name,
+							class: value.class_name.slice(1),
+						}
+						obj.class = obj.class.map(item2 => ({
+							...item2,
+							src: `${variable.router.movie}/${item2.id}`,
+						}))
+						this.otherNav.push(obj)
+					}
+
+					// console.log("value", value)
+					// console.log("key", key)
+				})
+				// console.log("this.otherNav", this.otherNav, "this.headerNavDefult", this.headerNavDefult)
+			}
+		},
 		async dragAsyncData(query: SliderTypes) {
 			const id = useId()
 			return await useAsyncData("dragAsyncDataSlide", () => getSliderApi(query))
 		},
-		// async get
+		async getAsyncBaseData() {
+			const { data, pending, error, refresh } = await useAsyncData("dragAsyncDataSeo", () =>
+				getHomeBase()
+			)
+			const { list, from, seo } = data!.value as any
+			console.log("======================")
+			this.setInitNav(list)
+			this.base = { list, from, seo }
+		},
 	},
 	persist: {
 		key: "a-s-h",

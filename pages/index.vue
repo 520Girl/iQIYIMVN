@@ -1,7 +1,7 @@
 <template>
 	<div class="amx-index">
 		<!-- Header -->
-		<Header />
+
 		<!-- {{ requestStates.data?.list[0] ?? [] }} -->
 		<main class="amx-index-main" ref="main">
 			<DragRefurbish
@@ -20,7 +20,7 @@
 		<!-- <ContentGrid /> -->
 
 		<!-- Footer -->
-		<Footer />
+		<!-- <Footer /> -->
 	</div>
 </template>
 

@@ -1,19 +1,19 @@
+//!废弃
 const useSetHead = () => {
-	const route = useRoute()
-	const { path } = route
+	const { path, params } = useRoute()
 	const store = useHomeStore()
-	const navMap = store.getNavMap
+	const navMap = store.getNavArr
+	console.log("8888888888888888888888888888", navMap)
 	const setHeader = () => {
-		if (navMap.has(path)) {
-			console.log("-------------------")
-			const header = navMap.get(path)
-			console.log(header)
+		const currentNav = navMap.find(item => item.id === Number(params.type_id))
+		console.log("9", currentNav)
+		if (currentNav) {
 			useHead({
-				title: header?.name,
+				title: currentNav?.name,
 				meta: [
 					{ name: "viewport", content: "width=device-width, initial-scale=1.0" },
-					{ name: "keywords", content: header?.key },
-					{ name: "description", content: header?.desc },
+					{ name: "keywords", content: currentNav?.key },
+					{ name: "description", content: currentNav?.desc },
 					{ name: "author", content: store.getHomeSeo.name },
 				],
 			}) // Set page title
