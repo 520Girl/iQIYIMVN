@@ -42,8 +42,9 @@ const navMap = store.getNavArr
 // const { data, pending, error, refresh } = await useAsyncData('dragAsyncData2', () => $fetch(`${import.meta.env.VITE_API_URL || process.env.NUXT_API_URL}/api.php/Aqiyim/homeBase`))
 
 const { params } = toRefs(useRoute())
-
-const active = ref(0)
+//判断当前页面选中状态确定
+const currentNavIndex = store.currentNav.findIndex(item => item.id === Number(params.value.type_id))
+const active = ref(currentNavIndex === -1 ? 0 : currentNavIndex)
 let list = reactive(store.currentNav)
 const barNavShow = ref(false)
 //! 1.2 设置头部 这样写是为了实现作用域的缓存方便在函数中调用自定义hooks，

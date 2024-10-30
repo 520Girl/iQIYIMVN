@@ -41,7 +41,6 @@
 <script lang="ts" setup>
 import { ref, reactive, onMounted, type Reactive } from "vue"
 import BScroll from "@better-scroll/core"
-import { useGetList } from "@/hooks/useGetList"
 import variable from "~/variable"
 const translateY = reactive({
 	content: 0,
@@ -90,8 +89,7 @@ const router = useRouter()
 const bsScrollInject: Function = inject("bscroll") || (() => {})
 const goClass = async (event: MouseEvent, item: { id: number; name: string }) => {
 	router.push({
-		path: `${variable.router.trending}/${item.id}`,
-		query: { class: item.id, name: item.name },
+		query: { type_id: item.id, name: item.name },
 	})
 	let startTime = new Date().getTime()
 

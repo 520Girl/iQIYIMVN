@@ -14,5 +14,6 @@ const home = useHomeStore()
 <style scoped lang="scss">
 .amx-Galloping-steak {
 	background-color: var(--amx-play-button-bc);
+	height: 100vh;
 }
 </style>

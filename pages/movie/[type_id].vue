@@ -48,22 +48,33 @@ const scrollHandler = ({ y, x }: { y: number; x: number }) => {
 }
 
 //! 1. 获取列表数据
-const { getList } = useGetList()
-const data = await getList({ pagesize: 9 })
 const route = useRoute()
-const { query } = toRefs(route)
+const { query, params } = toRefs(route)
+const { getList } = useGetList()
+
+const data = await getList({
+	pagesize: 9,
+	pg: 1,
+	t: query.value.type_id as string | undefined,
+	t_1: params.value.type_id as string | undefined,
+})
+
 console.log("data", data)
 requestStates.data = data
 requestStates.done = true // 请求完成
 provide("requestStatesList", requestStates)
-const requestHandler = async (params: { page: number; class?: string | undefined }) => {
+const requestHandler = async (params: {
+	page: number
+	class?: { type_id: string; name: string }
+}) => {
 	requestStates.done = false // 显示请求状态
 	//当出现了分类切换的情况时候，需要传入分类参数
 	return await getList({
 		ac: "list",
 		pagesize: 9,
 		pg: params.page,
-		class: params.class || query.value.class,
+		t: query.value.type_id as string | undefined,
+		t_1: params.class?.type_id,
 	})
 }
 watch(

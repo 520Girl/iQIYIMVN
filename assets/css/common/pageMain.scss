@@ -1,6 +1,6 @@
 @include b(index) {
 	@apply flex flex-col;
-	height: 100vh;
+	height: calc(100vh - (var(--amx-header-input-height) + var(--amx-header-scroll-height)));
 }
 
 @include b(index-main) {
@@ -11,7 +11,7 @@
 	/* Firefox */
 	-ms-overflow-style: none;
 	/* Internet Explorer 和 Edge */
-	height: calc(100vh - (var(--amx-header-input-height) + var(--amx-header-scroll-height)));
+	@apply h-full;
 }
 
 main::-webkit-scrollbar {

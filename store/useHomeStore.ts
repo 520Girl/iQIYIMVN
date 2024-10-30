@@ -155,7 +155,6 @@ export const useHomeStore = defineStore(StoreType.Home, {
 				})
 				//将key 和 路由path 一一对应
 				let pathMap = new Map<string, idsMap>()
-				console.log("newMap", newMap)
 				newMap.forEach((value, key) => {
 					for (const value2 of nav) {
 						if (value.ids.includes(value2.id)) {
@@ -221,7 +220,7 @@ export const useHomeStore = defineStore(StoreType.Home, {
 					// console.log("value", value)
 					// console.log("key", key)
 				})
-				// console.log("this.otherNav", this.otherNav, "this.headerNavDefult", this.headerNavDefult)
+				console.log("this.otherNav", this.otherNav, "this.headerNavDefult", this.headerNavDefult)
 			}
 		},
 		async dragAsyncData(query: SliderTypes) {

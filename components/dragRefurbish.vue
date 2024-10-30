@@ -134,7 +134,6 @@ import BScroll from "@better-scroll/core"
 import PullDown from "@better-scroll/pull-down"
 import Pullup from "@better-scroll/pull-up"
 import { useThrottle } from "~/hooks"
-import { useGetList } from "~/hooks/useGetList"
 
 const id = useId()
 let bscroll: any = ref(null)
@@ -168,7 +167,10 @@ const store = useHomeStore()
 
 //子组件传给父组件 通知请求数据，请求完成通知请求完成
 interface ChildProps {
-	requestHandler: (params: { page: number; class?: string | undefined }) => Promise<any> // 接收的函数类型，可以根据返回的数据类型更改
+	requestHandler: (params: {
+		page: number
+		class?: { type_id: string; name: string }
+	}) => Promise<any> // 接收的函数类型，可以根据返回的数据类型更改
 	requestStates: {
 		done: boolean // 请求是否完成
 		data: any // 请求返回的数据

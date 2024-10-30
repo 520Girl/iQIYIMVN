@@ -48,7 +48,7 @@ export interface ListItem {
 	more?: boolean //更多icon
 	tag: string // 标签名称类似router-link
 	width?: number // 容器宽度 1 2 4
-	height?: string // 容器高度 1 2 3 有默认高度，可进行配置替代默认
+	height?: ItemList // 容器高度 1 默认90px 2 {234} 3{153} 有默认高度，可进行配置替代默认
 	[key: string]: any // 字符串索引签名
 }
 

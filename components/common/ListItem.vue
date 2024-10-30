@@ -4,7 +4,7 @@
 		:is="tag"
 		:class="['amx-ListItem', 'w-' + width, { 'disable-click': isDisable }]"
 	>
-		<div class="amx-ListItem__img img-height">
+		<div class="amx-ListItem__img img-height" :class="'img-height_' + height.type">
 			<nuxt-link :to="src" :title="title" class="link" replace>
 				<nuxt-img
 					class="link object-cover"
@@ -106,7 +106,10 @@ const props = withDefaults(defineProps<ListItem>(), {
 	more: false,
 	tag: "div",
 	width: 2,
-	height: "90px",
+	height: () => ({
+		type: 1,
+		text: "",
+	}),
 	leftT: () => ({
 		type: 1,
 		text: "",
@@ -181,7 +184,13 @@ onMounted(() => {
 }
 
 .img-height {
-	height: v-bind(height);
+	height: 90px;
+}
+.img-height_2 {
+	height: 234px;
+}
+.img-height_3 {
+	height: 153px;
 }
 
 .disable-click {

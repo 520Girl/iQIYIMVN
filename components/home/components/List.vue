@@ -109,7 +109,7 @@ const changeList = () => {
 				vod_id: item.vod_id,
 				more: true,
 				width: 2,
-				height: "234px",
+				height: { type: 2, text: "234px" },
 				tag: "li",
 			}
 			return obj
@@ -140,7 +140,7 @@ const changeList = () => {
 				vod_id: item.vod_id,
 				more: true,
 				width: 3,
-				height: "153px",
+				height: { type: 3, text: "153px" },
 				tag: "li",
 			}
 			return obj
@@ -160,7 +160,7 @@ const changeList = () => {
 				bottomT: item.bottomT,
 				more: true,
 				width: 3,
-				height: "153px",
+				height: { type: 3, text: "153px" },
 				tag: "li",
 			}
 			return obj
@@ -181,7 +181,7 @@ const changeList = () => {
 				bottomT: item.bottomT,
 				more: true,
 				width: 3,
-				height: "153px",
+				height: { type: 3, text: "153px" },
 				tag: "li",
 			}
 			return obj
