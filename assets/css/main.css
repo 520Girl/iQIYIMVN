@@ -1,3 +1,83 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  :root {
+    /* 头部高度 */
+    --amx-header-input-height: 36px;
+    /* 输入框高度 */
+    --amx-header-search-input-height: 32px;
+    /* 滚动条导航高度 */
+    --amx-header-scroll-height: 40px;
+    /* 滚动条导航右侧的跟多导航宽度 */
+    --amx-header-scroll-bar-width: 46px;
+    --amx-play-height: 215px;
+    --amx-play-width: 100%;
+    --amx-play-info-title: 30px;
+
+    /* haeder 颜色 */
+    --amx-header-bc:#ede9ea;
+    --amx-header-linear-gradient: linear-gradient(to top, #ded6d4, #fbfbf9);
+    --amx-text:#2f2f2f;
+    --amx-text-active:#0c0c0c;
+    --amx-text-simple:#666666;
+    --amx-icon-color: #404040;
+    --amx-icon-color-simple: #7f7f7f;
+    --amx-main-bc: #fff;
+    --amx-main-bc-simple: #f2f5fa;
+    --amx-button-bc: #f5f5f5;
+    --amx-button-bc-simple: #ffffff;
+    --amx-hr-color: #f1f1f1;
+		--amx-input-box-shadow:rgb(0 0 0 / 0.1);
+
+    /* --amx-hr-color-simple: #e5e5e5; */
+    /* 恒定不变的颜色 */
+    --amx-theme-color: #00d257;
+    --amx-noChange-color:#fff;
+    --amx-theme-color-simple: #e3fae8;
+
+    /* 限免标签背景颜色 */
+    --amx-free-bc-tag:#18a0581a;
+    --amx-orange-bc-tag:#feefea;
+    --amx-orange-color-tag: #ea4913;
+
+     /* varlet 主题颜色修改 */
+     --tabs-background: transparent!important;
+     --bottom-navigation-background-color:#f5f4f2!important;
+     --bottom-navigation-item-active-color:#0c0c0c!important;
+     --bottom-navigation-item-active-background-color:#f5f4f2!important;
+  }
+
+  .dark {
+    --amx-header-bc:#000000;
+    --amx-header-linear-gradient: linear-gradient(to top, #372b13, #15120b);
+    --amx-text:#d4d3cf;
+    --amx-text-active:#f5f4f2;
+    --amx-text-simple:#b4b0ad;
+    --amx-icon-color: #c4c2c3;
+    --amx-icon-color-simple: #958689;
+    --amx-main-bc: #000000;
+    --amx-main-bc-simple: #0f0f0f;
+    --amx-button-bc: #1a1a1a;
+    --amx-button-bc-simple: #000000;
+    --amx-hr-color: #262626;
+    --amx-input-box-shadow:#4d4d4d;
+    /* --amx-hr-color-simple: #e5e5e5; */
+    /* 恒定不变的颜色 */
+    --amx-theme-color: #00d257;
+    --amx-noChange-color:#fff;
+
+    --amx-theme-color-simple: #172e24;
+    
+
+    --amx-free-bc-tag:#182d24;
+    --amx-orange-bc-tag:#2e2422;
+    --amx-orange-color-tag: #ea4913;
+    /* varlet 主题颜色修改 */
+    --tabs-background: transparent!important;
+    --bottom-navigation-background-color:#000000!important;
+    --bottom-navigation-item-active-color:#f5f4f2!important;
+    --bottom-navigation-item-active-background-color:#000000!important;
+  }
+}

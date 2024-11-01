@@ -228,7 +228,7 @@ watch(
 	@apply box-border w-full;
 	padding: 10px 5px 0 5px;
 	border-radius: 10px;
-	background-color: #fff;
+	background-color: var(--amx-main-bc);
 
 	// li {
 	// 	@apply w-2/4 inline-block box-border px-1;

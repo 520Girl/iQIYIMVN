@@ -69,11 +69,12 @@
         }
 
         .c-lb1 {
-            @apply absolute text-white font-semibold font-mono;
+            @apply absolute text-center font-semibold font-mono;
             bottom: 1px;
             left: 1px;
             font-size: 9px;
             background-color: #23314b;
+            color: var(--amx-noChange-color);
             padding: 1px 3px;
             border-radius: 2px;
         }
@@ -142,12 +143,12 @@
         .c-title {
             @apply truncate font-sans;
             font-size: 15px;
-            color: #0d0d0d;
+            color: var(--amx-text);
         }
 
         .c-info {
             @apply truncate font-sans flex justify-between;
-            color: #666666;
+            color: var(--amx-text-simple);
 
             a {
                 @apply truncate;
@@ -161,12 +162,13 @@
                 i {
                     vertical-align: baseline;
                     font-size: 15px;
+                    color: var(--amx-text-simple);
                 }
             }
         }
         .c-class{
             @apply truncate font-sans flex justify-between;
-            color: #444444;
+            color: var(--amx-text-simple);
             .c-tag{
                 @apply text-ellipsis font-sans truncate;
                 width: 100%;
@@ -179,13 +181,12 @@
                 @apply inline-block;
                }
                .c-tag-1{
-               
-                background-color: #f1f1f1;
+                background-color: var(--amx-button-bc);
             }
             .c-tag-2{
                 padding: 1px 4px;
-                background-color: #feefea;
-                color: #f4460a;
+                background-color: var(--amx-orange-bc-tag);
+                color: var(--amx-orange-color-tag);
                 display: inline-block;
                 border-radius: 4px;
             }
@@ -214,10 +215,10 @@
 @mixin tagColor{
     .limitFree{
         color: var(--amx-theme-color);
-        background-color: var(--amx-theme-color-simple);
+        background-color: var(--amx-free-bc-tag);
     }
     .hot {
-        background-color: #feede6;
-        color: #ff794a;
+        background-color: var(--amx-orange-bc-tag);
+        color: var(--amx-orange-color-tag);
     }
 }

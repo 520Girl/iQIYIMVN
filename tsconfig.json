@@ -9,10 +9,7 @@
   //     "src/**/*.vue",
   //     "./types/auto-imports.d.ts" // 和 AutoImport dts保持一致 引入即可
   //   ],
-  //   "compilerOptions": {
-  //     "baseUrl": ".",
-  //     "paths": {
-  //       "@/*": ["/*"] // 根据项目结构调整
-  //     }
-  //   }
+    "compilerOptions": {
+      "typeRoots": ["./types/colorthief.d.ts"]
+    }
 }

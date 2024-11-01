@@ -19,11 +19,13 @@
 		padding-top: 14px;
 		font-size: 15px;
 		padding: 14px 9px 0 9px;
-		border-bottom: 1px solid #f1f1f1;
+		border-bottom: 1px solid var(--amx-hr-color);
+		background-color: var(--amx-main-bc);
 
 		.super {
 			margin-right: 4px;
 			@apply font-semibold;
+			color: var(--amx-text-active);
 		}
 
 		.hits-item {
@@ -32,12 +34,13 @@
 			margin-right: 9px;
 			margin-bottom: 8px;
 			border-radius: 14px;
-			background-color: var(--amx-play-button-bc);
+			background-color: var(--amx-button-bc);
+			color: var( --amx-text-active);
 		}
 
 		.vip {
-			background-color: #feede6;
-			color: #ff794a;
+			background-color: var(--amx-orange-bc-tag);
+			color: var(--amx-orange-color-tag);
 			padding: 2px 4px;
 			font-size: 12px;
 			border-radius: 8px;
@@ -46,6 +49,7 @@
 
 		.recommend-item {
 			font-size: 14px;
+			color: var(--amx-text-active);
 		}
 
 		.icon {
@@ -64,7 +68,7 @@
 
 		.classify {
 			margin-top: 14px;
-			margin-bottom: 15px;
+			margin-bottom: 5px;
 		}
 
 		.body-item {
@@ -84,7 +88,7 @@
 			position: sticky;
 			top: 0px;
 			padding-top: 16px;
-			background-color: var(--amx-bc);
+			background-color: var(--amx-main-bc);
 		}
 		@include e(article) {}
 
@@ -116,7 +120,7 @@
 
 						.title {
 							font-size: 14px;
-							color: var(--amx-header-title-simple);
+							color: var(--amx-text-active);
 
 							span {
 								margin-left: 4px;
@@ -138,7 +142,7 @@
 
 						.tags {
 							font-size: 12px;
-							color: var(--amx-play-text-smail-color);
+							color: var(--amx-text);
 						}
 
 						.sub {
@@ -149,4 +153,7 @@
 			}
 		}
 	}
+}
+.var-popup--content-background-color{
+	background-color: var(--amx-main-bc);
 }

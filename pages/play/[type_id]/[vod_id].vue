@@ -17,8 +17,8 @@
 						elevation
 						style=""
 						disabled
-						active-color="#000"
-						inactive-color="#9f9a9a"
+						active-color="var(--amx-text-active)"
+						inactive-color="var(--amx-text)"
 						indicator-size="0"
 						v-model:active="active"
 					>
@@ -192,9 +192,12 @@ watch(active, (newVal, oldVal) => {
 //5. 返回上一页
 const router = useRouter()
 const goBack = () => {
-	// router.back()
-	router.go(-1)
-	// router.push("/")
+	if (window.history.length > 1) {
+		router.back()
+		// router.go(-1)
+	} else {
+		router.push("/")
+	} // router.push("/")
 }
 //当播放源数据发生变化时，更新播放器的url
 watch(store.currentVideo, (newVal, oldVal) => {
@@ -236,20 +239,20 @@ onUnmounted(() => {
 	@include e(play) {
 		height: var(--amx-play-height);
 		width: var(--amx-play-width);
-		background-color: #000;
+		background-color: var(--amx-main-bc);
 	}
 
 	@include e(content) {
 		height: calc(100vh - var(--amx-play-height));
 		width: 100%;
-		@apply bg-white;
+		background-color: var(--amx-main-bc);
 		border-radius: 8px 8px 0 0;
 
 		@include e(Title) {
 			height: var(--amx-play-info-title);
 			overflow: hidden;
 			width: 100%;
-			border-bottom: 1px solid #f1f1f1;
+			border-bottom: 1px solid var(--amx-hr-color);
 			border-radius: 8px;
 
 			:deep(.var-tabs) {

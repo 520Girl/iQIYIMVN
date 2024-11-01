@@ -21,7 +21,10 @@
 				</div>
 			</div>
 			<div class="amx-s-r-title">
-				<div class="amx-s-r-title__hits bar__nav__title">
+				<div
+					class="amx-s-r-title__hits bar__nav__title"
+					style="border-bottom: 1px solid var(--amx-hr-color)"
+				>
 					<div class="flex justify-between items-center">
 						<div class="inline-block">
 							<span class="super">我的频道</span>
@@ -57,7 +60,7 @@
 				>
 					<div class="flex justify-between items-center">
 						<div class="inline-block">
-							<span class="super">{{ item.name }}导航</span>
+							<span class="super" style="">{{ item.name }}导航</span>
 						</div>
 					</div>
 					<template v-if="item.class == 0">
@@ -71,7 +74,7 @@
 							tag="aside"
 						>
 							<p
-								class="hits-item nav-item"
+								class="hits-item nav-item no-add"
 								v-for="(item1, index1) in item.class"
 								:key="item1.id"
 								@click="addItem(index, index1, item1)"
@@ -98,7 +101,6 @@
 import { ref, reactive, onMounted } from "vue"
 import index from "@/variable/index"
 import type { HomeBaseTypes, HomeBaseList, navTypes, SliderTypes } from "@/types/api/index.d.ts"
-import Index from "../comic/index.vue"
 const home = useHomeStore()
 const editorState = ref(false)
 const deleteIndex = ref<string | number>("")
@@ -107,7 +109,7 @@ const otherNav = reactive<Array<navTypes>>(home.otherNav)
 const modelBarNavShow = defineModel({ type: Boolean, default: false })
 const navActive = defineModel("active", { type: Number, default: 0 })
 const router = useRouter()
-
+console.log("4444barNav", otherNav)
 //编辑
 const editor = () => {
 	editorState.value = true
@@ -154,17 +156,17 @@ onMounted(() => {
 		padding: 23px 12px;
 		font-size: 18px;
 		@apply flex font-bold justify-between items-center box-border w-full;
-		background-color: var(--amx-bc);
+		background-color: var(--amx-main-bc);
 		border-bottom: 1px solid var(--amx-hr-color);
 
 		.bar__title {
 			font-size: inherit;
-			color: var(--amx-header-title-color);
+			color: var(--amx-text-active);
 		}
 
 		.bar__button {
 			font-size: 14px;
-			color: var(--amx-header-title-color);
+			color: var(--amx-text-active);
 
 			.bar__button--default {
 				margin-right: 25px;
@@ -180,7 +182,7 @@ onMounted(() => {
 		padding: 6px 3px 8px 3px;
 
 		.nav-item.no-add {
-			background-color: var(--amx-bc);
+			background-color: var(--amx-button-bc-simple);
 			border: 1px solid var(--amx-hr-color);
 		}
 

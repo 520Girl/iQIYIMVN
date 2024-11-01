@@ -11,6 +11,7 @@ export enum UseAsyncDataKeys {
 	GET_HOME_BASE = `GET_HOME_BASE`,
 	GET_SLIDER = "GET_SLIDER",
 	GET_VOD_LIST = "GET_VOD_LIST",
+	GET_VOD_LIST_DETAIL = "GET_VOD_LIST_DETAIL",
 }
 
 export type Props = {

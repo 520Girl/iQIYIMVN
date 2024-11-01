@@ -190,25 +190,25 @@ onUnmounted(() => {
 // }
 @include b(playMovie) {
 	height: 100vh;
-	@apply bg-black;
+	background-color: var(--amx-main-bc);
 	overflow: hidden;
 
 	@include e(play) {
 		height: var(--amx-play-height);
 		width: var(--amx-play-width);
-		background-color: #000;
+		background-color: var(--amx-main-bc);
 	}
 
 	@include e(content) {
 		height: calc(100vh - var(--amx-play-height));
 		width: 100%;
-		@apply bg-white;
+		background-color: var(--amx-main-bc);
 		border-radius: 8px;
 		@include e(Title) {
 			height: var(--amx-play-info-title);
 			overflow: hidden;
 			width: 100%;
-			border-bottom: 1px solid #f1f1f1;
+			border-bottom: 1px solid var(--amx-hr-color);
 			border-radius: 8px;
 			:deep(.var-tabs) {
 				@apply w-full h-full inline-block shadow-none flex-none;

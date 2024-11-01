@@ -400,10 +400,10 @@ onUnmounted(() => {
 
 	@include e(content) {
 		@apply w-full h-full;
-
+		color: var(--amx-text-active);
 		@include m(title) {
 			height: var(--amx-play-info-title);
-			border-bottom: 1px solid #f1f1f1;
+			border-bottom: 1px solid var(--amx-hr-color);
 			padding: 0 15px;
 			font-size: var(--tab-active-font-size);
 			@apply w-full overflow-hidden flex justify-between items-center font-semibold;
@@ -440,7 +440,7 @@ onUnmounted(() => {
 
 						span {
 							padding: 1px 5px;
-							border: 1px solid #f1f1f1;
+							border: 1px solid var(--amx-hr-color);
 							font-size: 14px;
 							line-height: 1.5;
 							margin: 2px 5px;
@@ -489,7 +489,8 @@ onUnmounted(() => {
 
 			.desc {
 				font-size: 14px;
-				@apply text-gray-950 text-ellipsis overflow-hidden w-full line-clamp-6;
+				@apply text-ellipsis overflow-hidden w-full line-clamp-6;
+				color: var(--amx-text-active);
 				max-height: 12em;
 			}
 

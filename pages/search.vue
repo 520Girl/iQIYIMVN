@@ -35,6 +35,9 @@
 
 <script lang="ts" setup>
 import { ref, reactive, onMounted } from "vue"
+definePageMeta({
+	layout: "play-layout",
+})
 let searchText = ref<string>("")
 let searchResultShow = ref(true)
 const data = reactive({
@@ -96,12 +99,13 @@ onMounted(() => {
 <style scoped lang="scss">
 @include b(searchP) {
 	height: 100vh;
+	background-color: var(--amx-main-bc-simple);
 	@apply overflow-y-auto;
 
 	@include b(searchP-input) {
 		@include e(scroll) {
 			height: var(--amx-header-scroll-height);
-			background-color: var(--amx-bc);
+			background-color: var(--amx-main-bc);
 			line-height: 1;
 			@apply flex justify-start items-center;
 			.scroll_wrapper {
@@ -119,11 +123,12 @@ onMounted(() => {
 
 	@include b(searchP-result) {
 		padding: 16px 4px 0 4px;
-		background-color: var(--amx-bc);
-		border-top: 1px solid #f1f1f15c;
+		background-color: var(--amx-main-bc);
+		border-top: 1px solid var(--amx-hr-color);
 		.super {
 			margin-left: 4px;
 			@apply font-medium font-sans;
+			color: var(--amx-text-active);
 		}
 
 		@include e(article) {
@@ -131,7 +136,7 @@ onMounted(() => {
 				margin-top: 10px;
 
 				hr {
-					border-color: #f1f1f15c;
+					border-color: var(--amx-hr-color);
 				}
 
 				.more {

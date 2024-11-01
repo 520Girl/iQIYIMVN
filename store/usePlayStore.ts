@@ -10,7 +10,7 @@ export const usePlayStore = defineStore(StoreType.PlayStore, {
 		getPlayData(state) {
 			const { list } = state.base
 			const base = list[0]
-			console.log(base)
+			console.log("[[[[", base)
 			const handleData = {
 				type_name: base.type_name, //类型名称
 				vod_name: base.vod_name, //视频名称
@@ -92,7 +92,9 @@ export const usePlayStore = defineStore(StoreType.PlayStore, {
 	},
 	actions: {
 		async getPlayVodDetail(query: ListTypesParams) {
-			const { data } = await useAsyncData(UseAsyncDataKeys.GET_VOD_LIST, () => getVodListApi(query))
+			const { data } = await useAsyncData(UseAsyncDataKeys.GET_VOD_LIST_DETAIL, () =>
+				getVodListApi(query)
+			)
 			this.base = data.value as any
 			return data
 		},

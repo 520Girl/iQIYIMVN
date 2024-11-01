@@ -114,7 +114,7 @@ const tabsActive = watch(
 	@include e(content) {
 		height: calc(100vh - var(--amx-play-height));
 		width: 100%;
-		background-color: sandybrown;
+		background-color: var(--amx-main-bc);
 
 		@include e(Title) {
 			height: 38px;

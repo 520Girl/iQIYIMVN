@@ -137,9 +137,10 @@ onMounted(() => {
 	@include e(item) {
 		@apply inline-block whitespace-nowrap;
 		margin-right: 8px;
-		background-color: var(--amx-play-button-bc);
+		background-color: var(--amx-button-bc);
 		border-radius: 28px;
 		width: 75px;
+		color: var(--amx-text-active);
 		line-height: 2.5;
 	}
 }

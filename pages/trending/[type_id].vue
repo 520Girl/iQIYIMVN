@@ -67,7 +67,6 @@
 </template>
 
 <script lang="ts" setup>
-import dark from "@varlet/ui/es/themes/dark"
 import { ref, reactive, onMounted } from "vue"
 
 const data = reactive({

@@ -53,6 +53,7 @@ export default defineNuxtConfig({
 				// {rel: 'icon', type: 'image/x-icon', href:'@/static/favicon1.ico' },
 			],
 			meta: [{ name: "viewport", content: "width=device-width, initial-scale=1" }],
+			// script
 		},
 		pageTransition: {
 			name: "page",
@@ -64,7 +65,7 @@ export default defineNuxtConfig({
 	},
 	compatibilityDate: "2024-04-03",
 	devtools: { enabled: true },
-	css: ["~/assets/css/main.css", "~/assets/css/variable.css"],
+	css: ["~/assets/css/main.css"],
 	postcss: {
 		plugins: {
 			tailwindcss: {},
@@ -266,7 +267,21 @@ export default defineNuxtConfig({
 		"@pinia/nuxt",
 		"@pinia-plugin-persistedstate/nuxt",
 		"@nuxt/image",
+		"@nuxtjs/color-mode",
 	],
+	// plugins: ['~/plugins/dark-mode'],
+	//主题色
+	colorMode: {
+		preference: "system", // default value of $colorMode.preference
+		fallback: "light", // fallback value if not system preference found
+		hid: "nuxt-color-mode-script",
+		globalName: "__NUXT_COLOR_MODE__",
+		componentName: "ColorScheme",
+		classPrefix: "",
+		classSuffix: "",
+		storage: "localStorage", // or 'sessionStorage' or 'cookie'
+		storageKey: "nuxt-color-mode",
+	},
 	//pinia 持久化插件
 	piniaPersistedstate: {
 		cookieOptions: {

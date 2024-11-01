@@ -68,11 +68,12 @@ onMounted(() => {
 			padding: 4px 12px;
 			border-radius: 5px;
 			margin-right: 10px;
+			color: var(--amx-text-active);
 			background-color: var(--amx-play-button-bc);
 
 			&.active {
 				color: var(--amx-theme-color);
-				background-color: #e3fae8;
+				background-color: var(--amx-theme-color-simple);
 			}
 		}
 	}

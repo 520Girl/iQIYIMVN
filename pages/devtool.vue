@@ -784,6 +784,9 @@
 
 <script lang="ts" setup>
 import { ref, reactive, onMounted } from "vue"
+definePageMeta({
+	layout: "play-layout",
+})
 const host = ref("")
 if (process.client) {
 	host.value = window.location.host

@@ -124,6 +124,7 @@ export const useHomeStore = defineStore(StoreType.Home, {
 		},
 		//（根据type_pid 分类 获取大分类小分类ids集合 & {name:string,id:number} 小分类name 和 id） idsMap & (和定义的nav路径进行匹配进行分类用于slider)以及路径分类 pathMap
 		getNavClass(state) {
+			console.log("getNavClass1s", state.base.list.length)
 			if (state.base.list) {
 				const { base, nav } = state
 				let newMap = new Map<number, idsMap>()
@@ -202,7 +203,7 @@ export const useHomeStore = defineStore(StoreType.Home, {
 				this.currentNav = [...this.headerNavDefult]
 				//其他配置项
 				const { idsMap = new Map() } = this.getNavClass || {}
-				console.log(idsMap, "======================")
+				console.log(idsMap, "===========1111===========")
 				idsMap.forEach((value: idsMap, key: string) => {
 					if (!this.otherNav.find(item => item.id === value.type_id)) {
 						let obj = {
@@ -232,9 +233,10 @@ export const useHomeStore = defineStore(StoreType.Home, {
 				getHomeBase()
 			)
 			const { list, from, seo } = data!.value as any
-			console.log("======================")
-			this.setInitNav(list)
+			console.log("===========8888===========")
+
 			this.base = { list, from, seo }
+			this.setInitNav(list)
 		},
 	},
 	persist: {

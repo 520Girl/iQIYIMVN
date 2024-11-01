@@ -1,15 +1,17 @@
 <template>
 	<header class="amx-header">
 		<Search />
+
 		<div class="amx-scroll">
 			<div class="amx-scroll__nav">
 				<var-tabs
 					@click="handleClick"
 					elevation
 					disabled
+					name="scroll"
 					class="amx-scroll__scrollContent"
-					active-color="#000"
-					inactive-color="#000"
+					active-color="var(--amx-text-active)"
+					inactive-color="var(--amx-text)"
 					indicator-size="0"
 					v-model:active="active"
 				>
@@ -18,6 +20,7 @@
 						:key="item.name"
 						:ripple="item.ripple"
 						:disabled="item.disabled"
+						style="width: auto"
 						:class="{ activeListItem: active === index }"
 					>
 						<nuxt-link :to="item.src">
@@ -27,28 +30,44 @@
 				</var-tabs>
 			</div>
 			<div class="amx-scroll__bar">
-				<SvgIcon name="svgo-menu" class="more-btn__icon" @click="barClick" />
+				<SvgIcon name="svgo-menu" color="red" class="more-btn__icon" @click="barClick" />
+				<!-- <img crossOrigin="anonymous" ref="scrollImg"
+		class="w-[300px] h-[300px] transition-all"
+				@mouseenter="onMouseEnter($event)"
+					src="https://img.lzzyimg.com/upload/vod/20240725-1/57952052269afbd3d467311bdb980c15.jpg" alt=""  /> -->
 			</div>
 		</div>
 		<HeadBarNav v-model="barNavShow" v-model:active="active" />
 	</header>
 </template>
 <script setup lang="ts">
-// import BScroll from "@better-scroll/core"
-import useSetHead from "~/hooks/useSetHead"
+import colorThief from "colorthief"
 import Search from "./search.vue"
 const store = useHomeStore()
 const navMap = store.getNavArr
 // const { data, pending, error, refresh } = await useAsyncData('dragAsyncData2', () => $fetch(`${import.meta.env.VITE_API_URL || process.env.NUXT_API_URL}/api.php/Aqiyim/homeBase`))
-
+const colorMode = useColorMode()
+colorMode.preference = "dark"
+// console.log(colorMode,'当前颜色')
 const { params } = toRefs(useRoute())
 //判断当前页面选中状态确定
 const currentNavIndex = store.currentNav.findIndex(item => item.id === Number(params.value.type_id))
 const active = ref(currentNavIndex === -1 ? 0 : currentNavIndex)
 let list = reactive(store.currentNav)
 const barNavShow = ref(false)
-//! 1.2 设置头部 这样写是为了实现作用域的缓存方便在函数中调用自定义hooks，
+//!1.获取图片颜色
+//https://blog.csdn.net/m0_37622071/article/details/136345139
+const onMouseEnter = async (e: MouseEvent) => {
+	const ColorThief = new colorThief()
+	const img = e.target as HTMLImageElement
+	console.log(img)
+	if (img) {
+		const rgb: [number, number, number] | null = ColorThief.getColor(img, 1)
+		console.log(rgb, e)
+	}
+}
 
+//! 1.2 设置头部 这样写是为了实现作用域的缓存方便在函数中调用自定义hooks，
 watch(
 	() => params.value.type_id,
 	() => {
@@ -78,18 +97,18 @@ const barClick = () => {
 </script>
 <style lang="scss" scoped>
 @include b(header) {
-	height: 76px;
-
+	// height: 76px;
+	background: var(--amx-header-linear-gradient);
 	@include b(scroll) {
 		// --tabs-padding:50px;
 		@apply w-full h-full flex items-center justify-between overflow-hidden;
 		height: var(--amx-header-scroll-height);
-		background-color: var(--amx-bc);
+		// background-color: var(--amx-bc);
 
 		.activeListItem {
 			font-size: 16px;
 			transition: font-size 0.2s;
-			color: #000;
+			color: var(--amx-text-active);
 			@apply font-semibold;
 		}
 
@@ -102,6 +121,7 @@ const barClick = () => {
 			@apply box-border h-full;
 			--tabs-padding: 0px;
 			padding: 0 0 0 12px;
+			color: var(--amx-text);
 		}
 
 		@include e(bar) {

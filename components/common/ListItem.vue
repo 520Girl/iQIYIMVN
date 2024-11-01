@@ -5,9 +5,9 @@
 		:class="['amx-ListItem', 'w-' + width, { 'disable-click': isDisable }]"
 	>
 		<div class="amx-ListItem__img img-height" :class="'img-height_' + height.type">
-			<nuxt-link :to="src" :title="title" class="link" replace>
+			<nuxt-link :to="src" :title="title" class="link" :replace="replaceState">
 				<nuxt-img
-					class="link object-cover"
+					class="link object-cover object-top"
 					:src="imgUrl"
 					:placeholder="img(`/loading/loading.svg`, { h: 10, f: 'png', blur: 2, q: 10 })"
 					placeholder-class="w-full h-full"
@@ -43,13 +43,13 @@
 		</div>
 		<div class="amx-ListItem__title">
 			<div class="c-title text-ellipsis">
-				<nuxt-link :to="src" :title="title" replace>
+				<nuxt-link :to="src" :title="title" :replace="replaceState">
 					{{ title }}
 				</nuxt-link>
 			</div>
 			<template v-if="bottomT && (bottomT.type === 1 || bottomT.type === 2)">
 				<div class="c-info text-ellipsis font-sans">
-					<nuxt-link :to="src" :title="description" replace>
+					<nuxt-link :to="src" :title="description" :replace="replaceState">
 						{{ description }}
 					</nuxt-link>
 				</div>
@@ -71,7 +71,7 @@
 			</template>
 			<template v-else>
 				<div class="c-info c-class text-ellipsis">
-					<NuxtLink :to="src" :title="title" replace v-if="bottomT.type != 3">
+					<NuxtLink :to="src" :title="title" :replace="replaceState" v-if="bottomT.type != 3">
 						{{ description }}
 					</NuxtLink>
 					<div class="c-tag" v-else>
@@ -90,6 +90,8 @@
 import { ref, reactive, onMounted } from "vue"
 import type { ListItem } from "@/types/api/index.d.ts"
 
+const { name } = useRoute()
+const replaceState = ref(name === "play-type_id-vod_id" ? true : false)
 const rightText = computed(() => {
 	const { type, text } = props.rightT || { type: 1, text: "" }
 	return text?.split("|") || []
