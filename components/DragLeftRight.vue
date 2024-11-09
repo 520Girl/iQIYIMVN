@@ -18,6 +18,9 @@ const scrollInit = () => {
 		click: true, // 启用点击事件
 		probeType: 3, // 探测类型，3表示全量探测，即每次滚动都触发事件
 	})
+	bs.on("scrollEnd", (data: any) => {
+		console.log("scrollEnd", data, bs)
+	})
 }
 onMounted(async () => {
 	await nextTick()

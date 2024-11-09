@@ -1,7 +1,11 @@
 // vite-plugins/vite-plugin-custom-html.js
 import { createFilter } from "@rollup/pluginutils"
-
+// @filename: rollup-plugin-my-example.js
+// ---cut-start---
+/** @returns {import('rollup').Plugin} */
+// ---cut-end---
 export default function customHTMLPlugin() {
+	console.log("customHTMLPlugin")
 	const filter = createFilter(["index.html"], {})
 
 	return {

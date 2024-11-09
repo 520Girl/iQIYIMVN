@@ -28,7 +28,7 @@
 					<div class="sm__slide_wrapper">
 						<DragLeftRight>
 							<ul class="sm__item item-wrapper">
-								<li class="item active">类型</li>
+								<li class="item active" ref="listLi">类型</li>
 								<li class="item">古装</li>
 								<li class="item">古装</li>
 								<li class="item">古装</li>
@@ -68,6 +68,9 @@
 
 <script lang="ts" setup>
 import { ref, reactive, onMounted } from "vue"
+definePageMeta({
+	layout: "play-layout",
+})
 
 const data = reactive({
 	data: {
@@ -121,6 +124,7 @@ const data = reactive({
 	},
 })
 const active = ref(0)
+data.data.list.push(...data.data.list, ...data.data.list, ...data.data.list)
 provide("requestStatesList", data)
 
 //点击选中

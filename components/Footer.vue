@@ -43,6 +43,6 @@ const badgeProps = reactive<BadgeProps>({
 
 @include b(footer) {
 	width: 100%;
-	@apply fixed bottom-0;
+	@apply fixed bottom-0 z-[1];
 }
 </style>

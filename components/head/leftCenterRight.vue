@@ -40,12 +40,13 @@ onMounted(() => {
 
 @include b(headNav) {
 	height: var(--amx-header-input-height);
+	background-color: var(--amx-header-bc);
 }
 
 .content {
 	padding: 0 10px 0 5px;
 	font-size: 14px;
-	color: var(--amx-header-title-color);
+	color: var(--amx-text-active);
 	@apply font-semibold;
 
 	h5 {
@@ -59,6 +60,7 @@ onMounted(() => {
 	width: 72px;
 	margin-left: 10px;
 	@apply h-full text-center flex items-center justify-start;
+	color: var(--amx-text-active);
 }
 
 .right {

@@ -132,6 +132,9 @@ onMounted(() => {
 	}
 	@include e(article) {
 		margin-bottom: 15px;
+		.title {
+			color: var(--amx-text-active);
+		}
 	}
 	.amx-ListItem {
 		@apply inline-block w-1/3 box-border;
@@ -145,17 +148,19 @@ onMounted(() => {
 		margin-right: 8px;
 		@apply box-border text-center flex items-center justify-center;
 		width: 50%;
-		background-color: #f2f5fa;
+		background-color: var(--amx-button-bc);
 		font-size: 15px;
 		padding: 5px 0;
+		color: var(--amx-text-active);
 	}
 	.refresh-btn {
 		@apply box-border text-center flex items-center justify-center;
 		width: 50%;
-		background-color: #f2f5fa;
+		background-color: var(--amx-button-bc);
 		border-radius: 4px;
 		font-size: 15px;
 		padding: 5px 0;
+		color: var(--amx-text-active);
 	}
 	.more-btn__text {
 		margin-left: 2px;

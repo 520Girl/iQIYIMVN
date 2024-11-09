@@ -179,6 +179,7 @@ onMounted(() => {
 	}
 	@include e(article) {
 		margin-bottom: 15px;
+		color: var(--amx-text-active);
 	}
 	.amx-ListItem {
 		@apply inline-block w-1/4 box-border;

@@ -2,6 +2,7 @@ const baseURL = import.meta.env.VITE_API_URL || process.env.VITE_API_URL || "htt
 import type { FetchError, FetchResponse, SearchParameters } from "ofetch"
 // 指定后端返回的基本数据类型
 
+console.log("baseURL", import.meta.env.VITE_API_URL)
 export interface IResponse<T> extends FetchResponse<T> {
 	code: number
 	success: boolean

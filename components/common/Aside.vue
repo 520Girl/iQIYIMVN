@@ -75,7 +75,8 @@ onMounted(() => {
 
 	@include e(text) {
 		@apply text-center font-sans;
-		font-size: 14px;
+		font-size: 12px;
+		color: var(--amx-text-active);
 	}
 }
 </style>

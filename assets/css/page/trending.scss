@@ -2,15 +2,21 @@
 @include b(trending) {
     width: 100%;
     height: 100vh;
-    overflow: hidden;
-    
-    @include b(trending-header) {}
+    @apply flex flex-col;
+    @include b(trending-header) {
+        height: var(--amx-header-input-height);
+
+    }
 
     @include b(trending-content) {
         flex: 1;
-      
+        background:var(--amx-main-bc);
+        // height: calc(100vh - var(--amx-header-input-height));
+        @apply overflow-y-auto;
         @include e(classify) {
             padding: 0px 9px;
+            @apply sticky z-[2] top-0;
+            background-color: var(--amx-main-bc);
             *{
                 line-height: 1;
             }
@@ -30,7 +36,7 @@
             .item{
                 padding: 5px 12px;
                 @apply text-center rounded-2xl font-sans inline-block flex-shrink-0;
-                color: var(--amx-header-title-simple);
+                color: var(--amx-text-active);
                 font-size: 13px;
             }
             .active{
@@ -40,7 +46,7 @@
             .info_item{
                 @apply text-center font-sans relative;
                 font-size: 12px;
-                color: var(--amx-header-title-simple);
+                color: var(--amx-text-active);
                 padding: 0 11px;
                 line-height: 22px;
                 height: 22px;
@@ -54,7 +60,7 @@
                     display: block;
                     width: 1px;
                     height: 12px;
-                    background-color: #e7e7e7;
+                    background-color: var(--amx-hr-color);
                     overflow: hidden;
                     top: 6px;
                     @apply overflow-hidden absolute  right-0;
@@ -67,7 +73,7 @@
             }
             .info_active{
                 font-size: 14px;
-                color: var(--amx-header-title-color);
+                color: var(--amx-text-active);
                 @apply font-semibold;
                 &::after{
                     top: 6px;
