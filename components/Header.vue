@@ -31,10 +31,10 @@
 			</div>
 			<div class="amx-scroll__bar">
 				<SvgIcon name="svgo-menu" color="red" class="more-btn__icon" @click="barClick" />
-				<!-- <img crossOrigin="anonymous" ref="scrollImg"
-		class="w-[300px] h-[300px] transition-all"
+				<!-- <img crossOrigin="anonymous" ref="scrollImg" style="width: 100%;height: 100%;object-fit: cover;"
+		class=" transition-all"
 				@mouseenter="onMouseEnter($event)"
-					src="https://img.lzzyimg.com/upload/vod/20240725-1/57952052269afbd3d467311bdb980c15.jpg" alt=""  /> -->
+					src="https://img.lzzyimg.com/upload/vod/20240713-1/1d043e7b48c622766d51e556a3d884af.jpg" alt=""  /> -->
 			</div>
 		</div>
 		<HeadBarNav v-model="barNavShow" v-model:active="active" />
@@ -98,7 +98,7 @@ const barClick = () => {
 <style lang="scss" scoped>
 @include b(header) {
 	// height: 76px;
-	background: var(--amx-header-linear-gradient);
+	// background: var(--amx-header-linear-gradient);
 	@include b(scroll) {
 		// --tabs-padding:50px;
 		@apply w-full h-full flex items-center justify-between overflow-hidden;

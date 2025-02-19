@@ -8,7 +8,11 @@
 			</Swipe>
 			<div
 				ref="homeMain"
-				:style="translateY.content ? `transform: translate3d(0,${translateY.content}px,0)` : ''"
+				:style="
+					translateY.content
+						? `transform: translate3d(0,${translateY.content}px,0);background-color: var(--amx-main-bc-simple);`
+						: ''
+				"
 			>
 				<slot>
 					<HomeComponentsList />
@@ -29,6 +33,8 @@ const homeMain = ref<HTMLDivElement>()
 //拖拽事件 用作错位拖动
 const scrollTo = (scrollTo: number) => {
 	// console.log(scrollTo)
+	//滚动时添加纯色背景
+
 	const { top } = homeMain.value?.getBoundingClientRect() || { top: 0 }
 	const headerTop = document.getElementsByTagName("header")[0].clientHeight
 	if (scrollTo < 0 && top >= headerTop) {

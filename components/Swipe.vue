@@ -1,7 +1,7 @@
 <template>
-	<div class="amx-swipe" ref="swipeElement ">
+	<div class="amx-swipe" ref="swipeElement">
 		<!-- //:autoplay="4000" -->
-		<var-swipe class="swipe">
+		<var-swipe class="swipe" :autoplay="2000" loop>
 			<var-swipe-item v-for="(item, index) in swipeList" :key="item.src">
 				<nuxt-link
 					:to="{
@@ -72,9 +72,12 @@ onMounted(async () => {})
 
 	.swipe {
 		height: 100%;
+		width: 100%;
 
 		.var-swipe-item {
 			position: relative;
+			padding: 0 10px;
+			border-radius: 10px;
 		}
 
 		.swipe-title {
@@ -112,6 +115,7 @@ onMounted(async () => {})
 	.swipe-image {
 		width: 100%;
 		height: 100%;
+		border-radius: 10px;
 		@apply object-cover;
 	}
 }

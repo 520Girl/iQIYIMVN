@@ -51,7 +51,7 @@
 
   .dark {
     --amx-header-bc:#000000;
-    --amx-header-linear-gradient: linear-gradient(to top, #372b13, #15120b);
+    --amx-header-linear-gradient: linear-gradient(to bottom, #372b13, #000 544px);
     --amx-text:#d4d3cf;
     --amx-text-active:#f5f4f2;
     --amx-text-simple:#b4b0ad;

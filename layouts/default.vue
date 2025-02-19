@@ -16,7 +16,7 @@ onMounted(() => {
 </script>
 <style scoped lang="scss">
 .amx-Galloping-steak {
-	// background-color: var(--amx-main-bc-simple);
+	background: var(--amx-header-linear-gradient);
 	height: 100vh;
 }
 </style>
